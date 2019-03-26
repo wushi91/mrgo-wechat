@@ -1,0 +1,72 @@
+{
+  "pages": [
+    "pages/login/index",
+    "pages/classify/index",
+    "pages/my/index",
+    "pages/find/index",
+    "pages/home/index"
+  ],
+  "permission": {
+    "scope.userLocation": {
+      "desc": "你的位置信息将用于小程序位置接口的效果展示"
+    }
+  },
+  "window": {
+    "backgroundTextStyle": "dark",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "微信",
+    "navigationBarTextStyle": "white",
+    "enablePullDownRefresh":false
+  },
+  "tabBar": {
+    "color": "#999",
+    "backgroundColor": "#fafafa",
+    "selectedColor": "#333",
+    "borderStyle": "white",
+
+    "list": [{
+      "text": "首页",
+      "pagePath": "pages/home/index",
+      "iconPath": "static/tabs/5.png",
+      "selectedIconPath": "static/tabs/4.png"
+    },{
+      "text": "分类",
+      "pagePath": "pages/classify/index",
+      "iconPath": "static/tabs/2.png",
+      "selectedIconPath": "static/tabs/3.png"
+    },{
+      "text": "发现",
+      "pagePath": "pages/find/index",
+      "iconPath": "static/tabs/6.png",
+      "selectedIconPath": "static/tabs/7.png"
+    },{
+      "text": "我的",
+      "pagePath": "pages/my/index",
+      "iconPath": "static/tabs/8.png",
+      "selectedIconPath": "static/tabs/9.png"
+    }],
+    
+  "position": "bottom"
+  },
+  "usingComponents": {
+    "i-button": "static/dist/button/index",
+    "i-row": "static/dist/row/index",
+    "i-col": "static/dist/col/index",
+    "i-icon": "static/dist/icon/index",
+    "i-panel": "static/dist/panel/index",
+    "i-input": "static/dist/input/index",
+    "i-cell-group": "static/dist/cell-group/index",
+    "i-cell": "static/dist/cell/index",
+    "i-card": "static/dist/card/index",
+    "i-modal": "static/dist/modal/index",
+    "i-toast": "static/dist/toast/index",
+    "i-radio-group": "static/dist/radio-group/index",
+    "i-radio": "static/dist/radio/index",
+    "i-badge": "static/dist/badge/index",
+    "i-divider": "static/dist/divider/index",
+    "i-grid": "static/dist/grid/index",
+    "i-grid-item": "static/dist/grid-item/index",
+    "i-grid-icon": "static/dist/grid-icon/index",
+    "i-grid-label": "static/dist/grid-label/index"
+  }
+}
