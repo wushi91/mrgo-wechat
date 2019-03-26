@@ -4,9 +4,9 @@
 // import { bmobConfig } from '../config/bmob';//bmob配置文件
 const ajaxUrl = process.env.NODE_ENV === 'development'
   // 测试接口地址
-  ? ''
+  ? 'http://47.107.185.37:5555'
   // 线上接口地址
-  : '';
+  : 'http://47.107.185.37:5555';
 const ajaxs = {
   get(url, data) {
     var mtoken = wx.getStorageSync('token') 
