@@ -4,9 +4,9 @@
 // import { bmobConfig } from '../config/bmob';//bmob配置文件
 const ajaxUrl = process.env.NODE_ENV === 'development'
   // 测试接口地址
-  ? 'https://wechat.wehealth.net.cn'
+  ? ''
   // 线上接口地址
-  : 'https://wechat.wehealth.net.cn';
+  : '';
 const ajaxs = {
   get(url, data) {
     var mtoken = wx.getStorageSync('token') 
