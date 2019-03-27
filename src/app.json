@@ -1,9 +1,18 @@
 {
   "pages": [
+    "pages/index/index",
+    "pages/offlineStore/index",
+
+    "pages/test/index",
+    "pages/find/index",
+
+    "pages/proto/index",
     "pages/login/index",
+
+
     "pages/classify/index",
     "pages/my/index",
-    "pages/find/index",
+
     "pages/home/index"
   ],
   "permission": {
@@ -13,40 +22,10 @@
   },
   "window": {
     "backgroundTextStyle": "dark",
-    "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "微信",
+    "navigationBarBackgroundColor": "#37D0B3",
+    "navigationBarTitleText": "MRGO无人便利店",
     "navigationBarTextStyle": "white",
     "enablePullDownRefresh":false
-  },
-  "tabBar": {
-    "color": "#999",
-    "backgroundColor": "#fafafa",
-    "selectedColor": "#333",
-    "borderStyle": "white",
-
-    "list": [{
-      "text": "首页",
-      "pagePath": "pages/home/index",
-      "iconPath": "static/tabs/5.png",
-      "selectedIconPath": "static/tabs/4.png"
-    },{
-      "text": "分类",
-      "pagePath": "pages/classify/index",
-      "iconPath": "static/tabs/2.png",
-      "selectedIconPath": "static/tabs/3.png"
-    },{
-      "text": "发现",
-      "pagePath": "pages/find/index",
-      "iconPath": "static/tabs/6.png",
-      "selectedIconPath": "static/tabs/7.png"
-    },{
-      "text": "我的",
-      "pagePath": "pages/my/index",
-      "iconPath": "static/tabs/8.png",
-      "selectedIconPath": "static/tabs/9.png"
-    }],
-    
-  "position": "bottom"
   },
   "usingComponents": {
     "i-button": "static/dist/button/index",

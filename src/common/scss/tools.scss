@@ -1,0 +1,51 @@
+
+@function rpx($value) {
+  @return $value * 1rpx;
+}
+
+//长和高度，主要用于图片
+@mixin WH($width:D,$height:D){
+  @if type-of($width)==number{
+    width:rpx($width);
+  }
+  @if type-of($height)==number{
+    height:rpx($height);
+  }
+}
+
+
+//字体大小，颜色，以及行高和高度
+@mixin FCS($color,$fontSize:D,$lineHeight:D,$height:D){
+  color: $color;
+  @if type-of($fontSize)==number{
+    font-size:rpx($fontSize);
+  }
+  @if type-of($lineHeight)==number{
+    line-height:rpx($lineHeight);
+  }
+  @if type-of($height)==number{
+    height:rpx($height);
+  }
+}
+
+@mixin FONT-BOLD{
+  font-weight:700;
+}
+
+@mixin FONT-MEDIUM{
+  font-weight:500;
+}
+
+
+@mixin BTN($fontSize,$width,$height){
+  @if type-of($fontSize)==number{
+    font-size:rpx($fontSize);
+  }
+  @if type-of($width)==number{
+    width:rpx($width);
+  }
+  @if type-of($height)==number{
+    height:rpx($height);
+  }
+}
+

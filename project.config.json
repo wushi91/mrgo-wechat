@@ -10,7 +10,7 @@
 	},
 	"miniprogramRoot": "dist/",
 	"compileType": "miniprogram",
-	"appid": "touristappid",
+	"appid": "",
 	"projectname": "wx-mpvue-ebtry-quickstart",
 	"condition": {
 		"search": {

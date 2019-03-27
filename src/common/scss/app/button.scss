@@ -1,0 +1,43 @@
+button{
+  &.main-button{
+    background-color: $main-orange;
+    color:rgba(255,255,255,1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    &:active{
+      background-color: $main-orange;
+    }
+
+    &[disabled='']{
+      background-color: rgba(239,74,34,0.5);
+      color:rgba(255,255,255,1);
+    }
+  }
+
+
+
+  &.my-button{
+    background: rgba(0, 0, 0,0);
+    border: none;
+    outline: none;
+
+    &::after{
+      border: none;
+    }
+  }
+
+
+  &.open-type-button{
+    background: rgba(0, 0, 0,0);
+    border: none;
+    outline: none;
+
+    &::after{
+      border: none;
+    }
+  }
+
+
+
+}

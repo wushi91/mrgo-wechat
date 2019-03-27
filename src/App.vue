@@ -20,6 +20,7 @@ export default {
 }
 </script>
 
+
 <style>
 /* .container {
   height: 100%;
@@ -31,12 +32,18 @@ export default {
   box-sizing: border-box;
 } */
 /* this rule will be remove */
-* { 
-  height: 100%;
-  width: 100%;
-  transition: width 1s;
-  -moz-transition: width 1s;
-  -webkit-transition: width 1s;
-  -o-transition: width 1s;
-}
+
 </style>
+
+<style lang="scss">
+  @import "common/scss/app/app";
+  * {
+    height: 100%;
+    width: 100%;
+    transition: width 1s;
+    -moz-transition: width 1s;
+    -webkit-transition: width 1s;
+    -o-transition: width 1s;
+  }
+</style>
+

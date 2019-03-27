@@ -1,14 +1,19 @@
 <template>
   <div>
-    <p class="card">
-      {{text}}
+    <p class="card" @click="clickMessage">
+      {{text}}dddd
     </p>
   </div>
 </template>
 
 <script>
 export default {
-  props: ['text']
+  props: ['text'],
+  methods:{
+    clickMessage(){
+      console.log('---------fjefhejkfheiufhejifkuehfief')
+    }
+  }
 }
 </script>
 
