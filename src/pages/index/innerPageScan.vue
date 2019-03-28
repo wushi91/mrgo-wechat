@@ -1,7 +1,7 @@
 <template>
   <div class="scan">
 
-    <image class="avater"></image>
+    <image class="avater">头像</image>
     <text class="nickname">吃货一个</text>
     <div class="open-door" @click="scanOpenDoor">
       <image src="/static/images/bg_door.png"></image>

@@ -1,9 +1,7 @@
 <template>
   <div class="home">
-    <template v-for="item in arr">
-      <text >首页{{item}}</text>
-      <br/>
-    </template>
+    <text >首页{{item}}</text>
+
   </div>
 </template>
 
@@ -12,9 +10,12 @@
   export default {
     data() {
       return {
-        arr:[1],
+
       };
     },
+    methods:{
+
+    }
 
   };
 </script>

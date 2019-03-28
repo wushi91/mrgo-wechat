@@ -9,9 +9,11 @@ html, page {
 }
 
 .text-one-line {
-  white-space: nowrap;
-  text-overflow: ellipsis;
   overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
 }
 
 
@@ -52,4 +54,24 @@ html, page {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+
+.line-1-px{
+  position: relative;
+}
+
+.line-1-px::after{
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 200%;
+  height: 200%;
+  transform: scale(.5);
+  transform-origin: 0 0;
+  pointer-events: none;
+  box-sizing: border-box;
+  border: 0 solid #DBDBDB;
+  border-bottom-width: 1px
 }

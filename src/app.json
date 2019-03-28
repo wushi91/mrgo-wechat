@@ -1,6 +1,10 @@
 {
   "pages": [
     "pages/index/index",
+    "pages/orderList/index",
+
+    "pages/confirmOrder/index",
+
     "pages/offlineStore/index",
 
     "pages/test/index",
@@ -25,7 +29,8 @@
     "navigationBarBackgroundColor": "#37D0B3",
     "navigationBarTitleText": "MRGO无人便利店",
     "navigationBarTextStyle": "white",
-    "enablePullDownRefresh":false
+    "enablePullDownRefresh":false,
+    "backgroundColor": "#f5f5f5"
   },
   "usingComponents": {
     "i-button": "static/dist/button/index",
@@ -46,6 +51,9 @@
     "i-grid": "static/dist/grid/index",
     "i-grid-item": "static/dist/grid-item/index",
     "i-grid-icon": "static/dist/grid-icon/index",
+    "i-tabs": "static/dist/tabs/index",
+    "i-tab": "static/dist/tab/index",
+
     "i-grid-label": "static/dist/grid-label/index"
   }
 }

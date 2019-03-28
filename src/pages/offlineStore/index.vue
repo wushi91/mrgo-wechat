@@ -35,7 +35,7 @@
 
     <div class="buy-entry">
       <image src="/static/images/offline-shopcar.png"></image>
-      <image src="/static/images/offline-saoyisao.png"></image>
+      <image src="/static/images/offline-saoyisao.png" @click="scanGoodCode"></image>
 
     </div>
   </div>
@@ -53,7 +53,17 @@
 
     },
 
-    methods: {}
+    methods: {
+      scanGoodCode(){
+        wx.scanCode({
+          onlyFromCamera: true,
+          success(res) {
+            wx.navigateTo({url: `/pages/confirmOrder/index`})
+            console.log(res)
+          }
+        })
+      }
+    }
   };
 </script>
 

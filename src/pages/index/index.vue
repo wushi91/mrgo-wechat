@@ -19,13 +19,13 @@
 <script>
   import mytabbar from '@/components/myTabBar'
   import innerpagehome from './innerPageHome'
-  import innerpagescan from './innderPageScan'
-  import innerpagemy from './innderPageMy'
+  import innerpagescan from './innerPageScan'
+  import innerpagemy from './innerPageMy'
 
   export default {
     data() {
       return {
-        tabIndex:1,
+        tabIndex:2,
       };
     },
     mounted() {
@@ -34,6 +34,7 @@
     components: {
       mytabbar,innerpagehome,innerpagescan,innerpagemy
     },
+
 
     methods: {
       chooseTab(v){
