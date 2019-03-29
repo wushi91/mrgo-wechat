@@ -25,7 +25,7 @@
   export default {
     data() {
       return {
-        tabIndex:2,
+        tabIndex:0,
       };
     },
     mounted() {

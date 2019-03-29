@@ -1,22 +1,24 @@
 {
   "pages": [
+    "pages/login/index",
     "pages/index/index",
-    "pages/orderList/index",
 
-    "pages/confirmOrder/index",
 
-    "pages/offlineStore/index",
+    "pages/userProtocol/index",
+
 
     "pages/test/index",
+
+    "pages/offlineStore/index",
+    "pages/confirmOrder/index",
+
+    "pages/orderList/index",
+
     "pages/find/index",
-
     "pages/proto/index",
-    "pages/login/index",
-
 
     "pages/classify/index",
     "pages/my/index",
-
     "pages/home/index"
   ],
   "permission": {

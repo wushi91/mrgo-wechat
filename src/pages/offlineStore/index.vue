@@ -34,7 +34,11 @@
     <image class="qr-code" src="/static/images/qr-code.png"></image>
 
     <div class="buy-entry">
-      <image src="/static/images/offline-shopcar.png"></image>
+      <div class="shopcar-wrapper" @click="toShopCarPage">
+        <image src="/static/images/offline-shopcar.png"></image>
+        <text class="good-count" v-if="goodCount>0">{{goodCount}}</text>
+      </div>
+
       <image src="/static/images/offline-saoyisao.png" @click="scanGoodCode"></image>
 
     </div>
@@ -45,8 +49,7 @@
   export default {
     data() {
       return {
-        message: '线下购物',
-
+        goodCount:0,
       };
     },
     mounted() {
@@ -54,12 +57,14 @@
     },
 
     methods: {
+      toShopCarPage(){
+        wx.navigateTo({url: `/pages/confirmOrder/index`})
+      },
       scanGoodCode(){
         wx.scanCode({
           onlyFromCamera: true,
-          success(res) {
-            wx.navigateTo({url: `/pages/confirmOrder/index`})
-            console.log(res)
+          success:(res)=> {
+            this.goodCount++
           }
         })
       }
@@ -149,11 +154,27 @@
 
     .buy-entry{
       display: flex;
+
+      .shopcar-wrapper{
+        position: relative;
+        .good-count{
+          border-radius:rpx(16);
+          background-color: #F96D18;
+          @include FCS(#FFFFFF, 26, 34,34);
+
+          padding: 0 rpx(10);
+          position: absolute;
+          text-align: center;
+          top:rpx(40);
+          right:rpx(50);
+        }
+      }
+
       image{
         @include WH(195,195);
       }
-      image:first-child{
-        margin-right: rpx(102);
+      image:nth-child(2){
+        margin-left: rpx(102);
       }
     }
 

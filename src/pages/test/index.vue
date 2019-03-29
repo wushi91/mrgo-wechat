@@ -4,8 +4,10 @@
 
     <mytabbar :tabIndex=tabIndex @chooseTab=chooseTab></mytabbar>
     <card text="大师额"></card>
+    <web-view src="/static/html/hello.html"></web-view>
   </div>
 </template>
+
 
 <script>
 
