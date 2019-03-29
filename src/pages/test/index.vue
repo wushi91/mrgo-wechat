@@ -3,7 +3,6 @@
     <text >{{message}}</text>
 
     <mytabbar :tabIndex=tabIndex @chooseTab=chooseTab></mytabbar>
-    <card text="大师额"></card>
     <web-view src="/static/html/hello.html"></web-view>
   </div>
 </template>
@@ -12,7 +11,6 @@
 <script>
 
   import mytabbar from '@/components/myTabBar'
-  import card from '@/components/card'
 
   export default {
     config: {
@@ -26,7 +24,7 @@
       };
     },
     components: {
-      mytabbar,card
+      mytabbar
     },
     mounted() {
 

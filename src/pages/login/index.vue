@@ -34,6 +34,8 @@
 
     },
 
+
+
     methods: {
       getuserinfo(e) {
         if(this.agreeProto===false){
@@ -43,6 +45,7 @@
           })
           return
         }
+
 
         if (e.mp.detail.errMsg !== 'getUserInfo:ok') return
 
