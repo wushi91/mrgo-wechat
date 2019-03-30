@@ -31,7 +31,8 @@
       </div>
     </div>
 
-    <image class="qr-code" src="/static/images/qr-code.png"></image>
+    <canvas class="qr-code" canvas-id="myQrcode"></canvas>
+    <!--<image  src="/static/images/qr-code.png"></image>-->
 
     <div class="buy-entry">
       <div class="shopcar-wrapper" @click="toShopCarPage">
@@ -46,24 +47,48 @@
 </template>
 
 <script>
+  import drawQrcode from 'weapp-qrcode'
+  import {rpx2px} from '@/utils/myUtils'
+
   export default {
     data() {
       return {
-        goodCount:0,
+        goodCount: 0,
       };
+    },
+    onLoad() {
+
+      this.qrCode('myQrcode', 'http://baidu.com', 336, 336)
     },
     mounted() {
 
     },
 
     methods: {
-      toShopCarPage(){
+
+      qrCode(canvasId, text, width = 1, height = 1) {
+        width = rpx2px(width);
+        height = rpx2px(height);
+        drawQrcode({
+          width: width,
+          height: height,
+          canvasId: canvasId,
+          typeNumber: -1,
+          text: text,
+          correctLevel: 3,
+
+          callback(e) {
+            console.log('e: ', e)
+          }
+        })
+      },
+      toShopCarPage() {
         wx.navigateTo({url: `/pages/confirmOrder/index`})
       },
-      scanGoodCode(){
+      scanGoodCode() {
         wx.scanCode({
           onlyFromCamera: true,
-          success:(res)=> {
+          success: (res) => {
             this.goodCount++
           }
         })
@@ -73,15 +98,13 @@
 </script>
 
 <style>
-  html,page{
+  html, page {
     background-color: white;
   }
 </style>
 <style lang="scss" scoped>
 
   @import "../../common/scss/base";
-
-
 
   .offline-store {
     display: flex;
@@ -129,7 +152,7 @@
     .member-info {
       display: flex;
       width: 100%;
-      padding:rpx(30) 0;
+      padding: rpx(30) 0;
       .item {
         display: flex;
         flex: 1;
@@ -146,34 +169,34 @@
       }
 
     }
-    .qr-code{
+    .qr-code {
       margin-top: rpx(10);
       margin-bottom: rpx(85);
-      @include WH(336,336);
+      @include WH(336, 336);
     }
 
-    .buy-entry{
+    .buy-entry {
       display: flex;
 
-      .shopcar-wrapper{
+      .shopcar-wrapper {
         position: relative;
-        .good-count{
-          border-radius:rpx(16);
+        .good-count {
+          border-radius: rpx(16);
           background-color: #F96D18;
-          @include FCS(#FFFFFF, 26, 34,34);
+          @include FCS(#FFFFFF, 26, 34, 34);
 
           padding: 0 rpx(10);
           position: absolute;
           text-align: center;
-          top:rpx(40);
-          right:rpx(50);
+          top: rpx(40);
+          right: rpx(50);
         }
       }
 
-      image{
-        @include WH(195,195);
+      image {
+        @include WH(195, 195);
       }
-      image:nth-child(2){
+      image:nth-child(2) {
         margin-left: rpx(102);
       }
     }

@@ -1,5 +1,5 @@
 <template>
-  <div class="order-item">
+  <div class="order-item" @click="orderItemClick">
     <div class="header-wrapper">
       <text class="store-name">朗诗未来家店</text>
       <image></image>
@@ -36,7 +36,9 @@
       }
     },
     methods:{
-
+      orderItemClick(){
+        this.$emit('orderItemClick',{name:''})
+      }
 
     },
   }

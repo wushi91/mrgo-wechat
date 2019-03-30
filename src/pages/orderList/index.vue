@@ -10,23 +10,23 @@
 
 
     <div class="orderitem-wrapper">
-      <orderitem></orderitem>
+      <orderitem @orderItemClick="orderItemClick"></orderitem>
     </div>
 
     <div class="orderitem-wrapper">
-      <orderitem></orderitem>
+      <orderitem @orderItemClick="orderItemClick"></orderitem>
     </div>
 
     <div class="orderitem-wrapper">
-      <orderitem></orderitem>
+      <orderitem @orderItemClick="orderItemClick"></orderitem>
     </div>
 
     <div class="orderitem-wrapper">
-      <orderitem></orderitem>
+      <orderitem @orderItemClick="orderItemClick"></orderitem>
     </div>
 
     <div class="orderitem-wrapper">
-      <orderitem></orderitem>
+      <orderitem @orderItemClick="orderItemClick"></orderitem>
     </div>
 
 
@@ -58,6 +58,9 @@
     methods: {
       handleChange({mp}) {
         this.currentTab = mp.detail.key
+      },
+      orderItemClick(){
+        wx.navigateTo({url: `/pages/orderDetail/index`})
       }
     },
 

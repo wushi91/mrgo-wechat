@@ -10,8 +10,16 @@
         <text class="location">深圳市南山区软件产业基地B座2楼</text>
       </div>
 
-      <div class="good-list">
 
+
+
+      <div class="good-list" >
+
+        <i-swipeout  i-class="ordergooditem-swipeout" :actions="actions">
+          <view slot="content">
+            <ordergooditem></ordergooditem>
+          </view>
+        </i-swipeout>
         <ordergooditem></ordergooditem>
         <div class="line-1-px"></div>
         <ordergooditem></ordergooditem>
@@ -52,7 +60,7 @@
 
     <div class="pay-wrapper">
       <div class="btn-scan">继续扫码购</div>
-      <div class="btn-pay">去支付</div>
+      <div class="btn-pay" @click="toOperateResult('pay-success')">去支付</div>
     </div>
 
   </div>
@@ -64,7 +72,7 @@
 
   export default {
     config: {
-      navigationBarTitleText: 'MR.GO 订单确认'
+      navigationBarTitleText: 'MR.GO 订单确认',
     },
     components: {
       ordergooditem
@@ -72,22 +80,51 @@
     data() {
       return {
         message: '订单确认',
-
+        actions : [
+          {
+            name : '删除',
+            color : '#fff',
+            fontsize : '20',
+            width : 100,
+            icon : 'trash',
+            background : '#ed3f14'
+          },
+          {
+            name : '返回',
+            width : 100,
+            color : '#80848f',
+            fontsize : '20',
+            icon : 'undo'
+          }
+        ]
       };
     },
     mounted() {
 
     },
 
-    methods: {}
+    methods: {
+      toOperateResult(theResult){
+        wx.redirectTo({url: "/pages/operateResult/index?data=" + JSON.stringify({theResult})})
+      }
+    }
   };
 </script>
 
-<style>
+<style lang="scss">
   page {
     display: flex;
     flex-direction: column;
   }
+
+
+  .ordergooditem-swipeout{
+    background-color: red;
+    .i-swipeout-item{
+
+    }
+  }
+
 </style>
 
 <style lang="scss" scoped>
@@ -271,6 +308,8 @@
         margin-left: rpx(20);
       }
     }
+
+
 
   }
 
