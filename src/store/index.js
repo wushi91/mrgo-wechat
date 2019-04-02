@@ -3,9 +3,12 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import user from '@/store/user'
+import getters from '@/store/getters'
+
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
+  getters,
   state: {
     count: 0
   },
@@ -13,19 +16,6 @@ const store = new Vuex.Store({
     user
   },
   mutations: {
-    increment: (state) => {
-      const obj = state
-      obj.count += 1
-    },
-    setParam(state, payload) {
-      for (const i in payload) {
-        state[i] = payload[i]
-      }
-    },
-    decrement: (state) => {
-      const obj = state
-      obj.count -= 1
-    }
   }
 })
 

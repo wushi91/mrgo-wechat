@@ -1,14 +1,15 @@
 {
   "pages": [
-    "pages/login/index",
-    "pages/confirmOrder/index",
-    "pages/offlineStore/index",
+    "pages/test/index",
     "pages/index/index",
+
+    "pages/login/index",
+
+    "pages/offlineStore/index",
+    "pages/confirmOrder/index",
     "pages/orderDetail/index",
     "pages/operateResult/index",
-
     "pages/userProtocol/index",
-    "pages/test/index",
 
 
     "pages/orderList/index",

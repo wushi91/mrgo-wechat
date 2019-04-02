@@ -1,9 +1,10 @@
 <template>
   <div>
     <text >{{message}}</text>
+    <text >{{count}}<br/></text>
+    <text >{{token}}</text>
+    <button @click="totoken">fhfhf</button>
 
-    <mytabbar :tabIndex=tabIndex @chooseTab=chooseTab></mytabbar>
-    <web-view src="/static/html/hello.html"></web-view>
   </div>
 </template>
 
@@ -23,6 +24,16 @@
 
       };
     },
+    computed:{
+      count(){
+        return this.$store.state.count
+      },
+      token(){
+        return this.$store.getters.token
+      }
+    },
+    onLoad(){
+    },
     components: {
       mytabbar
     },
@@ -33,6 +44,9 @@
     methods: {
       chooseTab(v){
         this.tabIndex = v.tabIndex
+      },
+      totoken(){
+        this.$store.dispatch('Login', { token:'222fefefegsgdfg'})
       }
     }
   };
