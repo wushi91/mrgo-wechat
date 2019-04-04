@@ -10,24 +10,36 @@ Promise.prototype.finally = function (callback) {
   let P = this.constructor
   return this.then(
     value => P.resolve(callback()).then(() => value),
-    reason => P.resolve(callback()).then(() => { throw reason })
+    reason => P.resolve(callback()).then(() => {
+      throw reason
+    })
   )
 }
 
 const promisify = (api) => {
   return (options, ...params) => {
     return new Promise((resolve, reject) => {
-      api(Object.assign({}, options, { success: resolve, fail: reject }), ...params);
+      api(Object.assign({}, options, {success: resolve, fail: reject}), ...params);
     });
   }
 }
 
+const  pSetTimeout = (t)=>{
+  return new Promise((resolve,reject)=>{
+    setTimeout(()=>{
+      resolve()
+    },t)
+  })
+}
 export default {
+  scanCode: promisify(wx.scanCode),
   getSetting: promisify(wx.getSetting),
   getUserInfo: promisify(wx.getUserInfo),
   login: promisify(wx.login),
   chooseImage: promisify(wx.chooseImage),
   chooseVideo: promisify(wx.chooseVideo),
-  request:promisify(wx.request),
-  uploadFile:promisify(wx.uploadFile),
+  request: promisify(wx.request),
+  uploadFile: promisify(wx.uploadFile),
+  setTimeout: pSetTimeout
+
 }

@@ -1,15 +1,31 @@
-import Cookies from 'js-cookie'
+
 
 const TokenKey = 'Admin-Token'
+const UserInfoKey = 'UserInfo'
 
 export function getToken() {
-  return Cookies.get(TokenKey)
+
+  return wx.getStorageSync(TokenKey)
 }
 
 export function setToken(token) {
-  return Cookies.set(TokenKey, token)
+  return wx.setStorageSync(TokenKey,token)
 }
 
 export function removeToken() {
-  return Cookies.remove(TokenKey)
+  return wx.removeStorageSync(TokenKey)
+}
+
+
+export function getUserInfo() {
+
+  return wx.getStorageSync(UserInfoKey)
+}
+
+export function setUserInfo(userInfo) {
+  return wx.setStorageSync(UserInfoKey,userInfo)
+}
+
+export function removeUserInfo() {
+  return wx.removeStorageSync(UserInfoKey)
 }

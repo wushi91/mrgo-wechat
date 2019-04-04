@@ -2,18 +2,26 @@
   <div class="my">
     <div class="header-wrapper">
       <div class="avater-wrapper">
-        <image class="avater"></image>
+        <image class="avater" v-if="userInfo&&userInfo.imageUrl" :src="userInfo.imageUrl" ></image>
+        <image class="avater" src="/static/images/default-avater.png" v-else></image>
         <div class="username-wrapper">
-          <text class="name">深夜小淘淘</text>
-          <text class="phone">1354****726</text>
+          <text class="name" v-if="userInfo&&userInfo.nickname">{{userInfo.nickname}}</text>
+          <text class="phone">{{userInfo.mobile}}</text>
         </div>
+
+        <button v-if="!(userInfo&&userInfo.nickname)" class="btn-userinfo open-type-button" lang='zh_CN' open-type='getUserInfo' @getuserinfo='getuserinfo'>
+          获取头像昵称
+        </button>
+
         <image class="arrow" src="/static/images/me-arrow.png"></image>
       </div>
       <div class="card-wrapper">
         <div class="w1">
           <text class="range">金卡会员</text>
           <span class="score"><text class="s1">325</text><text class="s2">积分</text></span>
-          <div class="center">会员中心 <image class="member-arrow" src="/static/images/member-arrow.png"></image></div>
+          <div class="center">会员中心
+            <image class="member-arrow" src="/static/images/member-arrow.png"></image>
+          </div>
         </div>
 
         <text class="vip">VIP</text>
@@ -48,7 +56,7 @@
 
     <div class="menu-wrapper">
       <div class="menu">
-        <image class="icon"  src="/static/images/menu-wdpt.png"></image>
+        <image class="icon" src="/static/images/menu-wdpt.png"></image>
         <text>我的拼团</text>
         <image class="arrow" src="/static/images/menu-arrow.png"></image>
       </div>
@@ -86,10 +94,51 @@
     data() {
       return {};
     },
+    computed: {
+
+      token() {
+        return this.$store.getters.token
+      },
+      userInfo() {
+        console.log('computed userInfo')
+        return this.$store.getters.userInfo
+      }
+    },
     methods: {
       toOrderListPage(tab) {
         wx.navigateTo({url: '/pages/orderList/index' + "?data=" + JSON.stringify({tab})})
-      }
+      },
+      getuserinfo(e) {
+        if (e.mp.detail.errMsg === 'getUserInfo:ok') {
+          try {
+            let userInfo = e.mp.detail.userInfo
+
+            this.wxRequest.post.call(this, this.wxUrl.editUser, {needToken: true,contentType:'application/json', cities: userInfo.city,
+              imageUrl: userInfo.avatarUrl,
+              nationality: userInfo.country,
+              nickname: userInfo.nickName,
+              province: userInfo.province,
+              sex: userInfo.gender,
+            }).then(res => {
+              console.log('res.data.content',res.data.content)
+              this.$store.dispatch('Login', {userInfo:res.data.content})
+            }, res => {
+              if (res.data.status === 401) {
+                this.wxNavigate.waitNavigateToPage('login','请先登陆',1000)
+              } else {
+
+              }
+//              console.log('err',res)
+            })
+
+          } catch (err) {
+            wx.showToast({
+              title: err.message,
+              icon: 'none'
+            })
+          }
+        }
+      },
     }
 
   };
@@ -107,7 +156,7 @@
         padding: 0 rpx(30) rpx(14) rpx(30);
         align-items: center;
         .avater {
-          @include WH(118, 118);
+          @include WH(120, 120);
           border-radius: 50%;
           background-color: #e6e6ea;
           flex-shrink: 0;
@@ -127,6 +176,15 @@
           }
 
         }
+
+        .btn-userinfo {
+          @include WH(240, 78);
+          border: rpx(2) solid #FFFFFF;
+          border-radius: rpx(40);
+          font-size: rpx(32);
+          color: #FFFFFF;
+          line-height: rpx(78);
+        }
         .arrow {
           @include WH(16, 27);
           flex-shrink: 0;
@@ -140,7 +198,7 @@
         margin: 0 rpx(30);
         height: rpx(130);
         padding: rpx(25) rpx(30) 0 rpx(30);
-        background: linear-gradient(66deg, rgba(238, 216, 167, 1), rgba(241, 202, 143, 1));
+        background: linear-gradient(66deg, rgba(255, 231, 176, 1), rgba(236, 210, 138, 1));
         box-shadow: 0 0 rpx(9) 0 rgba(12, 78, 66, 0.28);
         border-radius: rpx(10) rpx(10) 0 0;
         .w1 {
@@ -154,10 +212,10 @@
             display: flex;
             align-items: flex-end;
             margin-left: rpx(80);
-            .s1{
+            .s1 {
               @include FCS(#876732, 32, 40, 40);
             }
-            .s2{
+            .s2 {
               margin-left: rpx(5);
               @include FCS(#876732, 26, 34, 34);
             }
@@ -174,9 +232,9 @@
             opacity: 0.78;
             border-radius: rpx(25);
             text-align: center;
-            .member-arrow{
+            .member-arrow {
               margin-left: rpx(8);
-              @include WH(11,13);
+              @include WH(11, 13);
             }
           }
         }
@@ -219,32 +277,32 @@
       }
     }
 
-    .menu-wrapper{
+    .menu-wrapper {
       display: flex;
       flex-direction: column;
-      padding:rpx(10) rpx(32);
+      padding: rpx(10) rpx(32);
       border-radius: rpx(10);
       background-color: white;
       margin: rpx(20) rpx(30);
-      .menu{
+      .menu {
         display: flex;
         align-items: center;
-        height:rpx(72);
+        height: rpx(72);
 
-        .icon{
-          @include WH(36,36);
+        .icon {
+          @include WH(36, 36);
           margin-right: rpx(27);
         }
-        text{
+        text {
           @include FCS(#393939, 32, 40, 40);
-          flex:1;
+          flex: 1;
         }
-        .arrow{
-          @include WH(16,27);
+        .arrow {
+          @include WH(16, 27);
         }
       }
 
-      .line-1-px{
+      .line-1-px {
         margin: rpx(15) 0;
       }
     }

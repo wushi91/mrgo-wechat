@@ -10,9 +10,9 @@
 
 
     <!--<button class="login_btn_t open-type-button" open-type="getUserInfo"-->
-            <!--@getuserinfo='getuserinfo'>-->
-      <!--<image class="wechat-icon" src="/static/images/login-wechat.png"></image>-->
-      <!--获取微信用户信息-->
+    <!--@getuserinfo='getuserinfo'>-->
+    <!--<image class="wechat-icon" src="/static/images/login-wechat.png"></image>-->
+    <!--获取微信用户信息-->
     <!--</button>-->
 
     <div class="proto-wrapper">
@@ -32,32 +32,46 @@
 </template>
 
 <script>
+
+  /**
+   * 登陆成功后的跳转主要考虑二维码扫描进来的页面
+   * **/
+
+  import {scanToPage} from '@/utils/scanQrcode'
+
   export default {
     config: {
       "disableScroll": true,
     },
-
     data() {
       return {
         agreeProto: true,
+        qrcodeUrl: '',
+        redirectPage: ''
+
       };
     },
+
+    onLoad(options) {
+      if (options && options.data) {
+        this.qrcodeUrl = decodeURIComponent(JSON.parse(options.data).qrcodeUrl)
+        this.redirectPage = JSON.parse(options.data).redirectPage
+
+        console.log('this.qrcodeUrl',this.qrcodeUrl)
+        console.log('this.redirectPage',this.redirectPage)
+      }
+    },
+
     mounted() {
 
     },
 
-//    wx.showToast({
-//    title: '登录成功'
-//  })
-//  setTimeout( () =>{
-//    wx.redirectTo({url: `/pages/index/index`})
-//  },1000)
 
     methods: {
       clickLoginBtn() {
         if (this.agreeProto === false) {
           wx.showToast({
-            title: '请阅读并同意《mrgo用户协议》',
+            title: '请阅读并同意《MR.GO用户协议》',
             icon: 'none',
           })
         }
@@ -92,23 +106,59 @@
       },
 
       toUserProtocolPage() {
-        wx.navigateTo({url: `/pages/userProtocol/index`})
+        this.wxNavigate.navigateToPage('userProtocol')
       },
+
+      loginBack() {
+        this.wxNavigate.goBack(1500)
+      },
+
 
       async phoneLogin({encryptedData, iv}) {
-        let code = await this.wxPromise.login().then(res => res.code, res => null)
+        let code = await this.wxPromise.login().then(res => {
+          return res.code
+        }, res => null)
         if (!code) throw new Error("登录失败")
-        let token = await this.wxRequest.get.call(this, this.wxUrl.login, {code, encryptedData, iv}).then(res => res.data.token, res => null)
+        let token = await this.wxRequest.post.call(this, this.wxUrl.login, {code, encryptedData, iv}).then(res => {
+          console.log('登录成功')
+          console.log(res.data)
+          this.$store.dispatch('Login', {token: res.data.content.token, userInfo: res.data.content.userInfo})
+          return res.data.content.token
+        }, res => null)
+        if (!token) throw new Error("登录失败")
+
+        //保存token，并同步到其他组件（store），提示登陆成功，返回原来的页面
+
+        wx.showToast({
+          title: '登录成功'
+        })
+
+
+        if (this.qrcodeUrl) {
+          scanToPage.call(this, true, this.qrcodeUrl, 1500)
+        } else if (this.redirectPage) {
+          this.wxNavigate.waitRedirectToage(this.redirectPage)
+        } else {
+          this.loginBack()
+        }
+
 
       },
 
-      async userinfoLogin({encryptedData, iv,rawData,signature}) {
+      async userinfoLogin({encryptedData, iv, rawData, signature}) {
         let code = await this.wxPromise.login().then(res => res.code, res => null)
         if (!code) throw new Error("登录失败")
 
-        let token = await this.wxRequest.get.call(this, this.wxUrl.login, {code, encryptedData, iv,rawData,signature}).then(res => res.data.token, res => null)
+        let token = await this.wxRequest.get.call(this, this.wxUrl.login, {
+          code,
+          encryptedData,
+          iv,
+          rawData,
+          signature
+        }).then(res => res.data.token, res => null)
         if (!token) throw new Error("登录失败")
       }
+
 
     }
   };

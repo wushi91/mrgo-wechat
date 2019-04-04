@@ -1,42 +1,43 @@
 <script>
-export default {
-  globalConfig: {
-    usingComponents: {
-      'van-tag': 'vant-weapp/dist/tag/index'
-    }
-  },
-  created () {
-    var token = wx.getStorageSync('token')
-    // 调用API从本地缓存中获取数据
-     if(token.token){
-        var _this =this
-        var url = 'pages/classify/index'
-        // var url = 'pages/classify/settlement'
-        wx.switchTab({ url })
-     }
-  },
-  methods: {
-  },
-}
+
+  import {getToken} from '@/utils/auth'
+
+  export default {
+    globalConfig: {
+      usingComponents: {
+        'van-tag': 'vant-weapp/dist/tag/index'
+      }
+    },
+    created() {
+//      console.log(getToken())
+//      console.log('this.$store.getters.token')
+//
+//      console.log(this.$store.getters.token)
+//      console.log(wx)
+//      wx.redirectTo({url: 'pages/splashScreen/index'})
+    },
+    methods: {},
+  }
 </script>
 
 
 <style>
-/* .container {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  padding: 200rpx 0;
-  box-sizing: border-box;
-} */
-/* this rule will be remove */
+  /* .container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 200rpx 0;
+    box-sizing: border-box;
+  } */
+  /* this rule will be remove */
 
 </style>
 
 <style lang="scss">
   @import "common/scss/app/app";
+
   * {
     height: 100%;
     width: 100%;

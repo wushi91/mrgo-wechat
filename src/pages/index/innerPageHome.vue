@@ -15,8 +15,9 @@
     </swiper>
 
     <div class="my-info">
-      <image class="avater"></image>
-      <text class="nickname">深夜小淘淘</text>
+      <image class="avater" v-if="userInfo&&userInfo.imageUrl" :src="userInfo.imageUrl" ></image>
+      <image class="avater" src="/static/images/default-avater.png" v-else></image>
+      <text class="nickname" >{{userInfo.nickname}}</text>
       <text class="member">普卡会员</text>
       <image class="imember" src="/static/images/index-vip.png"></image>
       <div class="center">升级会员 <image class="member-arrow" src="/static/images/member-arrow.png"></image></div>
@@ -58,6 +59,16 @@
       return {
         bannerList:[1,23,456]
       };
+    },
+    computed: {
+
+      token() {
+        return this.$store.getters.token
+      },
+      userInfo() {
+        console.log('computed userInfo')
+        return this.$store.getters.userInfo
+      }
     },
     methods:{
 

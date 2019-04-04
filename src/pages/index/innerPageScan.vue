@@ -1,8 +1,8 @@
 <template>
   <div class="scan">
-
-    <image class="avater">头像</image>
-    <text class="nickname">吃货一个</text>
+    <image class="avater" v-if="userInfo&&userInfo.imageUrl" :src="userInfo.imageUrl" ></image>
+    <image class="avater" src="/static/images/default-avater.png" v-else></image>
+    <text class="nickname" >{{userInfo.nickname}}</text>
     <div class="open-door" @click="scanOpenDoor">
       <image src="/static/images/bg_door.png"></image>
       <text>开门</text>
@@ -21,6 +21,17 @@
         arr:[1],
       };
     },
+
+    computed: {
+      token() {
+        return this.$store.getters.token
+      },
+      userInfo() {
+        console.log('computed userInfo')
+        return this.$store.getters.userInfo
+      }
+    },
+
     methods:{
       scanOpenDoor(){
         wx.scanCode({
@@ -47,7 +58,6 @@
 
     .avater{
       @include WH(118,118);
-      background-color: lightblue;
       border-radius: rpx(10);
       margin-top: rpx(60);
     }

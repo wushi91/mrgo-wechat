@@ -59,13 +59,14 @@
       handleChange({mp}) {
         this.currentTab = mp.detail.key
       },
-      orderItemClick(){
+      orderItemClick() {
         wx.navigateTo({url: `/pages/orderDetail/index`})
       }
     },
 
-    onLoad(options){
-      this.currentTab = JSON.parse(options.data).tab
+    onLoad(options) {
+      if (options && options.data)
+        this.currentTab = JSON.parse(options.data).tab
     }
 
 
@@ -83,10 +84,6 @@
       margin-top: rpx(20);
     }
   }
-
-
-
-
 
 
 </style>

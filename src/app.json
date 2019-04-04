@@ -1,20 +1,21 @@
 {
   "pages": [
-    "pages/test/index",
+    "pages/splashScreen/index",
     "pages/index/index",
 
     "pages/login/index",
 
     "pages/offlineStore/index",
-    "pages/confirmOrder/index",
+
+
+    "pages/test/index",
+
+    "pages/offlineSCar/index",
     "pages/orderDetail/index",
     "pages/operateResult/index",
     "pages/userProtocol/index",
-
-
     "pages/orderList/index",
     "pages/proto/index"
-
   ],
   "permission": {
     "scope.userLocation": {
@@ -24,9 +25,9 @@
   "window": {
     "backgroundTextStyle": "dark",
     "navigationBarBackgroundColor": "#37D0B3",
-    "navigationBarTitleText": "MRGO无人便利店",
+    "navigationBarTitleText": "MR.GO智慧便利店",
     "navigationBarTextStyle": "white",
-    "enablePullDownRefresh":false,
+    "enablePullDownRefresh": false,
     "backgroundColor": "#f5f5f5"
   },
   "usingComponents": {
@@ -51,7 +52,6 @@
     "i-tabs": "static/dist/tabs/index",
     "i-tab": "static/dist/tab/index",
     "i-swipeout": "static/dist/swipeout/index",
-
     "i-grid-label": "static/dist/grid-label/index"
   }
 }

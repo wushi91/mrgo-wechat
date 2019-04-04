@@ -11,8 +11,6 @@
       </div>
 
 
-
-
       <div class="good-list" >
 
         <i-swipeout  i-class="ordergooditem-swipeout" :actions="actions">

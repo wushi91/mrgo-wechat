@@ -3,7 +3,7 @@
     <div class="card-vip">
       <image src="/static/images/bg_vip.png"></image>
       <div class="card-content">
-        <text class="t1">MR.GO 智慧无人便利店</text>
+        <text class="t1">MR.GO 智慧便利店</text>
         <div class="divcenter">
           <div>
             <text class="t21">VIP</text>
@@ -35,30 +35,41 @@
     <!--<image  src="/static/images/qr-code.png"></image>-->
 
     <div class="buy-entry">
-      <div class="shopcar-wrapper" @click="toShopCarPage">
+      <div class="shopcar-wrapper" @click="toOrderListPage">
         <image src="/static/images/offline-shopcar.png"></image>
-        <text class="good-count" v-if="goodCount>0">{{goodCount}}</text>
       </div>
 
-      <image src="/static/images/offline-saoyisao.png" @click="scanGoodCode"></image>
+      <image src="/static/images/offline-saoyisao.png" @click="scanMRGOCode"></image>
 
     </div>
   </div>
 </template>
 
 <script>
+
+  /**
+   * 关键，扫码开门，扫码添加物品，以及处理传入当前页面的店面id（扫码开门）
+   * */
   import drawQrcode from 'weapp-qrcode'
-  import {rpx2px} from '@/utils/myUtils'
+  import {goodQrcode, storeQrcode} from '@/utils/scanQrcode'
 
   export default {
     data() {
       return {
-        goodCount: 0,
+        qrcodeUrl: '',
+        storeId: ''
       };
     },
-    onLoad() {
+    onLoad(options) {
 
       this.qrCode('myQrcode', 'http://baidu.com', 336, 336)
+
+      if (options && options.data) {
+        this.qrcodeUrl = decodeURIComponent(JSON.parse(options.data).qrcodeUrl)
+        this.storeId = storeQrcode.storeId(this.qrcodeUrl)
+        this.openDoor(this.storeId)
+      }
+
     },
     mounted() {
 
@@ -67,8 +78,8 @@
     methods: {
 
       qrCode(canvasId, text, width = 1, height = 1) {
-        width = rpx2px(width);
-        height = rpx2px(height);
+        width = this.wxUtil.rpx2px(width);
+        height = this.wxUtil.rpx2px(height);
         drawQrcode({
           width: width,
           height: height,
@@ -76,23 +87,53 @@
           typeNumber: -1,
           text: text,
           correctLevel: 3,
+        })
+      },
 
-          callback(e) {
-            console.log('e: ', e)
+      scanMRGOCode() {
+        this.wxPromise.scanCode({onlyFromCamera: true}).then(res => {
+          let qrcodeUrl = res.result
+          if (qrcodeUrl.startsWith(storeQrcode.path)) {
+            let storeId = storeQrcode.storeId(qrcodeUrl)
+            this.openDoor(storeId)
+          } else if (qrcodeUrl.startsWith(goodQrcode.path)) {
+            let goodId = goodQrcode.goodId(qrcodeUrl)
+            this.toOfflineSCarPage(goodId)
+          } else {
+            wx.showToast({
+              title: '没有找到对应的商品',
+              icon: 'none'
+            })
           }
+
+        })
+
+      },
+
+      openDoor(storeId) {
+        storeQrcode.scanAction.call(this, storeId).then(res => {
+          console.log('开门成功')
+          wx.showToast({title: "开门成功，欢迎光临", icon: 'none'})
+          this.wxUtil.playWelcomeVoice()
+
+        }, res => {
+          console.log('开门失败')
+          if (res.data.status === 401) {
+            this.wxNavigate.waitNavigateToPage('login','请先登陆',1000)
+          } else {
+
+          }
+
         })
       },
-      toShopCarPage() {
-        wx.navigateTo({url: `/pages/confirmOrder/index`})
+
+      toOfflineSCarPage(goodId) {
+        this.wxNavigate.navigateToPage('offlineSCar',{goodId})
       },
-      scanGoodCode() {
-        wx.scanCode({
-          onlyFromCamera: true,
-          success: (res) => {
-            this.goodCount++
-          }
-        })
+      toOrderListPage(){
+        this.wxNavigate.navigateToPage('orderList')
       }
+
     }
   };
 </script>
