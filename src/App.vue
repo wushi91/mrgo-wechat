@@ -5,7 +5,7 @@
   export default {
     globalConfig: {
       usingComponents: {
-        'van-tag': 'vant-weapp/dist/tag/index'
+//        'van-tag': 'vant-weapp/dist/tag/index'
       }
     },
     created() {

@@ -1,7 +1,7 @@
 <template>
   <div class="my">
     <div class="header-wrapper">
-      <div class="avater-wrapper">
+      <div class="avater-wrapper" @click="toPersonInfoPage">
         <image class="avater" v-if="userInfo&&userInfo.imageUrl" :src="userInfo.imageUrl" ></image>
         <image class="avater" src="/static/images/default-avater.png" v-else></image>
         <div class="username-wrapper">
@@ -9,47 +9,66 @@
           <text class="phone">{{userInfo.mobile}}</text>
         </div>
 
-        <button v-if="!(userInfo&&userInfo.nickname)" class="btn-userinfo open-type-button" lang='zh_CN' open-type='getUserInfo' @getuserinfo='getuserinfo'>
+        <button v-if="!(userInfo&&userInfo.nickname)" class="btn-userinfo open-type-button" lang='zh_CN' open-type='getUserInfo' @getuserinfo='getuserinfo' @click.stop>
           获取头像昵称
         </button>
 
         <image class="arrow" src="/static/images/me-arrow.png"></image>
       </div>
       <div class="card-wrapper">
-        <div class="w1">
-          <text class="range">金卡会员</text>
-          <span class="score"><text class="s1">325</text><text class="s2">积分</text></span>
-          <div class="center">会员中心
-            <image class="member-arrow" src="/static/images/member-arrow.png"></image>
+        <div class="card">
+          <div class="w1">
+            <text class="range">金卡会员</text>
+            <span class="score"><text class="s1">325</text><text class="s2">积分</text></span>
+            <div class="center">会员中心
+              <image class="member-arrow" src="/static/images/member-arrow.png"></image>
+            </div>
           </div>
+
+          <text class="vip">VIP</text>
         </div>
 
-        <text class="vip">VIP</text>
-
+        <image class="index-hudu" src="/static/images/index-hudu.png"></image>
       </div>
+
+
     </div>
+
 
 
     <div class="order-wrapper">
       <text class="title">我的订单</text>
       <div class="item-wrapper">
         <div class="item" @click="toOrderListPage('tab-wait')">
-          <image src="/static/images/order-wait.png"></image>
-          <text>待付款</text>
+          <div class="icon-order-wrapper">
+            <image src="/static/images/order-wait.png"></image>
+            <text>9</text>
+          </div>
+
+          <text class="order-text">待付款</text>
         </div>
         <div class="item" @click="toOrderListPage('tab-can')">
-          <image src="/static/images/order-can.png"></image>
-          <text>可使用</text>
+          <div class="icon-order-wrapper">
+            <image src="/static/images/order-can.png"></image>
+            <text>3</text>
+          </div>
+          <text class="order-text">可使用</text>
         </div>
 
         <div class="item" @click="toOrderListPage('tab-back')">
-          <image src="/static/images/order-back.png"></image>
-          <text>退款/售后</text>
+          <div class="icon-order-wrapper">
+            <image src="/static/images/order-back.png"></image>
+            <text>3</text>
+          </div>
+          <text class="order-text">退款/售后</text>
         </div>
 
         <div class="item" @click="toOrderListPage('tab-all')">
-          <image src="/static/images/order-all.png"></image>
-          <text>全部订单</text>
+          <div class="icon-order-wrapper">
+            <image src="/static/images/order-all.png"></image>
+            <text>3</text>
+          </div>
+          <text class="order-text">全部订单</text>
         </div>
       </div>
     </div>
@@ -94,19 +113,18 @@
     data() {
       return {};
     },
-    computed: {
 
-      token() {
-        return this.$store.getters.token
-      },
-      userInfo() {
-        console.log('computed userInfo')
-        return this.$store.getters.userInfo
-      }
-    },
+    props: ['userInfo','orderStatus'],
+
     methods: {
       toOrderListPage(tab) {
-        wx.navigateTo({url: '/pages/orderList/index' + "?data=" + JSON.stringify({tab})})
+        this.wxNavigate.navigateToPage('orderList',{tab})
+      },
+      toPersonInfoPage(){
+        if(this.userInfo&&this.userInfo.nickname){
+          this.wxNavigate.navigateToPage('personInfo')
+        }
+
       },
       getuserinfo(e) {
         if (e.mp.detail.errMsg === 'getUserInfo:ok') {
@@ -122,13 +140,6 @@
             }).then(res => {
               console.log('res.data.content',res.data.content)
               this.$store.dispatch('Login', {userInfo:res.data.content})
-            }, res => {
-              if (res.data.status === 401) {
-                this.wxNavigate.waitNavigateToPage('login','请先登陆',1000)
-              } else {
-
-              }
-//              console.log('err',res)
             })
 
           } catch (err) {
@@ -151,6 +162,8 @@
     .header-wrapper {
       background-color: #37D0B3;
       padding-top: rpx(10);
+      display: flex;
+      flex-direction: column;
       .avater-wrapper {
         display: flex;
         padding: 0 rpx(30) rpx(14) rpx(30);
@@ -184,6 +197,7 @@
           font-size: rpx(32);
           color: #FFFFFF;
           line-height: rpx(78);
+          margin-right: rpx(12);
         }
         .arrow {
           @include WH(16, 27);
@@ -193,14 +207,18 @@
 
       .card-wrapper {
         position: relative;
-        box-sizing: border-box;
-        display: flex;
-        margin: 0 rpx(30);
-        height: rpx(130);
-        padding: rpx(25) rpx(30) 0 rpx(30);
-        background: linear-gradient(66deg, rgba(255, 231, 176, 1), rgba(236, 210, 138, 1));
-        box-shadow: 0 0 rpx(9) 0 rgba(12, 78, 66, 0.28);
-        border-radius: rpx(10) rpx(10) 0 0;
+        .card{
+          position: relative;
+          box-sizing: border-box;
+          display: flex;
+          margin: 0 rpx(30);
+          height: rpx(130);
+          padding: rpx(25) rpx(30) 0 rpx(30);
+          background: linear-gradient(66deg, rgba(255, 231, 176, 1), rgba(236, 210, 138, 1));
+          box-shadow: 0 0 rpx(9) 0 rgba(12, 78, 66, 0.28);
+          border-radius: rpx(10) rpx(10) 0 0;
+        }
+
         .w1 {
           display: flex;
           align-items: center;
@@ -245,9 +263,19 @@
           opacity: 0.28;
           top: rpx(75);
         }
+
+        .index-hudu{
+          position: absolute;
+          bottom:rpx(-15);
+          @include WH(750,50)
+        }
       }
 
+
+
+
     }
+
 
     .order-wrapper {
       margin: rpx(20) rpx(30);
@@ -266,10 +294,26 @@
           display: flex;
           flex-direction: column;
           align-items: center;
-          image {
-            @include WH(36, 36);
+
+          .icon-order-wrapper{
+            position: relative;
+            @include WH(42, 42);
+            image {
+              @include WH(42, 42);
+            }
+            text{
+              background-color: white;
+              position: absolute;
+              @include WH(26,26);
+              text-align: center;
+              @include FCS(#FF766F,18,26,26);
+              border: rpx(2) solid #FF766F;
+              border-radius: 50%;
+              transform: translate(-50%, -50%);
+            }
           }
-          text {
+
+          .order-text {
             margin-top: rpx(12);
             @include FCS(#393939, 26, 34, 34);
           }

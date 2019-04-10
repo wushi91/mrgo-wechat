@@ -37,8 +37,6 @@
    * 登陆成功后的跳转主要考虑二维码扫描进来的页面
    * **/
 
-  import {scanToPage} from '@/utils/scanQrcode'
-
   export default {
     config: {
       "disableScroll": true,
@@ -47,18 +45,21 @@
       return {
         agreeProto: true,
         qrcodeUrl: '',
-        redirectPage: ''
-
+        redirectPage: '',//已有流程无法区分，一开始进入登录页还是之后跳转的进入登录页
       };
     },
 
     onLoad(options) {
       if (options && options.data) {
-        this.qrcodeUrl = decodeURIComponent(JSON.parse(options.data).qrcodeUrl)
-        this.redirectPage = JSON.parse(options.data).redirectPage
 
-        console.log('this.qrcodeUrl',this.qrcodeUrl)
-        console.log('this.redirectPage',this.redirectPage)
+        let parseData = JSON.parse(options.data)
+        if(parseData.qrcodeUrl){
+          this.qrcodeUrl = parseData.qrcodeUrl
+        }
+        if(parseData.redirectPage){
+          this.redirectPage = parseData.redirectPage
+        }
+
       }
     },
 
@@ -119,25 +120,19 @@
           return res.code
         }, res => null)
         if (!code) throw new Error("登录失败")
-        let token = await this.wxRequest.post.call(this, this.wxUrl.login, {code, encryptedData, iv}).then(res => {
+        let token = await this.wxRequest.get.call(this, this.wxUrl.login, {code, encryptedData, iv}).then(res => {
           console.log('登录成功')
-          console.log(res.data)
-          this.$store.dispatch('Login', {token: res.data.content.token, userInfo: res.data.content.userInfo})
+          this.$store.dispatch('Login', {token: res.data.content.token, userInfo: res.data.content.userInfo})//保存token，并同步到其他组件（store），提示登陆成功，返回原来的页面
           return res.data.content.token
         }, res => null)
         if (!token) throw new Error("登录失败")
 
-        //保存token，并同步到其他组件（store），提示登陆成功，返回原来的页面
-
-        wx.showToast({
-          title: '登录成功'
-        })
 
 
         if (this.qrcodeUrl) {
-          scanToPage.call(this, true, this.qrcodeUrl, 1500)
+          this.wxNavigate.redirectToPage('index', {qrcodeUrl: this.qrcodeUrl})
         } else if (this.redirectPage) {
-          this.wxNavigate.waitRedirectToage(this.redirectPage)
+          this.wxNavigate.redirectToPage(this.redirectPage)
         } else {
           this.loginBack()
         }

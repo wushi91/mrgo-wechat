@@ -1,45 +1,58 @@
 <template>
   <div class="offline-store">
-    <div class="card-vip">
-      <image src="/static/images/bg_vip.png"></image>
-      <div class="card-content">
-        <text class="t1">MR.GO 智慧便利店</text>
-        <div class="divcenter">
-          <div>
-            <text class="t21">VIP</text>
-            <text class="t22">尊享会员</text>
+    <div class="top-wrapper">
+      <div class="card-vip">
+        <image src="/static/images/bg_vip.png"></image>
+        <div class="card-content">
+          <text class="t1">MR.GO 智慧便利店</text>
+          <div class="divcenter">
+            <div>
+              <text class="t21">VIP</text>
+              <text class="t22">尊享会员</text>
+            </div>
           </div>
+          <text class="card-time">2019年10月10日到期</text>
+          <text class="card-num">8855 9766 9877 3152</text>
         </div>
-        <text class="t3">8855 9766 9877 3152</text>
+      </div>
+
+      <div class="member-info">
+        <div class="item">
+          <text class="t1">积分</text>
+          <text class="t2">100</text>
+        </div>
+
+        <div class="item">
+          <text class="t1">会员</text>
+          <text class="t2">尊享会员</text>
+        </div>
+
+
+        <div class="item">
+          <text class="t1">优惠券</text>
+          <text class="t2">5张</text>
+        </div>
       </div>
     </div>
 
-    <div class="member-info">
-      <div class="item">
-        <text class="t1">积分</text>
-        <text class="t2">100</text>
-      </div>
 
-      <div class="item">
-        <text class="t1">会员</text>
-        <text class="t2">尊享会员</text>
-      </div>
-
-      <div class="item">
-        <text class="t1">优惠券</text>
-        <text class="t2">5张</text>
-      </div>
+    <div class="canvas-wrapper">
+      <canvas class="qr-code" canvas-id="myQrcode"></canvas>
     </div>
 
-    <canvas class="qr-code" canvas-id="myQrcode"></canvas>
     <!--<image  src="/static/images/qr-code.png"></image>-->
 
     <div class="buy-entry">
-      <div class="shopcar-wrapper" @click="toOrderListPage">
-        <image src="/static/images/offline-shopcar.png"></image>
+      <div class="shopcar-wrapper" @click="toOrderListPage('tab-can')">
+        <image src="/static/images/offline-order.png"></image>
+        <text class="tip">可使用订单</text>
       </div>
+      <!--@click="scanMRGOCode"-->
 
-      <image src="/static/images/offline-saoyisao.png" @click="scanMRGOCode"></image>
+      <div class="saoyisao-wrapper" @click="scanMRGOCode">
+        <image src="/static/images/offline-saoyisao.png"></image>
+        <text class="tip">扫码购</text>
+      </div>
 
     </div>
   </div>
@@ -61,12 +74,11 @@
       };
     },
     onLoad(options) {
-
-      this.qrCode('myQrcode', 'http://baidu.com', 336, 336)
-
+      this.qrCode('myQrcode', 'http://baidu.com', 316, 316)
       if (options && options.data) {
         this.qrcodeUrl = decodeURIComponent(JSON.parse(options.data).qrcodeUrl)
         this.storeId = storeQrcode.storeId(this.qrcodeUrl)
+        console.log('this.storeId', this.storeId)
         this.openDoor(this.storeId)
       }
 
@@ -93,12 +105,15 @@
       scanMRGOCode() {
         this.wxPromise.scanCode({onlyFromCamera: true}).then(res => {
           let qrcodeUrl = res.result
-          if (qrcodeUrl.startsWith(storeQrcode.path)) {
-            let storeId = storeQrcode.storeId(qrcodeUrl)
-            this.openDoor(storeId)
-          } else if (qrcodeUrl.startsWith(goodQrcode.path)) {
-            let goodId = goodQrcode.goodId(qrcodeUrl)
-            this.toOfflineSCarPage(goodId)
+//          if (qrcodeUrl.startsWith(storeQrcode.path)) {
+//            let storeId = storeQrcode.storeId(qrcodeUrl)
+//            this.wxNavigate.navigateToPage('offlineStore', {qrcodeUrl: encodeURIComponent(qrcodeUrl)})
+//            this.wxNavigate.redirectToPage('offlineStore', {qrcodeUrl: encodeURIComponent(qrcodeUrl)})
+//            this.openDoor(storeId)
+//          } else
+          if (qrcodeUrl.startsWith(goodQrcode.path)) {
+            this.wxNavigate.navigateToPage('offlineSCar', {qrcodeUrl: encodeURIComponent(qrcodeUrl)})
+
           } else {
             wx.showToast({
               title: '没有找到对应的商品',
@@ -115,34 +130,25 @@
           console.log('开门成功')
           wx.showToast({title: "开门成功，欢迎光临", icon: 'none'})
           this.wxUtil.playWelcomeVoice()
-
         }, res => {
           console.log('开门失败')
           if (res.data.status === 401) {
-            this.wxNavigate.waitNavigateToPage('login','请先登陆',1000)
+            this.wxNavigate.waitNavigateToPage('login', '请先登陆', 1000)
           } else {
 
           }
 
         })
       },
-
-      toOfflineSCarPage(goodId) {
-        this.wxNavigate.navigateToPage('offlineSCar',{goodId})
+      toOrderListPage(tab) {
+        this.wxNavigate.navigateToPage('orderList',{tab})
       },
-      toOrderListPage(){
-        this.wxNavigate.navigateToPage('orderList')
-      }
+
 
     }
   };
 </script>
 
-<style>
-  html, page {
-    background-color: white;
-  }
-</style>
 <style lang="scss" scoped>
 
   @import "../../common/scss/base";
@@ -151,12 +157,20 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+
+    .top-wrapper{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background-color: white;
+      width: 100%;
+    }
     .card-vip {
       display: flex;
       margin-top: rpx(20);
       position: relative;
       image {
-        @include WH(709, 316);
+        @include WH(710, 318);
       }
       .card-content {
         position: absolute;
@@ -169,20 +183,27 @@
         padding: rpx(18) rpx(30);
         box-sizing: border-box;
         .t1 {
-          @include FCS(#FFFFFF, 32, 40, 40);
+          @include FCS(#99704E, 32, 40, 40);
         }
         .t21 {
-          @include FCS(#FFFFFF, 72, 80, 80);
+          @include FCS(#99704E, 72, 80, 80);
         }
         .t22 {
-          @include FCS(#FFFFFF, 36, 44, 44);
+          @include FCS(#99704E, 36, 44, 44);
+          margin-left: rpx(26);
         }
-        .t3 {
-          @include FCS(#FFF1DB, 32, 40, 40);
+
+        .card-time{
+          @include FCS(#B68D6A, 24, 40, 40);
+          margin-left: rpx(170);
+          flex:1;
+        }
+        .card-num {
+          @include FCS(#99704E, 32, 40, 40);
           margin-left: rpx(10);
         }
         .divcenter {
-          flex: 1;
+          margin-top: rpx(60);
           display: flex;
           align-items: center;
           margin-left: rpx(35);
@@ -210,35 +231,36 @@
       }
 
     }
-    .qr-code {
-      margin-top: rpx(10);
-      margin-bottom: rpx(85);
-      @include WH(336, 336);
+
+    .canvas-wrapper{
+      margin-top: rpx(48);
+      margin-bottom: rpx(32);
+      background-color: white;
+      padding:rpx(20);
+      .qr-code {
+        @include WH(316, 316);
+      }
     }
+
 
     .buy-entry {
       display: flex;
 
-      .shopcar-wrapper {
-        position: relative;
-        .good-count {
-          border-radius: rpx(16);
-          background-color: #F96D18;
-          @include FCS(#FFFFFF, 26, 34, 34);
-
-          padding: 0 rpx(10);
-          position: absolute;
-          text-align: center;
-          top: rpx(40);
-          right: rpx(50);
+      .shopcar-wrapper,.saoyisao-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        image {
+          @include WH(148, 148);
+        }
+        text{
+          @include FCS(#666666,32,40,40);
         }
       }
 
-      image {
-        @include WH(195, 195);
-      }
-      image:nth-child(2) {
-        margin-left: rpx(102);
+
+      .saoyisao-wrapper {
+        margin-left: rpx(226);
       }
     }
 

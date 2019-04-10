@@ -60,16 +60,9 @@
         bannerList:[1,23,456]
       };
     },
-    computed: {
 
-      token() {
-        return this.$store.getters.token
-      },
-      userInfo() {
-        console.log('computed userInfo')
-        return this.$store.getters.userInfo
-      }
-    },
+    props: ['userInfo'],
+
     methods:{
 
     }

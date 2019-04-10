@@ -1,5 +1,6 @@
 <template>
   <div>
+
     <text>{{message}}</text>
     <text>{{count}}<br/></text>
     <text>{{token}}</text>
@@ -74,8 +75,6 @@
       },
       playvoice() {
         console.log('playvoice ----')
-
-
 
 
 //        wx.playBackgroundAudio({

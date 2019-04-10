@@ -1,6 +1,6 @@
 <template>
-    <div>
-      <text>{{message}}</text>
+    <div class="proto">
+
     </div>
   <!--<image src="/static/images/offline-saoyisao.png"></image>-->
 </template>
@@ -18,8 +18,6 @@ export default {
   },
   data() {
     return {
-        message:'hello page hha',
-
     };
   },
   mounted() {
@@ -32,6 +30,13 @@ export default {
 };
 </script>
 
+<style>
+  page {
+    /*background-color: #FFFFFF;*/
+    background-color: red;
+    height: 100%;
+  }
+</style>
 <style lang="scss" scoped>
   @import "../../common/scss/base";
 </style>

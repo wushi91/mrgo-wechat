@@ -1,29 +1,28 @@
 
-let  welcomeVoice = null
-function creatWelcomeVoice(){
-  welcomeVoice = wx.createInnerAudioContext()
-  welcomeVoice.onPlay(() => {
-    console.log('开始播放')
-  })
-
-  welcomeVoice.onEnded(()=>{
-    console.log('welcomeVoice onStop 结束')
-    welcomeVoice.destroy()
-  })
-  welcomeVoice.onError((res) => {
-    console.log(res.errMsg)
-    console.log(res.errCode)
-  })
-  return welcomeVoice
-}
+// let  welcomeVoice = null
+// function creatWelcomeVoice(){
+//   welcomeVoice = wx.createInnerAudioContext()
+//   welcomeVoice.onPlay(() => {
+//     console.log('开始播放')
+//   })
+//
+//   welcomeVoice.onEnded(()=>{
+//     console.log('welcomeVoice onStop 结束')
+//     welcomeVoice.destroy()
+//   })
+//   welcomeVoice.onError((res) => {
+//     console.log(res.errMsg)
+//     console.log(res.errCode)
+//   })
+//   return welcomeVoice
+// }
 
 export function playWelcomeVoice(src = 'static/wav/welcome-mrgo.wav') {
-
-  welcomeVoice = null
-  welcomeVoice = creatWelcomeVoice()
-  // console.log('播放playWelcomeVoice')
+  let  welcomeVoice = wx.createInnerAudioContext()
+  console.log('播放playWelcomeVoice')
   welcomeVoice.src = src
   welcomeVoice.obeyMuteSwitch = false
+  // welcomeVoice.play()
   wx.setInnerAudioOption({
     obeyMuteSwitch: false, success: () => {
       welcomeVoice.play()

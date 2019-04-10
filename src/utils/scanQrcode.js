@@ -11,7 +11,7 @@ export const storeQrcode = {
   storeId: function (qrcodeUrl) {
     return getParamByName('id', qrcodeUrl)
   },
-  scanAction: function (storeId, success, fail) {//请求开门
+  scanAction: function (storeId) {//请求开门
     return new Promise((resolve, reject) => {
       this.wxRequest.post.call(this, this.wxUrl.openDoor, {
         needToken: true,
@@ -29,9 +29,12 @@ export const goodQrcode = {
   goodId: function (qrcodeUrl) {
     return getParamByName('id', qrcodeUrl)
   },
-  scanAction: function (storeId, success, fail) {//请求开门
+  scanAction: function (goodId) {//请求商品信息
     return new Promise((resolve, reject) => {
-
+      this.wxRequest.get.call(this, this.wxUrl.getCommodity, {
+        needToken: true,
+        id: goodId,
+      }).then(res => resolve(res), res => reject(res))
     })
   }
 }
@@ -40,14 +43,20 @@ export function scanToPage(isLogin, qrcodeUrl, duration) {
 
   //如果路径是空的，登录后跳转到首页
   if (!isLogin) {
-    this.wxNavigate.waitRedirectToage('login', '请先登陆', 1000, {qrcodeUrl: encodeURIComponent(qrcodeUrl),redirectPage:'index'})
-    return
+    this.wxNavigate.waitRedirectToage('login', '', duration, {qrcodeUrl: encodeURIComponent(qrcodeUrl),redirectPage:'index'})
+    // return
+  }else{
+    this.wxNavigate.waitRedirectToage('index', '', duration, {qrcodeUrl: encodeURIComponent(qrcodeUrl),tabIndex:1})
+    // this.wxNavigate.waitRedirectToage('index', '', duration,)
   }
-  if (qrcodeUrl.startsWith(storeQrcode.path)) {
-    this.wxNavigate.waitRedirectToage(storeQrcode.goalPage, '', duration, {qrcodeUrl: encodeURIComponent(qrcodeUrl)})
-  } else {
-    this.wxNavigate.waitRedirectToage('index', '', duration,)
-  }
+
+
+
+  // if (qrcodeUrl.startsWith(storeQrcode.path)) {
+  //   this.wxNavigate.waitRedirectToage(storeQrcode.goalPage, '', duration, {qrcodeUrl: encodeURIComponent(qrcodeUrl)})
+  // } else {
+  //   this.wxNavigate.waitRedirectToage('index', '', duration,)
+  // }
 
 
   // this.wxPromise.setTimeout(duration).then(res => {

@@ -47,9 +47,23 @@
     },
     data() {
       return {
-        message: '我的订单hello page hha',
         currentTab: 'tab-all'
       };
+    },
+
+
+
+    onLoad(options) {
+      if (options && options.data)
+        this.currentTab = JSON.parse(options.data).tab
+      console.log('on load - - - ')
+      this.wxRequest.get.call(this,this.wxUrl.getAllOrder,{
+        needToken: true
+      }).then(res=>{
+        console.log('order res',res)
+      },res=>{
+        console.log('order err',res)
+      })
     },
     mounted() {
 
@@ -64,10 +78,6 @@
       }
     },
 
-    onLoad(options) {
-      if (options && options.data)
-        this.currentTab = JSON.parse(options.data).tab
-    }
 
 
   };

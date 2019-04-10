@@ -2,11 +2,11 @@
   <div class="order-good-item">
     <image class="pic">商品图片</image>
     <div class="divname">
-      <text class="name text-two-line">费列罗核果卫华巧克力16盒装200g/盒</text>
+      <text class="name text-two-line">{{goodInfo.name}}</text>
       <div class="divprice">
-        <text class="n-price">￥3.00</text>
+        <text class="n-price">￥{{goodInfo.price}}</text>
         <text class="y-price">会员￥2.00</text>
-        <text class="amount">x4</text>
+        <text class="amount">x1</text>
       </div>
     </div>
   </div>
@@ -15,6 +15,7 @@
 <script>
   export default {
 
+    props: ['goodInfo'],
     data(){
       return{
 
@@ -34,9 +35,7 @@
 
   .order-good-item{
     display: flex;
-    padding-right: rpx(30);
-    padding-top: rpx(20);
-    padding-bottom: rpx(20);
+    padding: rpx(20) rpx(30);
     image{
       flex-shrink: 0;
       @include WH(136,136);
