@@ -5,24 +5,22 @@
       <div class="store-info">
         <div class="name">
           <image src="/static/images/store-location-map.png"></image>
-          <text>朗诗未来家</text>
+          <text>{{offlineShop.name}}</text>
         </div>
-        <text class="location">深圳市南山区软件产业基地B座2楼</text>
+        <text class="location">{{offlineShop.address}}</text>
       </div>
 
       <!--<i-swipeout  i-class="ordergooditem-swipeout" :actions="actions">-->
-        <!--<view slot="content">-->
-          <!--<ordergooditem></ordergooditem>-->
-        <!--</view>-->
+      <!--<view slot="content">-->
+      <!--<ordergooditem></ordergooditem>-->
+      <!--</view>-->
       <!--</i-swipeout>-->
 
       <!--<div style="background-color: white">-->
-        <!--<view slot="content">-->
-          <!--<ordergooditem></ordergooditem>-->
-        <!--</view>-->
+      <!--<view slot="content">-->
+      <!--<ordergooditem></ordergooditem>-->
+      <!--</view>-->
       <!--</div>-->
-
-
 
 
       <div class="good-list">
@@ -30,17 +28,17 @@
         <div v-for="(good,index) in goodList" :key="index" class="good-item">
 
           <!--<van-swipe-cell :right-width="swipeLeftPx">-->
-            <!--<ordergooditem :goodInfo="good"></ordergooditem>-->
-            <!--<div slot="right" class="delete-wrapper" >-->
-              <!--<image src="/static/images/icon-shanchu.png"></image>-->
-            <!--</div>-->
+          <!--<ordergooditem :goodInfo="good"></ordergooditem>-->
+          <!--<div slot="right" class="delete-wrapper" >-->
+          <!--<image src="/static/images/icon-shanchu.png"></image>-->
+          <!--</div>-->
           <!--</van-swipe-cell>-->
 
-          <i-swipeout  i-class="ordergooditem-swipeout" :operateWidth="swipeLeftPx" >
+          <i-swipeout i-class="ordergooditem-swipeout" :operateWidth="swipeLeftPx">
             <view slot="content">
               <ordergooditem :goodInfo="good"></ordergooditem>
             </view>
-            <view slot="button" class="delete-wrapper" >
+            <view slot="button" class="delete-wrapper" @click="deleteGood(index)">
               <image src="/static/images/icon-shanchu.png"></image>
             </view>
           </i-swipeout>
@@ -54,24 +52,26 @@
         <div class="w1">
           <div class="original-price">
             <text class="t1">商品总金额</text>
-            <text class="t2">￥6.00</text>
+            <text class="t2">￥{{shopCarTotal.totalPrice}}</text>
           </div>
 
-          <text class="member-price">会员: ￥15.00</text>
+          <!--<text class="member-price">会员: ￥15.00</text>-->
         </div>
 
         <div class="line-1-px"></div>
 
-        <div class="w2">
-          <text class="t1">优惠卷</text>
-          <text class="t2">已减￥1.00</text>
-        </div>
+        <template v-if="false">
+          <div class="w2">
+            <text class="t1">优惠卷</text>
+            <text class="t2">已减￥1.00</text>
+          </div>
 
-        <div class="line-1-px"></div>
+          <div class="line-1-px"></div>
+        </template>
 
         <div class="w3">
-          <text class="t1">合计：</text>
-          <text class="t2">￥5.00</text>
+          <text class="t1">小计：</text>
+          <text class="t2">￥{{shopCarTotal.totalPrice}}</text>
         </div>
       </div>
     </div>
@@ -83,9 +83,11 @@
 
 
     <div class="pay-wrapper">
-      <text class="money">￥5.00</text>
+      <text class="money">￥{{shopCarTotal.totalPrice}}</text>
       <div class="btn-scan" @click="scanMRGOCode">继续扫码购</div>
-      <div class="btn-pay" @click="toOperateResult('pay-success')">去支付</div>
+      <!--<div class="btn-scan" @click="shopCarFrids">继续扫码购</div>-->
+      <!--<div class="btn-pay" @click="toOperateResult('pay-success')">去支付</div>-->
+      <div class="btn-pay" @click="shopCarFrids">去支付</div>
     </div>
 
   </div>
@@ -94,12 +96,7 @@
 <script>
 
   import ordergooditem from '@/components/orderGoodItem'
-//  import vantswipecell from '@/components/vant/swipe-cell'
   import {goodQrcode} from '@/utils/scanQrcode'
-
-//  import pageFactory from 'mpvue-page-factory'
-//  // import App from './index'
-//  Page(pageFactory(this))
 
 
   export default {
@@ -109,31 +106,33 @@
     components: {
       ordergooditem
     },
+    computed: {
+      shopCarTotal() {
+
+        let totalPrice = 0
+        let totalCount = 0
+
+        for (let i = 0; i < this.goodList.length; i++) {
+          totalPrice = totalPrice + (this.goodList[i].price * this.goodList[i].count)
+          totalCount = totalCount + this.goodList[i].count
+        }
+
+        return {
+          totalPrice: totalPrice.toFixed(2),
+          totalCount: totalCount
+        }
+      }
+    },
     data() {
       return {
-        swipeLeftRpx:148,
-        swipeLeftPx:0,
-        message: '订单确认',
-        qrcodeUrl:'',
-        goodId:'',
-        goodList:[],
-        actions : [
-          {
-            name : '删除',
-            color : '#fff',
-            fontsize : '20',
-            width : 100,
-            icon : 'trash',
-            background : '#ed3f14'
-          },
-          {
-            name : '返回',
-            width : 100,
-            color : '#80848f',
-            fontsize : '20',
-            icon : 'undo'
-          }
-        ]
+        swipeLeftRpx: 148,
+        swipeLeftPx: 0,
+
+        qrcodeUrl: '',
+        goodRFId: '',
+
+        offlineShop: {},
+        goodList: [],
       };
     },
     mounted() {
@@ -141,37 +140,44 @@
     },
     onLoad(options) {
       Object.assign(this.$data, this.$options.data())//清楚初始页面数据
+      this.swipeLeftPx = this.wxUtil.rpx2px(this.swipeLeftRpx)
       if (options && options.data) {
         this.qrcodeUrl = decodeURIComponent(JSON.parse(options.data).qrcodeUrl)
-        this.goodId = goodQrcode.goodId(this.qrcodeUrl)
-        console.log('this.goodId',this.goodId)
-        this.addGood(this.goodId)
+        this.goodRFId = goodQrcode.goodRFId(this.qrcodeUrl)
+        this.addGood(this.goodRFId)
       }
 
-      this.swipeLeftPx = this.wxUtil.rpx2px(this.swipeLeftRpx)
-      console.log('this.swipeLeftPx ',this.swipeLeftPx )
     },
 
+
     methods: {
-      addGood(goodId){
-        goodQrcode.scanAction.call(this, goodId).then(res=>{
-          let good = res.data.content
-          this.goodList.push(good)
-//          console.log('goodQrcode success',res.data.content)
-        },res=>{
-//          console.log('goodQrcode fail',res)
+      addGood(goodRFId) {
+        goodQrcode.scanAction.call(this, goodRFId).then(res => {
+          console.log('goodQrcode success', res.data)
+          this.shopCarManage(this.goodList,res.data.content.commodity)
+          this.offlineShop = res.data.content.store
+        }, res => {
+          console.log('goodQrcode fail', res)
+          if (res.data.message) {
+            wx.showToast({title: res.data.message, icon: 'none'})
+          }
         })
+      },
+
+      deleteGood(index) {
+        this.goodList.splice(index, 1)
+        console.log('delete good', index)
       },
 
       scanMRGOCode() {
         this.wxPromise.scanCode({onlyFromCamera: true}).then(res => {
           let qrcodeUrl = res.result
           if (qrcodeUrl.startsWith(goodQrcode.path)) {
-            let goodId = goodQrcode.goodId(qrcodeUrl)
-            this.addGood(goodId)
+            let goodRFId = goodQrcode.goodRFId(qrcodeUrl)
+            this.addGood(goodRFId)
           } else {
             wx.showToast({
-              title: '没有找到对应的商品',
+              title: '没有查询到商品信息',
               icon: 'none'
             })
           }
@@ -180,9 +186,56 @@
 
       },
 
-      toOperateResult(theResult){
+      toOperateResult(theResult) {
         wx.redirectTo({url: "/pages/operateResult/index?data=" + JSON.stringify({theResult})})
       },
+
+      shopCarManage(goodList,good){
+
+        /**
+         * 购物车管理解决的3个问题
+         * 1.该商品已经支付，不加入购物车
+         * 2.该商品已经添加到购物车，不要重复添加，通过rfid唯一值判断
+         * 3.添加同一类商品，做数量增加，记得要同时加入该物品的rfid
+         * */
+        {
+          good.count = 1 //购物车有商品计数功能
+          good.rfids = [good.rfid] //增加一个新的属性rfids，数组类型
+          good.price = good.price.toFixed(2)//价格保留小数点后两位
+        }
+
+
+        if (good.status === 1) {//支付了的商品就提示已经支付，不加入购物车
+          wx.showToast({title: '该商品已经支付', icon: 'none'})
+          return
+        }
+
+        for (let i = 0; i < goodList.length; i++) {//rfid一致，扫描的是同一个商品
+          for (let j = 0; j < goodList[i].rfids.length; j++) {
+            if (goodList[i].rfids[j] === good.rfid) {
+              wx.showToast({title: '该商品已经添加到购物车', icon: 'none'})
+              return
+            }
+          }
+        }
+
+        for (let i = 0; i < goodList.length; i++) {//id一致，同一个商品的做数量的叠加
+          if (goodList[i].id === good.id) {
+            goodList[i].count++
+            goodList[i].rfids.push(good.rfid)
+            return
+          }
+        }
+        goodList.push(good)//全新的商品
+      },
+
+      shopCarFrids(){
+        let frids = []
+        for(let i= 0;i<this.goodList.length;i++){
+          frids = frids.concat(this.goodList[i].rfids)
+        }
+        return frids
+      }
     }
   };
 </script>
@@ -193,9 +246,8 @@
     flex-direction: column;
   }
 
-  .van-swipe-cell{
+  .van-swipe-cell {
   }
-
 
 
 </style>
@@ -208,19 +260,19 @@
     display: flex;
     flex-direction: column;
 
-    .delete-wrapper{
+    .delete-wrapper {
       position: absolute;
-      top:0;
+      top: 0;
       left: 0;
-      bottom:0;
+      bottom: 0;
       right: 0;
       display: flex;
       justify-content: center;
       align-items: center;
       /*background-color: wheat;*/
       width: rpx(148);
-      image{
-        @include WH(56,56);
+      image {
+        @include WH(56, 56);
       }
     }
     .line-1-px {
@@ -295,7 +347,7 @@
         }
       }
 
-      .good-item{
+      .good-item {
         display: flex;
         flex-direction: column;
         .line-1-px {
@@ -389,9 +441,9 @@
       height: rpx(98);
       align-items: center;
       justify-content: center;
-      .money{
-        flex:1;
-        @include FCS(#FF766F,32,40,40);
+      .money {
+        flex: 1;
+        @include FCS(#FF766F, 32, 40, 40);
       }
       .btn-scan {
         text-align: center;
@@ -411,8 +463,6 @@
         margin-left: rpx(20);
       }
     }
-
-
 
   }
 

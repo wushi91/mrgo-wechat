@@ -50,12 +50,11 @@
       if (options && options.data && JSON.parse(options.data).qrcodeUrl) {
         this.qrcodeUrl = decodeURIComponent(JSON.parse(options.data).qrcodeUrl)
         this.tabIndex = 1
-      }else if(options&&options.q){
+      }else if(options&&options.q){//微信扫一扫二维码参数是q
         this.qrcodeUrl = decodeURIComponent(options.q)
         this.tabIndex = 1
       }
 
-//      this.initData()
     },
 
     onShow(){
@@ -71,18 +70,6 @@
 
 
     methods: {
-//      async initData() {
-//        if (!this.token) {//本地都没有token，直接登录页
-//          this.wxNavigate.redirectToPage('login', {redirectPage: 'index'})
-//          return
-//        }
-//        await this.wxRequest.get.call(this, this.wxUrl.checkLogin, {needToken: true}).then(res => {//判断token是否失效
-//        }, res => {
-//          if (res.data.status === 401) {
-//            this.wxNavigate.redirectToPage('login', {redirectPage: 'index'})
-//          }
-//        })
-//      },
       freshOrderData(){
         this.wxRequest.get.call(this, this.wxUrl.getOrderStatusCount, {needToken: true}).then(res => {//获取个人页面的订单数量
           let orderStatus = {tabAll:0,tabWait:0,tabBack:0,tabCan:0}

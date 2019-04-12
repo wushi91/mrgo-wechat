@@ -1,12 +1,16 @@
 <template>
   <div class="order-good-item">
-    <image class="pic">商品图片</image>
+    <div class="pic-wrapper">
+      <image class="pic" :src="goodInfo.imgUrl">商品图片</image>
+    </div>
+
     <div class="divname">
       <text class="name text-two-line">{{goodInfo.name}}</text>
       <div class="divprice">
         <text class="n-price">￥{{goodInfo.price}}</text>
-        <text class="y-price">会员￥2.00</text>
-        <text class="amount">x1</text>
+        <!--<text class="y-price">会员￥{{goodInfo.price}}</text>-->
+        <text class="y-price"></text>
+        <text class="amount">x {{goodInfo.count}}</text>
       </div>
     </div>
   </div>
@@ -21,6 +25,8 @@
 
       }
     },
+
+
     methods:{
 
 
@@ -36,12 +42,21 @@
   .order-good-item{
     display: flex;
     padding: rpx(20) rpx(30);
-    image{
+    .pic-wrapper{
       flex-shrink: 0;
       @include WH(136,136);
-      background-color: #e6e6ea;
+      border:rpx(2) solid rgba(238, 238, 238, 1);
+      display: flex;
+      justify-content: center;
+      align-items: center;
       margin-right: rpx(25);
+      image{
+        @include WH(90,90);
+        background-color: #e6e6ea;
+
+      }
     }
+
     .divname{
       flex:1;
       display: flex;

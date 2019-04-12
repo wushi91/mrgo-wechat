@@ -26,14 +26,14 @@ export const goodQrcode = {
   path: 'http://wechat.mrgo.club/mrgogood',
   goalPage: 'offlineSCar',
   goalfullPage: 'pages/offlineSCar/index',
-  goodId: function (qrcodeUrl) {
+  goodRFId: function (qrcodeUrl) {
     return getParamByName('id', qrcodeUrl)
   },
-  scanAction: function (goodId) {//请求商品信息
+  scanAction: function (goodRFId) {//请求商品信息
     return new Promise((resolve, reject) => {
-      this.wxRequest.get.call(this, this.wxUrl.getCommodity, {
+      this.wxRequest.get.call(this, this.wxUrl.getCommodityStoreByRfid, {
         needToken: true,
-        id: goodId,
+        rfid: goodRFId,
       }).then(res => resolve(res), res => reject(res))
     })
   }

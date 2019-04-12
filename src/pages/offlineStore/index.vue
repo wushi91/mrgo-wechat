@@ -116,7 +116,7 @@
 
           } else {
             wx.showToast({
-              title: '没有找到对应的商品',
+              title: '没有查询到商品信息',
               icon: 'none'
             })
           }
