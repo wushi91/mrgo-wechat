@@ -10,72 +10,66 @@
         <text class="location">{{offlineShop.address}}</text>
       </div>
 
-      <!--<i-swipeout  i-class="ordergooditem-swipeout" :actions="actions">-->
-      <!--<view slot="content">-->
-      <!--<ordergooditem></ordergooditem>-->
-      <!--</view>-->
-      <!--</i-swipeout>-->
-
-      <!--<div style="background-color: white">-->
-      <!--<view slot="content">-->
-      <!--<ordergooditem></ordergooditem>-->
-      <!--</view>-->
-      <!--</div>-->
-
 
       <div class="good-list">
 
         <div v-for="(good,index) in goodList" :key="index" class="good-item">
 
-          <!--<van-swipe-cell :right-width="swipeLeftPx">-->
-          <!--<ordergooditem :goodInfo="good"></ordergooditem>-->
-          <!--<div slot="right" class="delete-wrapper" >-->
-          <!--<image src="/static/images/icon-shanchu.png"></image>-->
-          <!--</div>-->
-          <!--</van-swipe-cell>-->
-
           <i-swipeout i-class="ordergooditem-swipeout" :operateWidth="swipeLeftPx">
             <view slot="content">
               <ordergooditem :goodInfo="good"></ordergooditem>
             </view>
-            <view slot="button" class="delete-wrapper" @click="deleteGood(index)">
+            <view slot="button" class="delete-wrapper" @click="deleteGood(good.commodityId)">
               <image src="/static/images/icon-shanchu.png"></image>
             </view>
           </i-swipeout>
           <div class="line-1-px" v-if="index<goodList.length-1"></div>
         </div>
 
-
       </div>
 
       <div class="count-price">
         <div class="w1">
-          <div class="original-price">
-            <text class="t1">商品总金额</text>
-            <text class="t2">￥{{shopCarTotal.totalPrice}}</text>
-          </div>
+          <!--<div class="original-price">-->
+            <!--<text class="t1">商品总金额</text>-->
+            <!--<text class="t2">￥{{shopCarTotal.totalPrice}}</text>-->
+          <!--</div>-->
+
+          <text class="t1">商品总金额</text>
+          <text class="t2">￥{{shopCarTotal.totalPrice}}</text>
 
           <!--<text class="member-price">会员: ￥15.00</text>-->
         </div>
 
         <div class="line-1-px"></div>
 
-        <template v-if="false">
+        <template v-if="true">
           <div class="w2">
-            <text class="t1">优惠卷</text>
-            <text class="t2">已减￥1.00</text>
+            <text class="t1">会员价</text>
+            <text class="t2">￥{{shopCarTotal.vipAmount}}</text>
           </div>
 
           <div class="line-1-px"></div>
         </template>
 
-        <div class="w3">
-          <text class="t1">小计：</text>
-          <text class="t2">￥{{shopCarTotal.totalPrice}}</text>
+        <div class="w2">
+          <text class="t1">优惠卷</text>
+          <text class="t2">已减￥0.00</text>
         </div>
+
+
+        <!--<div class="w3">-->
+          <!--<text class="t1">小计：</text>-->
+          <!--<text class="t2">￥{{shopCarTotal.totalPrice}}</text>-->
+        <!--</div>-->
       </div>
     </div>
 
+
+    <div class="total-price-wrapper">
+      <text class="t1">小计：</text>
+      <text class="t2">￥{{shopCarTotal.totalPrice}}</text>
+    </div>
 
     <div class="slogan-wrapper">
       <!--<image class="slogan" src="/static/images/slogan.png"></image>-->
@@ -83,11 +77,8 @@
 
 
     <div class="pay-wrapper">
-      <text class="money">￥{{shopCarTotal.totalPrice}}</text>
       <div class="btn-scan" @click="scanMRGOCode">继续扫码购</div>
-      <!--<div class="btn-scan" @click="shopCarFrids">继续扫码购</div>-->
-      <!--<div class="btn-pay" @click="toOperateResult('pay-success')">去支付</div>-->
-      <div class="btn-pay" @click="shopCarFrids">去支付</div>
+      <div class="btn-pay" @click="payShopCarTryCatch">去支付</div>
     </div>
 
   </div>
@@ -99,89 +90,97 @@
   import {goodQrcode} from '@/utils/scanQrcode'
 
 
+  /**
+   * 购物车管理解决的3个问题
+   * 1.该商品已经支付，不加入购物车
+   * 2.该商品已经添加到购物车，不要重复添加，通过rfid唯一值判断
+   * 3.添加同一类商品，做数量增加，记得要同时加入该物品的rfid
+   * */
+//  disableSwipeBack: true,
   export default {
     config: {
       navigationBarTitleText: 'MR.GO 订单确认',
+
     },
     components: {
       ordergooditem
     },
-    computed: {
-      shopCarTotal() {
 
-        let totalPrice = 0
-        let totalCount = 0
-
-        for (let i = 0; i < this.goodList.length; i++) {
-          totalPrice = totalPrice + (this.goodList[i].price * this.goodList[i].count)
-          totalCount = totalCount + this.goodList[i].count
-        }
-
-        return {
-          totalPrice: totalPrice.toFixed(2),
-          totalCount: totalCount
-        }
-      }
-    },
     data() {
       return {
         swipeLeftRpx: 148,
         swipeLeftPx: 0,
 
-        qrcodeUrl: '',
-        goodRFId: '',
-
         offlineShop: {},
         goodList: [],
+        shopCarTotal: {
+          totalPrice: 0,
+          totalCount: 0,
+          vipAmount:0,
+        }
       };
     },
     mounted() {
 
     },
     onLoad(options) {
-      Object.assign(this.$data, this.$options.data())//清楚初始页面数据
-      this.swipeLeftPx = this.wxUtil.rpx2px(this.swipeLeftRpx)
+
+      this.swipeLeftPx = this.wxUtil.rpx2px(this.swipeLeftRpx);
       if (options && options.data) {
-        this.qrcodeUrl = decodeURIComponent(JSON.parse(options.data).qrcodeUrl)
-        this.goodRFId = goodQrcode.goodRFId(this.qrcodeUrl)
-        this.addGood(this.goodRFId)
+        let qrcodeUrl = decodeURIComponent(JSON.parse(options.data).qrcodeUrl);
+        this.addGood(goodQrcode.goodRFId(qrcodeUrl))
       }
 
     },
 
+    onUnload() {
+      Object.assign(this.$data, this.$options.data())//清楚页面数据
+    },
 
     methods: {
+
       addGood(goodRFId) {
-        goodQrcode.scanAction.call(this, goodRFId).then(res => {
-          console.log('goodQrcode success', res.data)
-          this.shopCarManage(this.goodList,res.data.content.commodity)
-          this.offlineShop = res.data.content.store
+        goodQrcode.scanAction.call(this, goodRFId, this.goodList.length === 0 ? 1 : 0).then(res => {
+
+          console.log('添加商品',res)
+          this.goodList = res.data.content.commodityCarts.reverse();
+          this.offlineShop = res.data.content.store;
+          this.shopCarTotal.totalPrice = res.data.content.amount
+          this.shopCarTotal.vipAmount = res.data.content.vipAmount
         }, res => {
-          console.log('goodQrcode fail', res)
           if (res.data.message) {
             wx.showToast({title: res.data.message, icon: 'none'})
           }
         })
       },
 
-      deleteGood(index) {
-        this.goodList.splice(index, 1)
-        console.log('delete good', index)
+      deleteGood(commodityId) {
+        this.wxRequest.post.call(this, this.wxUrl.updateShoppingCartTypeExpired, {
+          needToken: true,
+          commodityId: commodityId,
+        }).then(res => {
+          console.log('删除商品',res)
+          this.goodList = res.data.content.commodityCarts.reverse();
+          this.shopCarTotal.totalPrice = res.data.content.amount
+          this.shopCarTotal.vipAmount = res.data.content.vipAmount
+        }, res => {
+          if (res.data.message) {
+            wx.showToast({title: res.data.message, icon: 'none'})
+          }
+        })
       },
 
       scanMRGOCode() {
         this.wxPromise.scanCode({onlyFromCamera: true}).then(res => {
-          let qrcodeUrl = res.result
+          let qrcodeUrl = res.result;
           if (qrcodeUrl.startsWith(goodQrcode.path)) {
-            let goodRFId = goodQrcode.goodRFId(qrcodeUrl)
-            this.addGood(goodRFId)
+            this.addGood(goodQrcode.goodRFId(qrcodeUrl))
           } else {
             wx.showToast({
               title: '没有查询到商品信息',
               icon: 'none'
             })
           }
-
         })
 
       },
@@ -190,52 +189,77 @@
         wx.redirectTo({url: "/pages/operateResult/index?data=" + JSON.stringify({theResult})})
       },
 
-      shopCarManage(goodList,good){
-
-        /**
-         * 购物车管理解决的3个问题
-         * 1.该商品已经支付，不加入购物车
-         * 2.该商品已经添加到购物车，不要重复添加，通过rfid唯一值判断
-         * 3.添加同一类商品，做数量增加，记得要同时加入该物品的rfid
-         * */
-        {
-          good.count = 1 //购物车有商品计数功能
-          good.rfids = [good.rfid] //增加一个新的属性rfids，数组类型
-          good.price = good.price.toFixed(2)//价格保留小数点后两位
+      async payShopCarTryCatch(){
+        try {
+          await this.payShopCar()
+        } catch (err) {
+          wx.showToast({
+            title: err.message,
+            icon: 'none'
+          })
         }
-
-
-        if (good.status === 1) {//支付了的商品就提示已经支付，不加入购物车
-          wx.showToast({title: '该商品已经支付', icon: 'none'})
-          return
-        }
-
-        for (let i = 0; i < goodList.length; i++) {//rfid一致，扫描的是同一个商品
-          for (let j = 0; j < goodList[i].rfids.length; j++) {
-            if (goodList[i].rfids[j] === good.rfid) {
-              wx.showToast({title: '该商品已经添加到购物车', icon: 'none'})
-              return
-            }
-          }
-        }
-
-        for (let i = 0; i < goodList.length; i++) {//id一致，同一个商品的做数量的叠加
-          if (goodList[i].id === good.id) {
-            goodList[i].count++
-            goodList[i].rfids.push(good.rfid)
-            return
-          }
-        }
-        goodList.push(good)//全新的商品
       },
 
-      shopCarFrids(){
-        let frids = []
-        for(let i= 0;i<this.goodList.length;i++){
-          frids = frids.concat(this.goodList[i].rfids)
+      async payShopCar(){
+        let shoppingCartIds = this.shopCarRfids(this.goodList)
+        let orderId = await this.wxRequest.post.call(this, this.wxUrl.saveOrderForShoppingCart, {
+          needToken: true,
+          status:1,//待付款
+          shoppingCartIds:shoppingCartIds,
+          isSalePrice:0,//0不是会员，1是会员
+          sourceType:2,//订单来源，2表示的是线下扫码购
+          storeId:this.offlineShop.id
+        }).then(res => {
+          console.log('下订单 success', res.data)
+          return res.data.content.orderId
+        }, res => {
+          console.log('saveOrderForShoppingCart fail', res)
+          return null
+        })
+
+        if(!orderId){
+          throw new Error("支付失败")
         }
-        return frids
-      }
+
+        let wxpayData = await this.wxRequest.post.call(this, this.wxUrl.wechatPay, {
+          needToken: true,
+          orderId:orderId
+        }).then(res => {
+          console.log('支付参数 success', res.data)
+          return res.data.content
+        }, res => {
+          console.log('wechatPay fail', res)
+          return null
+        })
+
+        if(!(wxpayData&&wxpayData.paySign)){
+          throw new Error("支付失败")
+        }
+
+        console.log('wxpayData',wxpayData)
+
+        await this.wxPromise.requestPayment(wxpayData).then(res=>{
+          console.log('微信支付 success',res)
+          wx.showToast({title:'支付成功'})
+          this.wxNavigate.waitRedirectToage('operateResult','',1000,{theResult:'pay-success',orderId:orderId})
+          return true
+
+        },res=>{
+          console.log('requestPayment fail',res)
+//          this.wxNavigate.waitRedirectToage('operateResult','',1000,{theResult:'pay-success',orderId:orderId})
+//          this.wxNavigate.waitRedirectToage('operateResult','',1000,{theResult:'pay-success',orderId:orderId})
+          return false
+        })
+
+      },
+      shopCarRfids(goodList) {
+        let rfids = '';
+        for (let i = 0; i < goodList.length; i++) {
+          rfids = i===0? rfids+goodList[i].idsStr: rfids+','+goodList[i].idsStr
+        }
+        return rfids
+      },
+
     }
   };
 </script>
@@ -315,36 +339,7 @@
           background-color: #e6e6ea;
           margin-right: rpx(25);
         }
-        .divname {
-          flex: 1;
-          display: flex;
-          flex-direction: column;
-          .name {
-            margin-top: rpx(4);
-            margin-bottom: rpx(16);
-            @include FCS(#333333, 26, 34, 34);
-            height: rpx(68);
-          }
-          .divprice {
-            display: flex;
-            align-items: center;
 
-            .n-price {
-              @include FCS(#F96D18, 32, 40, 40);
-              width: rpx(130);
-              margin-right: rpx(10);
-
-            }
-            .y-price {
-              @include FCS(#333333, 26, 34, 34);
-              flex: 1;
-
-            }
-            .amount {
-              @include FCS(#333333, 32, 40, 40);
-            }
-          }
-        }
       }
 
       .good-item {
@@ -360,43 +355,37 @@
       background-color: white;
       display: flex;
       flex-direction: column;
-      margin-top: rpx(28);
-      padding-top: rpx(32);
-      padding-left: rpx(30);
+      margin-top: rpx(20);
+
       .w1 {
-        display: flex;
-        flex-direction: column;
-        padding-right: rpx(30);
-        padding-bottom: rpx(6);
-        .original-price {
-          margin-bottom: rpx(32);
-          display: flex;
-          .t1 {
-            flex: 1;
-          }
-          @include FCS(#333333, 32, 40, 40);
-
-        }
-
-        .member-price {
-          @include FCS(#333333, 32, 40, 40);
-          width: 100%;
-          text-align: right;
-        }
-      }
-
-      .w2 {
         margin: rpx(32) 0;
-        padding-right: rpx(30);
+        padding: 0 rpx(30);
         display: flex;
         .t1 {
           flex: 1;
           @include FCS(#333333, 32, 40, 40);
         }
         .t2 {
-          @include FCS(#F96D18, 32, 40, 40);
+          @include FCS(#333333, 32, 40, 40);
+        }
+      }
+
+      .w2 {
+        margin: rpx(32) 0;
+        padding: 0 rpx(30);
+        display: flex;
+        .t1 {
+          flex: 1;
+          @include FCS(#333333, 32, 40, 40);
+        }
+        .t2 {
+          @include FCS(#FF766F, 32, 40, 40);
         }
 
+      }
+
+      .line-1-px{
+        margin-left: rpx(30);
       }
 
       .w3 {
@@ -413,6 +402,19 @@
         }
       }
 
+    }
+    .total-price-wrapper{
+      margin: rpx(32) 0 rpx(34) 0;
+      padding-right: rpx(30);
+      display: flex;
+      .t1 {
+        text-align: right;
+        flex: 1;
+        @include FCS(#999999, 32, 40, 40);
+      }
+      .t2 {
+        @include FCS(#333333, 32, 40, 40);
+      }
     }
 
     .slogan-wrapper {
@@ -433,13 +435,13 @@
     .pay-wrapper {
       display: flex;
       position: fixed;
-      background-color: #F5F5F5;
+      background-color: #F9FCFB;
       padding: 0 rpx(30);
       bottom: 0;
       left: 0;
       right: 0;
-      height: rpx(98);
-      align-items: center;
+      height: rpx(100);
+
       justify-content: center;
       .money {
         flex: 1;
@@ -451,7 +453,7 @@
         @include FCS(#37D0B3, 32, 78, 78);
         border: rpx(2) solid #37D0B3;
         border-radius: rpx(40);
-        background-color: #F5F5F5;
+        background-color: #F9FCFB;
       }
 
       .btn-pay {
@@ -460,7 +462,7 @@
         background-color: #37D0B3;
         @include FCS(#FFFFFF, 32, 78, 78);
         border-radius: rpx(40);
-        margin-left: rpx(20);
+        margin-left: rpx(80);
       }
     }
 

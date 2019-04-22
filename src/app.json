@@ -1,16 +1,16 @@
 {
   "pages": [
     "pages/index/index",
+    "pages/orderDetail/index",
+    "pages/offlineSCar/index",
+    "pages/buyVIP/index",
+    "pages/orderList/index",
     "pages/test/index",
     "pages/offlineStore/index",
     "pages/operateResult/index",
     "pages/personInfo/index",
-    "pages/offlineSCar/index",
     "pages/login/index",
-    "pages/orderDetail/index",
-
     "pages/userProtocol/index",
-    "pages/orderList/index",
     "pages/proto/index"
   ],
   "permission": {
@@ -24,7 +24,7 @@
     "navigationBarTitleText": "MR.GO智慧便利店",
     "navigationBarTextStyle": "white",
     "enablePullDownRefresh": false,
-    "backgroundColor": "#f5f5f5"
+    "backgroundColor": "#F9FCFB"
   },
   "usingComponents": {
     "i-swipeout": "static/iview/swipeout/index",

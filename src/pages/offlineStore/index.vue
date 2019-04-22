@@ -1,25 +1,14 @@
 <template>
   <div class="offline-store">
     <div class="top-wrapper">
-      <div class="card-vip">
-        <image src="/static/images/bg_vip.png"></image>
-        <div class="card-content">
-          <text class="t1">MR.GO 智慧便利店</text>
-          <div class="divcenter">
-            <div>
-              <text class="t21">VIP</text>
-              <text class="t22">尊享会员</text>
-            </div>
-          </div>
-          <text class="card-time">2019年10月10日到期</text>
-          <text class="card-num">8855 9766 9877 3152</text>
-        </div>
+      <div>
+        <membercard :cardInfo="cardInfo"></membercard>
       </div>
 
       <div class="member-info">
         <div class="item">
           <text class="t1">积分</text>
-          <text class="t2">100</text>
+          <text class="t2">0</text>
         </div>
 
         <div class="item">
@@ -30,7 +19,7 @@
 
         <div class="item">
           <text class="t1">优惠券</text>
-          <text class="t2">5张</text>
+          <text class="t2">0张</text>
         </div>
       </div>
     </div>
@@ -65,13 +54,18 @@
    * */
   import drawQrcode from 'weapp-qrcode'
   import {goodQrcode, storeQrcode} from '@/utils/scanQrcode'
+  import membercard from '@/components/memberCard'
 
   export default {
     data() {
       return {
         qrcodeUrl: '',
-        storeId: ''
+        storeId: '',
+        cardInfo:{}
       };
+    },
+    components: {
+      membercard
     },
     onLoad(options) {
       this.qrCode('myQrcode', 'http://baidu.com', 316, 316)
@@ -164,51 +158,7 @@
       align-items: center;
       background-color: white;
       width: 100%;
-    }
-    .card-vip {
-      display: flex;
-      margin-top: rpx(20);
-      position: relative;
-      image {
-        @include WH(710, 318);
-      }
-      .card-content {
-        position: absolute;
-        top: 0;
-        left: 0;
-        @include WH(709, 316);
-        border-radius: rpx(10);
-        display: flex;
-        flex-direction: column;
-        padding: rpx(18) rpx(30);
-        box-sizing: border-box;
-        .t1 {
-          @include FCS(#99704E, 32, 40, 40);
-        }
-        .t21 {
-          @include FCS(#99704E, 72, 80, 80);
-        }
-        .t22 {
-          @include FCS(#99704E, 36, 44, 44);
-          margin-left: rpx(26);
-        }
-
-        .card-time{
-          @include FCS(#B68D6A, 24, 40, 40);
-          margin-left: rpx(170);
-          flex:1;
-        }
-        .card-num {
-          @include FCS(#99704E, 32, 40, 40);
-          margin-left: rpx(10);
-        }
-        .divcenter {
-          margin-top: rpx(60);
-          display: flex;
-          align-items: center;
-          margin-left: rpx(35);
-        }
-      }
+      padding-top: rpx(20);
     }
 
     .member-info {

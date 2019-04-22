@@ -1,16 +1,25 @@
 <template>
   <div class="home">
-    <swiper autoplay circular interval="100000" previous-margin="20rpx" next-margin="40rpx">
+    <!--previous-margin="20rpx" next-margin="40rpx"-->
+    <swiper autoplay circular interval="100000" >
       <swiper-item>
-        <image class="i1" mode='aspectFill' src="/static/images/index-banner.png"></image>
+        <div class="swiper-inner">
+          <image class="i1" mode='aspectFill' src="/static/images/index-banner.png"></image>
+        </div>
+
       </swiper-item>
 
       <swiper-item>
-        <image class="i2" mode='aspectFill' src="/static/images/index-banner.png"></image>
+        <div class="swiper-inner">
+          <image class="i2" mode='aspectFill' src="/static/images/index-banner.png"></image>
+        </div>
+
       </swiper-item>
 
       <swiper-item>
-        <image class="i3" mode='aspectFill' src="/static/images/index-banner.png"></image>
+        <div class="swiper-inner">
+          <image class="i3" mode='aspectFill' src="/static/images/index-banner.png"></image>
+        </div>
       </swiper-item>
     </swiper>
 
@@ -18,9 +27,10 @@
       <image class="avater" v-if="userInfo&&userInfo.imageUrl" :src="userInfo.imageUrl" ></image>
       <image class="avater" src="/static/images/default-avater.png" v-else></image>
       <text class="nickname" >{{userInfo.nickname}}</text>
-      <text class="member">普卡会员</text>
-      <image class="imember" src="/static/images/index-vip.png"></image>
-      <div class="center">升级会员 <image class="member-arrow" src="/static/images/member-arrow.png"></image></div>
+      <text v-if="userInfo&&userInfo.nickname" class="member">普通会员</text>
+      <image v-if="userInfo&&userInfo.nickname" class="imember" src="/static/images/index-green-vip-code.png" @click="toOfflineStorePage"></image>
+      <text v-if="userInfo&&userInfo.nickname" class="vip-code" @click="toOfflineStorePage">会员码</text>
+      <!--<div class="center">升级会员 <image class="member-arrow" src="/static/images/member-arrow.png"></image></div>-->
     </div>
 
     <div class="w1">
@@ -65,6 +75,9 @@
 
     methods:{
 
+      toOfflineStorePage(){
+        this.wxNavigate.navigateToPage('offlineStore')
+      }
     }
 
   };
@@ -76,17 +89,22 @@
   .home{
     swiper {
       /*background-color: #FFB9B9;*/
-      padding:rpx(20);
+      padding: rpx(20) 0;
       height: rpx(320);
       swiper-item{
         border-radius: rpx(10);
       }
 
+      .swiper-inner{
+        height: 100%;
+        width: 100%;
+        box-sizing: border-box;
+        padding: 0 rpx(20);
+      }
       image{
         background-color: #e6e6ea;
         height: 100%;
         width: 100%;
-        margin: 0 rpx(20);
         border-radius: rpx(10);
       }
     }
@@ -115,7 +133,12 @@
       }
 
       .imember{
-        @include WH(33, 30);
+        @include WH(82, 82);
+      }
+      .vip-code{
+        margin-left: rpx(18);
+        @include FCS(#7F7F7F,24,40,40);
+        opacity:0.8;
       }
 
       .center {

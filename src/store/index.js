@@ -3,6 +3,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import user from '@/store/user'
+import order from '@/store/order'
 import getters from '@/store/getters'
 
 Vue.use(Vuex)
@@ -13,7 +14,7 @@ const store = new Vuex.Store({
     count: 0
   },
   modules: {
-    user
+    user,order
   },
   mutations: {
   }

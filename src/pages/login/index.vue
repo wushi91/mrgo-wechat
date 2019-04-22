@@ -2,10 +2,11 @@
   <div class="login">
 
     <image class="slogan-1" src="/static/images/login-slogan-1.png"></image>
+    <text class="name">MR.GO智慧便利店</text>
     <button class="login_btn_t open-type-button" :open-type="[agreeProto?'getPhoneNumber':'']"
             @getphonenumber='getphonenumber' @click="clickLoginBtn">
       <image class="wechat-icon" src="/static/images/login-wechat.png"></image>
-      使用微信手机号登录
+      使用微信登录
     </button>
 
 
@@ -22,7 +23,8 @@
         <image class="check" src="/static/images/read_un.png" v-else @click="agreeProto=!agreeProto"></image>
       </div>
       <text class="t1" @click="agreeProto=!agreeProto">已阅读并同意</text>
-      <text class="t2" @click="toUserProtocolPage">《MGRO用户协议》</text>
+      <!--<text class="t2" @click="toUserProtocolPage">《MGRO用户协议》</text>-->
+      <text class="t2" >《MGRO用户协议》</text>
     </div>
 
     <div class="slogan-2-wrapper">
@@ -164,7 +166,7 @@
   @import "../../common/scss/base";
 
   page {
-    background-color: #F1FFFF;
+    background-color: #F9FCFB;
     height: 100%;
   }
 
@@ -173,13 +175,17 @@
     flex-direction: column;
     align-items: center;
     height: 100%;
-    background-color: #F1FFFF;
+    background-color: #F9FCFB;
     .slogan-1 {
-      @include WH(615, 216);
-      margin-top: rpx(210);
+      @include WH(168, 168);
+      margin-top: rpx(146);
+    }
+    .name{
+      margin-top: rpx(36);
+      @include FCS(#666666,32,40,40)
     }
     .login_btn_t {
-      margin-top: rpx(190);
+      margin-top: rpx(130);
       display: flex;
       justify-content: center;
       align-items: center;

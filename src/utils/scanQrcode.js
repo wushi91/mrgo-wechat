@@ -29,11 +29,12 @@ export const goodQrcode = {
   goodRFId: function (qrcodeUrl) {
     return getParamByName('id', qrcodeUrl)
   },
-  scanAction: function (goodRFId) {//请求商品信息
+  scanAction: function (goodRFId,isFirstAdd) {//请求商品信息
     return new Promise((resolve, reject) => {
-      this.wxRequest.get.call(this, this.wxUrl.getCommodityStoreByRfid, {
+      this.wxRequest.post.call(this, this.wxUrl.saveShoppingCartByRfid, {
         needToken: true,
         rfid: goodRFId,
+        isFirstAdd:isFirstAdd
       }).then(res => resolve(res), res => reject(res))
     })
   }

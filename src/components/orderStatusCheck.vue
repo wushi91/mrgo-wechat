@@ -4,20 +4,21 @@
 
 <script>
   export default {
+
+
     data() {
       return {
+
       }
     },
     onLoad() {
-//      console.log('on load order status check')
-//      this.freshOrderData()
+      this.freshOrderData()
     },
 
 
 
     methods: {
       freshOrderData(){
-        console.log('freshOrderData 44 order status check')
         this.wxRequest.get.call(this, this.wxUrl.getOrderStatusCount, {needToken: true}).then(res => {//获取个人页面的订单数量
           let orderStatus = {tabAll:0,tabWait:0,tabBack:0,tabCan:0}
           for(let i = 0 ;i<res.data.content.length;i++){
@@ -29,7 +30,7 @@
                 orderStatus.tabCan = res.data.content[i].count
                 break
               case '3':
-                orderStatus.tabCan = res.data.content[i].count
+//                orderStatus.tabCan = res.data.content[i].count
                 break
               case '4':
                 orderStatus.tabBack = res.data.content[i].count
@@ -37,9 +38,8 @@
             }
           }
 
-          console.log('orderStatus',orderStatus)
-
-          this.orderStatus = orderStatus
+//          console.log('orderStatus',orderStatus)
+          this.$store.commit('SET_ORDER_STATUS',orderStatus)
         })
       },
 

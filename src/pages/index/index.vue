@@ -5,7 +5,7 @@
         <innerpagehome :userInfo='userInfo'></innerpagehome>
       </div>
       <div v-show="tabIndex===1">
-        <innerpagescan :userInfo='userInfo'></innerpagescan>
+        <innerpagescan ref="innerpagescan" :userInfo='userInfo'></innerpagescan>
       </div>
       <div v-show="tabIndex===2">
         <innerpagemy :userInfo='userInfo' :orderStatus="orderStatus"></innerpagemy>
@@ -18,6 +18,7 @@
 
     <scancheck v-if="qrcodeUrl" :qrcodeUrl="qrcodeUrl"></scancheck>
     <usercheck v-else></usercheck>
+    <orderstatuscheck :orderStatus='orderStatus' ref="orderstatuscheck" v-if="showPage"></orderstatuscheck>
 
   </div>
 </template>
@@ -26,6 +27,7 @@
   import mytabbar from '@/components/myTabBar'
   import usercheck from '@/components/userCheck'
   import scancheck from '@/components/scanCheck'
+  import orderstatuscheck from '@/components/orderStatusCheck'
   import innerpagehome from './innerPageHome'
   import innerpagescan from './innerPageScan'
   import innerpagemy from './innerPageMy'
@@ -34,66 +36,55 @@
     data() {
       return {
         tabIndex: 0,
-        qrcodeUrl:''
+        qrcodeUrl:'',
+        showPage:true
       };
+    },
+    components: {
+      mytabbar,usercheck, scancheck,orderstatuscheck,innerpagehome, innerpagescan, innerpagemy
     },
     computed: {
       token() {
         return this.$store.getters.token
       },
       userInfo() {
-        console.log('index page computed userInfo')
         return this.$store.getters.userInfo
+      },
+      orderStatus(){
+        return this.$store.getters.orderStatus
+
       }
     },
     onLoad(options) {
       if (options && options.data && JSON.parse(options.data).qrcodeUrl) {
         this.qrcodeUrl = decodeURIComponent(JSON.parse(options.data).qrcodeUrl)
-        this.tabIndex = 1
+//        this.tabIndex = 1
       }else if(options&&options.q){//微信扫一扫二维码参数是q
         this.qrcodeUrl = decodeURIComponent(options.q)
-        this.tabIndex = 1
+//        this.tabIndex = 1
       }
 
     },
 
     onShow(){
-      this.freshOrderData()
+      this.showPage = true
     },
-
+    onHide(){
+      this.showPage = false
+    },
     mounted() {
 
     },
-    components: {
-      mytabbar,usercheck, scancheck,innerpagehome, innerpagescan, innerpagemy
-    },
-
 
     methods: {
-      freshOrderData(){
-        this.wxRequest.get.call(this, this.wxUrl.getOrderStatusCount, {needToken: true}).then(res => {//获取个人页面的订单数量
-          let orderStatus = {tabAll:0,tabWait:0,tabBack:0,tabCan:0}
-          for(let i = 0 ;i<res.data.content.length;i++){
-            switch (res.data.content[i].value){
-              case '1':
-                orderStatus.tabWait = res.data.content[i].count
-                break
-              case '2':
-                orderStatus.tabCan = res.data.content[i].count
-                break
-              case '3':
-                orderStatus.tabCan = res.data.content[i].count
-                break
-              case '4':
-                orderStatus.tabBack = res.data.content[i].count
-                break
-            }
-          }
-
-          this.orderStatus = orderStatus
-        })
-      },
       chooseTab(v) {
+        if(v.tabIndex===1){//打开扫描
+          this.$refs.innerpagescan.scanMRGOCode()
+          return
+        }
+
+        if(this.tabIndex===0&&v.tabIndex===0){//
+        }
         this.tabIndex = v.tabIndex
       },
 

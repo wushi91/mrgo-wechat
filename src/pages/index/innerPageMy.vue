@@ -6,22 +6,21 @@
         <image class="avater" src="/static/images/default-avater.png" v-else></image>
         <div class="username-wrapper">
           <text class="name" v-if="userInfo&&userInfo.nickname">{{userInfo.nickname}}</text>
-          <text class="phone">{{userInfo.mobile}}</text>
+          <text class="phone">{{formatPhone}}</text>
         </div>
 
         <button v-if="!(userInfo&&userInfo.nickname)" class="btn-userinfo open-type-button" lang='zh_CN' open-type='getUserInfo' @getuserinfo='getuserinfo' @click.stop>
           获取头像昵称
         </button>
-
-        <image class="arrow" src="/static/images/me-arrow.png"></image>
+        <image v-if="userInfo&&userInfo.nickname"  @click.stop="toOfflineStorePage" class="index-white-vip-code" src="/static/images/index-white-vip-code.png"></image>
       </div>
       <div class="card-wrapper">
         <div class="card">
           <div class="w1">
-            <text class="range">金卡会员</text>
-            <span class="score"><text class="s1">325</text><text class="s2">积分</text></span>
-            <div class="center">会员中心
-              <image class="member-arrow" src="/static/images/member-arrow.png"></image>
+            <text class="range">尊享会员</text>
+            <span class="score"><text class="s1">0</text><text class="s2">积分</text></span>
+            <div class="center" @click.stop="toBuyVIPPage">会员中心
+              <!--<image class="member-arrow" src="/static/images/member-arrow.png"></image>-->
             </div>
           </div>
 
@@ -42,15 +41,14 @@
         <div class="item" @click="toOrderListPage('tab-wait')">
           <div class="icon-order-wrapper">
             <image src="/static/images/order-wait.png"></image>
-            <text>9</text>
+            <text v-if="orderStatus.tabWait">{{orderStatus.tabWait<100?orderStatus.tabWait:'···'}}</text>
           </div>
-
           <text class="order-text">待付款</text>
         </div>
         <div class="item" @click="toOrderListPage('tab-can')">
           <div class="icon-order-wrapper">
             <image src="/static/images/order-can.png"></image>
-            <text>3</text>
+            <text v-if="orderStatus.tabCan">{{orderStatus.tabCan<100?orderStatus.tabCan:'···'}}</text>
           </div>
           <text class="order-text">可使用</text>
         </div>
@@ -58,7 +56,7 @@
         <div class="item" @click="toOrderListPage('tab-back')">
           <div class="icon-order-wrapper">
             <image src="/static/images/order-back.png"></image>
-            <text>3</text>
+            <text v-if="orderStatus.tabBack">{{orderStatus.tabBack<100?orderStatus.tabBack:'···'}}</text>
           </div>
           <text class="order-text">退款/售后</text>
         </div>
@@ -66,7 +64,7 @@
         <div class="item" @click="toOrderListPage('tab-all')">
           <div class="icon-order-wrapper">
             <image src="/static/images/order-all.png"></image>
-            <text>3</text>
+
           </div>
           <text class="order-text">全部订单</text>
         </div>
@@ -82,7 +80,7 @@
       <div class="line-1-px"></div>
       <div class="menu">
         <image class="icon" src="/static/images/menu-wdyhq.png"></image>
-        <text>我的优惠卷</text>
+        <text>我的优惠券</text>
         <image class="arrow" src="/static/images/menu-arrow.png"></image>
       </div>
       <div class="line-1-px"></div>
@@ -110,21 +108,38 @@
 <script>
 
   export default {
+
+    props: ['userInfo','orderStatus'],
     data() {
       return {};
     },
 
-    props: ['userInfo','orderStatus'],
+    computed:{
+      formatPhone() {
+        if(this.userInfo.mobile&&this.userInfo.mobile.length>=11){
+          return this.userInfo.mobile.substr(0, 3) + '****' + this.userInfo.mobile.substr(7, 11);
+        }
+        return ''
+
+      }
+    },
+
+
 
     methods: {
       toOrderListPage(tab) {
         this.wxNavigate.navigateToPage('orderList',{tab})
       },
+      toOfflineStorePage(){
+        this.wxNavigate.navigateToPage('offlineStore')
+      },
       toPersonInfoPage(){
         if(this.userInfo&&this.userInfo.nickname){
           this.wxNavigate.navigateToPage('personInfo')
         }
-
+      },
+      toBuyVIPPage(){
+        this.wxNavigate.navigateToPage('buyVIP')
       },
       getuserinfo(e) {
         if (e.mp.detail.errMsg === 'getUserInfo:ok') {
@@ -199,6 +214,12 @@
           line-height: rpx(78);
           margin-right: rpx(12);
         }
+
+        .index-white-vip-code{
+          @include WH(80, 80);
+          flex-shrink: 0;
+          margin-right: rpx(30);
+        }
         .arrow {
           @include WH(16, 27);
           flex-shrink: 0;
@@ -221,12 +242,16 @@
 
         .w1 {
           display: flex;
+          flex:1;
           align-items: center;
-          height: rpx(58);
+          height: rpx(50);
           .range {
+            flex-shrink: 0;
             @include FCS(#876732, 32, 40, 40);
           }
           .score {
+
+            flex:1;
             display: flex;
             align-items: flex-end;
             margin-left: rpx(80);
@@ -243,7 +268,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-left: rpx(120);
+            margin-right: rpx(20);
             @include FCS(#FFFFFF, 24, 50, 50);
             @include WH(156, 50);
             background-color: #37D0B3;
@@ -261,7 +286,7 @@
           position: absolute;
           @include FCS(#FFF7DD, 60, 68, 68);
           opacity: 0.28;
-          top: rpx(75);
+          top: rpx(68);
         }
 
         .index-hudu{

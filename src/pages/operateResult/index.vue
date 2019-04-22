@@ -9,17 +9,17 @@
       <div class="detail-wrapper">
         <div class="item">
           <text class="t1">订单编号：</text>
-          <text class="t2">6565323465984</text>
+          <text class="t2">{{orderId}}</text>
         </div>
 
         <div class="item">
           <text class="t1">下单时间：</text>
-          <text class="t2">2019-10-11 16:15:12</text>
+          <text class="t2">{{orderDetail.createTime}}</text>
         </div>
 
         <div class="item">
           <text class="t1">支付状态：</text>
-          <text class="t2">成功</text>
+          <text class="t2">支付成功</text>
         </div>
 
         <div class="item">
@@ -29,13 +29,13 @@
 
         <div class="item">
           <text class="t1">用户姓名：</text>
-          <text class="t2">刷的一定</text>
+          <text class="t2">{{nickname?nickname:'无'}}</text>
         </div>
 
       </div>
       <div class="btn-wrapper">
-        <div class="btn-back">继续浏览</div>
-        <div class="btn-order">查看订单</div>
+        <div class="btn-back" @click="toBackPage">继续浏览</div>
+        <div class="btn-order" @click="toOrderDetailPage">查看订单</div>
       </div>
 
     </div>
@@ -58,28 +58,52 @@
     },
     data() {
       return {
-        theResult: ''
-
+        theResult: '',
+        orderDetail:{},
+        orderId:'',
+        nickname:this.$store.getters.userInfo.nickname
       };
     },
     mounted() {
 
     },
 
-    methods: {},
+    methods: {
+      toBackPage(){
+        this.wxNavigate.goBack()
+      },
+      toOrderDetailPage(){
+        this.wxNavigate.redirectToPage('orderDetail',{orderId:this.orderId})
+      },
 
-    onLoad(options) {
-      this.theResult = options.data ? JSON.parse(options.data).theResult : ''
-      console.log(this.theResult)
-      this.theResult = 'pay-success'
-      if (this.theResult === 'pay-success') {
-        console.log('支付成功')
+      paySuccess(orderId){
+        console.log(this.orderId)
+        console.log('支付成功 orderId',this.orderId)
+        this.orderId = orderId
         wx.setNavigationBarTitle({title: '支付成功'})
-      } else {
-        wx.setNavigationBarTitle({title: '支付成功'})
+        this.wxRequest.get.call(this, this.wxUrl.getOrderDetail, {needToken: true,orderId}).then(res => {
+          console.log('order detail success', res.data)
+          this.orderDetail = res.data.content.order
+        })
       }
 
+    },
+
+    onLoad(options) {
+      this.theResult = options&&options.data ? JSON.parse(options.data).theResult : ''
+      console.log('this.theResult',this.theResult)
+      this.theResult = 'pay-success'
+
+      switch (this.theResult){
+        case 'pay-success':
+          this.paySuccess(JSON.parse(options.data).orderId)
+          break
+      }
+
+
     }
+
+
   };
 </script>
 
@@ -111,6 +135,9 @@
       .detail-wrapper{
         display: flex;
         flex-direction: column;
+        width: 100%;
+        padding-left:rpx(86);
+        box-sizing: border-box;
         .item{
           display: flex;
           margin-bottom: rpx(26);

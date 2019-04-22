@@ -10,7 +10,7 @@
         <text class="n-price">￥{{goodInfo.price}}</text>
         <!--<text class="y-price">会员￥{{goodInfo.price}}</text>-->
         <text class="y-price"></text>
-        <text class="amount">x {{goodInfo.count}}</text>
+        <text class="amount">x {{goodInfo.num}}</text>
       </div>
     </div>
   </div>
@@ -72,7 +72,7 @@
         align-items: center;
 
         .n-price{
-          @include FCS(#F96D18,32,40,40);
+          @include FCS(#FF766F,32,40,40);
           width: rpx(130);
           margin-right: rpx(10);
 

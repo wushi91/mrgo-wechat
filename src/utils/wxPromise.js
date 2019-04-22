@@ -40,6 +40,7 @@ export default {
   chooseVideo: promisify(wx.chooseVideo),
   request: promisify(wx.request),
   uploadFile: promisify(wx.uploadFile),
+  requestPayment: promisify(wx.requestPayment),
   setTimeout: pSetTimeout
 
 }
