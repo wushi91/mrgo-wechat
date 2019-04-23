@@ -24,16 +24,16 @@
           for(let i = 0 ;i<res.data.content.length;i++){
             switch (res.data.content[i].value){
               case '1':
-                orderStatus.tabWait = res.data.content[i].count
+                orderStatus.tabWait = res.data.content[i].num
                 break
               case '2':
-                orderStatus.tabCan = res.data.content[i].count
+                orderStatus.tabCan = res.data.content[i].num
                 break
               case '3':
 //                orderStatus.tabCan = res.data.content[i].count
                 break
               case '4':
-                orderStatus.tabBack = res.data.content[i].count
+                orderStatus.tabBack = res.data.content[i].num
                 break
             }
           }

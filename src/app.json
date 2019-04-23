@@ -13,6 +13,7 @@
     "pages/userProtocol/index",
     "pages/proto/index"
   ],
+
   "permission": {
     "scope.userLocation": {
       "desc": "你的位置信息将用于小程序位置接口的效果展示"
@@ -30,6 +31,5 @@
     "i-swipeout": "static/iview/swipeout/index",
     "i-tabs": "static/iview/tabs/index",
     "i-tab": "static/iview/tab/index"
-
   }
 }

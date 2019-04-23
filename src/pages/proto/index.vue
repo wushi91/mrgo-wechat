@@ -33,7 +33,7 @@ export default {
 <style>
   page {
     /*background-color: #FFFFFF;*/
-    background-color: red;
+    /*background-color: red;*/
     height: 100%;
   }
 </style>

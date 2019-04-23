@@ -59,6 +59,10 @@
 
     </div>
 
+
+    <!--<div class="pay-wrapper">-->
+      <!--<div class="btn-pay" @click="payShopCarTryCatch">去支付</div>-->
+    <!--</div>-->
   </div>
   <!--<image src="/static/images/offline-saoyisao.png"></image>-->
 </template>
@@ -118,6 +122,7 @@
   @import "../../common/scss/base";
 
   .order-detail {
+    padding-bottom: rpx(120);
     .store-info-wrapper {
       display: flex;
       flex-direction: column;
@@ -207,6 +212,26 @@
       .info{
         @include FCS(#999999, 26, 34, 34);
         margin-bottom: rpx(16);
+      }
+    }
+
+
+    .pay-wrapper {
+      display: flex;
+      position: fixed;
+      padding: 0 rpx(30);
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: rpx(100);
+      justify-content: center;
+
+      .btn-pay {
+        text-align: center;
+        @include WH(240, 78);
+        background-color: #37D0B3;
+        @include FCS(#FFFFFF, 32, 78, 78);
+        border-radius: rpx(40);
       }
     }
   }

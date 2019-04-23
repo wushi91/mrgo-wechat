@@ -193,14 +193,32 @@
         try {
           await this.payShopCar()
         } catch (err) {
+
           wx.showToast({
             title: err.message,
             icon: 'none'
           })
+
+          if(err.message.startsWith('支付失败')){
+            //清空购物车，这里的逻辑是业务规定的，不是很好的体验
+            console.log('clear shop car ---- --- -- -')
+            this.goodList = []
+            this.shopCarTotal.totalPrice = 0
+            this.shopCarTotal.vipAmount = 0
+          }
+
+
         }
       },
 
       async payShopCar(){
+
+
+        wx.showLoading({mask:true})
+        if(!(this.goodList&&this.goodList.length>0)){
+          throw new Error("请扫码添加商品")
+        }
+
         let shoppingCartIds = this.shopCarRfids(this.goodList)
         let orderId = await this.wxRequest.post.call(this, this.wxUrl.saveOrderForShoppingCart, {
           needToken: true,
@@ -218,7 +236,7 @@
         })
 
         if(!orderId){
-          throw new Error("支付失败")
+          throw new Error("订单生成失败")
         }
 
         let wxpayData = await this.wxRequest.post.call(this, this.wxUrl.wechatPay, {
@@ -233,24 +251,23 @@
         })
 
         if(!(wxpayData&&wxpayData.paySign)){
-          throw new Error("支付失败")
+          throw new Error("支付失败，请重新扫码购买")
         }
 
-        console.log('wxpayData',wxpayData)
 
-        await this.wxPromise.requestPayment(wxpayData).then(res=>{
+        let payStatus = await this.wxPromise.requestPayment(wxpayData).then(res=>{
           console.log('微信支付 success',res)
           wx.showToast({title:'支付成功'})
           this.wxNavigate.waitRedirectToage('operateResult','',1000,{theResult:'pay-success',orderId:orderId})
           return true
-
         },res=>{
           console.log('requestPayment fail',res)
-//          this.wxNavigate.waitRedirectToage('operateResult','',1000,{theResult:'pay-success',orderId:orderId})
-//          this.wxNavigate.waitRedirectToage('operateResult','',1000,{theResult:'pay-success',orderId:orderId})
           return false
         })
 
+        if(!payStatus){
+          throw new Error("支付失败，请重新扫码购买")
+        }
       },
       shopCarRfids(goodList) {
         let rfids = '';
@@ -443,10 +460,7 @@
       height: rpx(100);
 
       justify-content: center;
-      .money {
-        flex: 1;
-        @include FCS(#FF766F, 32, 40, 40);
-      }
+
       .btn-scan {
         text-align: center;
         @include WH(240, 78);
