@@ -1,36 +1,55 @@
 <template>
+
   <div class="login">
+    <!--v-if="!showWechatUser"-->
+    <div class="login-wrapper phone-login-wrapper"  >
 
-    <image class="slogan-1" src="/static/images/login-slogan-1.png"></image>
-    <text class="name">MR.GO智慧便利店</text>
-    <button class="login_btn_t open-type-button" :open-type="[agreeProto?'getPhoneNumber':'']"
-            @getphonenumber='getphonenumber' @click="clickLoginBtn">
-      <image class="wechat-icon" src="/static/images/login-wechat.png"></image>
-      使用微信登录
-    </button>
+      <image class="slogan-1" src="/static/images/login-slogan-1.png"></image>
+      <text class="name">MR.GO智慧便利店</text>
+      <button class="login_btn_t open-type-button" :open-type="[agreeProto?'getPhoneNumber':'']"
+              @getphonenumber='getphonenumber' @click="clickLoginBtn">
+        <image class="wechat-icon" src="/static/images/login-wechat.png"></image>
+        使用微信登录
+      </button>
 
 
-    <!--<button class="login_btn_t open-type-button" open-type="getUserInfo"-->
-    <!--@getuserinfo='getuserinfo'>-->
-    <!--<image class="wechat-icon" src="/static/images/login-wechat.png"></image>-->
-    <!--获取微信用户信息-->
-    <!--</button>-->
-
-    <div class="proto-wrapper">
-      <div class="agree-wrapper">
-        <image class="check" src="/static/images/read_done.png" v-if="agreeProto"
-               @click="agreeProto=!agreeProto"></image>
-        <image class="check" src="/static/images/read_un.png" v-else @click="agreeProto=!agreeProto"></image>
+      <div class="proto-wrapper" >
+        <div class="agree-wrapper">
+          <image class="check" src="/static/images/read_done.png" v-if="agreeProto"
+                 @click="agreeProto=!agreeProto"></image>
+          <image class="check" src="/static/images/read_un.png" v-else @click="agreeProto=!agreeProto"></image>
+        </div>
+        <text class="t1" @click="agreeProto=!agreeProto">已阅读并同意</text>
+        <!--<text class="t2" @click="toUserProtocolPage">《MGRO用户协议》</text>-->
+        <text class="t2">《MGRO用户协议》</text>
       </div>
-      <text class="t1" @click="agreeProto=!agreeProto">已阅读并同意</text>
-      <!--<text class="t2" @click="toUserProtocolPage">《MGRO用户协议》</text>-->
-      <text class="t2" >《MGRO用户协议》</text>
+
+      <div class="slogan-2-wrapper">
+        <image class="slogan-2" src="/static/images/login-slogan-2.png"></image>
+      </div>
     </div>
 
-    <div class="slogan-2-wrapper">
-      <image class="slogan-2" src="/static/images/login-slogan-2.png"></image>
+    <!--用户信息-->
+    <div class="login-wrapper userinfo-login-wrapper" :class="[showWechatUser?'show-on':'']" >
+
+      <image class="slogan-1" src="/static/images/login-slogan-1.png"></image>
+      <text class="name">MR.GO智慧便利店</text>
+
+
+
+      <button class="login_btn_t open-type-button" open-type="getUserInfo"
+              @getuserinfo='getuserinfo'>
+        <image class="wechat-icon" src="/static/images/login-wechat.png"></image>
+        获取微信用户信息
+      </button>
+
+
+      <div class="slogan-2-wrapper">
+        <image class="slogan-2" src="/static/images/login-slogan-2.png"></image>
+      </div>
     </div>
   </div>
+
 </template>
 
 <script>
@@ -48,6 +67,7 @@
         agreeProto: true,
         qrcodeUrl: '',
         redirectPage: '',//已有流程无法区分，一开始进入登录页还是之后跳转的进入登录页
+        showWechatUser: false
       };
     },
 
@@ -55,10 +75,10 @@
       if (options && options.data) {
 
         let parseData = JSON.parse(options.data)
-        if(parseData.qrcodeUrl){
+        if (parseData.qrcodeUrl) {
           this.qrcodeUrl = parseData.qrcodeUrl
         }
-        if(parseData.redirectPage){
+        if (parseData.redirectPage) {
           this.redirectPage = parseData.redirectPage
         }
 
@@ -71,6 +91,10 @@
 
 
     methods: {
+
+      ttt(){
+        this.showWechatUser = true
+      },
       clickLoginBtn() {
         if (this.agreeProto === false) {
           wx.showToast({
@@ -80,19 +104,19 @@
         }
       },
 
-      async getuserinfo(e) {
-        if (e.mp.detail.errMsg === 'getUserInfo:ok') {
-          try {
-            console.log(e.mp.detail)
-            await this.userinfoLogin(e.mp.detail)
-          } catch (err) {
-            wx.showToast({
-              title: err.message,
-              icon: 'none'
-            })
-          }
-        }
-      },
+//      async getuserinfo(e) {
+//        if (e.mp.detail.errMsg === 'getUserInfo:ok') {
+//          try {
+//            console.log(e.mp.detail)
+//            await this.userinfoLogin(e.mp.detail)
+//          } catch (err) {
+//            wx.showToast({
+//              title: err.message,
+//              icon: 'none'
+//            })
+//          }
+//        }
+//      },
 
       async getphonenumber(e) {
         if (e.mp.detail.errMsg === 'getPhoneNumber:ok') {
@@ -121,14 +145,34 @@
         let code = await this.wxPromise.login().then(res => {
           return res.code
         }, res => null)
+
+        console.log('测试 code',code)
         if (!code) throw new Error("登录失败")
-        let token = await this.wxRequest.get.call(this, this.wxUrl.login, {code, encryptedData, iv}).then(res => {
-          console.log('登录成功')
+        let {token, userInfo} = await this.wxRequest.get.call(this, this.wxUrl.login, {
+          code,
+          encryptedData,
+          iv
+        }).then(res => {
+          console.log('登录成功',res.data.content)
           this.$store.dispatch('Login', {token: res.data.content.token, userInfo: res.data.content.userInfo})//保存token，并同步到其他组件（store），提示登陆成功，返回原来的页面
-          return res.data.content.token
-        }, res => null)
+          return {token: res.data.content.token, userInfo: res.data.content.userInfo}
+        }, res => {
+          console.log('登录失败',res)
+          return {token: null, userInfo: null}
+        })
+
+        console.log('测试 token',token)
         if (!token) throw new Error("登录失败")
 
+//        console.log('----')
+
+//        userInfo.imageUrl = ''//测试用 必须注释的
+
+
+        if (!(userInfo&&userInfo.imageUrl && userInfo.nickname)) {//如果头像或者nickname为空，显示获取头像的按钮
+          this.showWechatUser = true
+          throw new Error("请先获取微信用户信息")
+        }
 
 
         if (this.qrcodeUrl) {
@@ -142,19 +186,62 @@
 
       },
 
-      async userinfoLogin({encryptedData, iv, rawData, signature}) {
-        let code = await this.wxPromise.login().then(res => res.code, res => null)
-        if (!code) throw new Error("登录失败")
 
-        let token = await this.wxRequest.get.call(this, this.wxUrl.login, {
-          code,
-          encryptedData,
-          iv,
-          rawData,
-          signature
-        }).then(res => res.data.token, res => null)
-        if (!token) throw new Error("登录失败")
-      }
+      async getuserinfo(e) {
+        if (e.mp.detail.errMsg === 'getUserInfo:ok') {
+          try {
+            let userInfo = e.mp.detail.userInfo
+
+            let editstatus = await this.wxRequest.post.call(this, this.wxUrl.editUser, {
+              needToken: true, contentType: 'application/json', cities: userInfo.city,
+              imageUrl: userInfo.avatarUrl,
+              nationality: userInfo.country,
+              nickname: userInfo.nickName,
+              province: userInfo.province,
+              sex: userInfo.gender,
+            }).then(res => {
+              console.log('res.data.content', res.data.content)
+              this.$store.dispatch('Login', {userInfo: res.data.content})
+              return true
+            },res=>{
+              return false
+            })
+
+
+            if(editstatus){
+              if (this.qrcodeUrl) {
+                this.wxNavigate.redirectToPage('index', {qrcodeUrl: this.qrcodeUrl})
+              } else if (this.redirectPage) {
+                this.wxNavigate.redirectToPage(this.redirectPage)
+              } else {
+                this.loginBack()
+              }
+            }else{
+              throw new Error("获取微信用户信息失败")
+            }
+
+          } catch (err) {
+            wx.showToast({
+              title: err.message,
+              icon: 'none'
+            })
+          }
+        }
+      },
+
+//      async userinfoLogin({encryptedData, iv, rawData, signature}) {
+//        let code = await this.wxPromise.login().then(res => res.code, res => null)
+//        if (!code) throw new Error("登录失败")
+//
+//        let token = await this.wxRequest.get.call(this, this.wxUrl.login, {
+//          code,
+//          encryptedData,
+//          iv,
+//          rawData,
+//          signature
+//        }).then(res => res.data.token, res => null)
+//        if (!token) throw new Error("登录失败")
+//      }
 
 
     }
@@ -170,19 +257,42 @@
     height: 100%;
   }
 
-  .login {
+  .login{
+    height: 100%;
+    background-color: #F9FCFB;
+  }
+
+  .phone-login-wrapper{
+    left:0;
+    right: 0;
+    background-color: #F9FCFB;
+  }
+  .userinfo-login-wrapper{
+    z-index: 2;
+    left:100%;
+    right:-100%;
+    background-color: #F9FCFB;
+  }
+
+  .show-on{
+    left:0!important;
+    right:0!important;
+  }
+
+  .login-wrapper {
     display: flex;
     flex-direction: column;
     align-items: center;
     height: 100%;
-    background-color: #F9FCFB;
+    position: absolute;
+    transition: all 0.2s linear;
     .slogan-1 {
       @include WH(168, 168);
       margin-top: rpx(146);
     }
-    .name{
+    .name {
       margin-top: rpx(36);
-      @include FCS(#666666,32,40,40)
+      @include FCS(#666666, 32, 40, 40)
     }
     .login_btn_t {
       margin-top: rpx(130);

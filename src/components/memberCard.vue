@@ -1,18 +1,7 @@
 <template>
   <div class="member-card">
-    <div class="inner-wrapper normal" v-if="!cardInfo.vip">
-      <image class="bg" src="/static/images/member-card-normal-bg.png"></image>
-      <div class="info">
-        <image class="member-card-title" src="/static/images/member-card-normal-title.png"></image>
-        <div class="center">
-          <image class="member-card-normal-text" src="/static/images/member-card-normal-text.png"></image>
 
-        </div>
-        <text class="number">8855 9766 9877 3152</text>
-      </div>
-    </div>
-
-    <div class="inner-wrapper vip" v-else>
+    <div class="inner-wrapper vip" v-if="cardInfo.status===1" >
       <image class="bg" src="/static/images/member-card-vip-bg.png"></image>
       <div class="info">
         <image class="member-card-title" src="/static/images/member-card-vip-title.png"></image>
@@ -22,11 +11,25 @@
             <image class="member-card-normal-text2" src="/static/images/member-card-vip-text2.png"></image>
           </div>
 
-          <text class="card-time">2019年10月10日到期</text>
+          <text class="card-time">{{cardInfo.endTime?cardInfo.endTime:''}}到期</text>
         </div>
-        <text class="number">8855 9766 9877 3152</text>
+        <text class="number">{{cardNumber}}</text>
       </div>
     </div>
+
+    <div class="inner-wrapper normal" v-else>
+      <image class="bg" src="/static/images/member-card-normal-bg.png"></image>
+      <div class="info">
+        <image class="member-card-title" src="/static/images/member-card-normal-title.png"></image>
+        <div class="center">
+          <image class="member-card-normal-text" src="/static/images/member-card-normal-text.png"></image>
+
+        </div>
+        <text class="number">{{cardNumber}}</text>
+      </div>
+    </div>
+
+
   </div>
 </template>
 
@@ -36,6 +39,18 @@
     data() {
       return {
       }
+    },
+
+    computed:{
+      cardNumber(){
+        if(this.cardInfo&&this.cardInfo.id){
+          return this.cardInfo.id.replace(/(.{4})/g, "$1 ")
+        }else{
+          return ''
+        }
+
+      }
+
     },
 
     methods: {

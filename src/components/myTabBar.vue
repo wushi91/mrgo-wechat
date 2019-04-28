@@ -9,7 +9,8 @@
     <div class="center">
       <div class="scan-wrapper" :class="[tabIndex ===1 ?'select': '']" @click="chooseTab(1)">
         <image class="icon" src="/static/images/index-saoyisao.png" ></image>
-        <text class="title">扫码</text>
+        <div style="height: 45rpx"></div>
+        <text class="title">开门·购物</text>
       </div>
     </div>
 
@@ -90,7 +91,7 @@
 
         .title{
           @include FCS(#B7B7B7, 22, 30);
-          margin-top: rpx(50);
+          margin-top: rpx(5);
         }
       }
       .scan-wrapper.select{

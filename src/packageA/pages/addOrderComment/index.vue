@@ -42,7 +42,7 @@ export default {
 
 
 <style lang="scss" scoped>
-  @import "../../common/scss/base";
+  @import "../../../common/scss/base";
 
   .add-order-comment{
     padding: rpx(60) rpx(30) rpx(30) rpx(30);

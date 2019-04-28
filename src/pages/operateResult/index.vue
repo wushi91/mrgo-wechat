@@ -39,6 +39,18 @@
       </div>
 
     </div>
+    <div class="pay-member-success" v-if="theResult==='pay-member-success'">
+
+      <img class="icon-pay-sucess" src="/static/images/icon-pay-sucess.png"/>
+      <text class="operate-title">支付成功</text>
+
+
+      <div class="btn-wrapper">
+        <div class="btn-back" @click="toBackPage">返回首页</div>
+        <div class="btn-order" @click="toOrderDetailPage">查看订单</div>
+      </div>
+
+    </div>
     <text>{{message}}</text>
   </div>
   <!--<image src="/static/images/offline-saoyisao.png"></image>-->
@@ -92,7 +104,7 @@
     onLoad(options) {
       this.theResult = options&&options.data ? JSON.parse(options.data).theResult : ''
       console.log('this.theResult',this.theResult)
-      this.theResult = 'pay-success'
+//      this.theResult = 'pay-member-success'
 
       switch (this.theResult){
         case 'pay-success':
@@ -115,6 +127,66 @@
     flex-direction: column;
     align-items: center;
     .pay-success {
+      margin-top: rpx(30);
+      background-color: white;
+      width: rpx(690);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      border-radius:rpx(10);
+      .icon-pay-sucess {
+        @include WH(244, 244);
+        margin: rpx(30) 0 rpx(60) 0;
+      }
+
+      .operate-title{
+        @include FCS(#393939,36,44,44);
+        margin-bottom: rpx(90);
+      }
+
+      .detail-wrapper{
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        padding-left:rpx(86);
+        box-sizing: border-box;
+        .item{
+          display: flex;
+          margin-bottom: rpx(26);
+          .t1{
+            @include FCS(#666666,32,40,40);
+          }
+          .t2{
+            @include FCS(#999999,32,40,40);
+          }
+        }
+      }
+
+      .btn-wrapper{
+        display: flex;
+        margin-top: rpx(64);
+        margin-bottom: rpx(90);
+        .btn-back {
+          text-align: center;
+          @include WH(260, 78);
+          background-color: #37D0B3;
+          @include FCS(#FFFFFF, 32, 78, 78);
+          border-radius: rpx(40);
+        }
+
+        .btn-order {
+          text-align: center;
+          @include WH(260, 78);
+          @include FCS(#37D0B3, 32, 78, 78);
+          border: rpx(2) solid #37D0B3;
+          border-radius: rpx(40);
+          margin-left: rpx(20);
+        }
+      }
+
+    }
+
+    .pay-member-success {
       margin-top: rpx(30);
       background-color: white;
       width: rpx(690);

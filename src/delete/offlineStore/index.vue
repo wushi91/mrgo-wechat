@@ -2,18 +2,18 @@
   <div class="offline-store">
     <div class="top-wrapper">
       <div>
-        <membercard :cardInfo="memberInfo"></membercard>
+        <membercard :cardInfo="cardInfo"></membercard>
       </div>
 
       <div class="member-info">
         <div class="item">
           <text class="t1">积分</text>
-          <text class="t2">{{memberInfo.points}}</text>
+          <text class="t2">0</text>
         </div>
 
         <div class="item">
           <text class="t1">会员</text>
-          <text class="t2">{{memberInfo.status==1?'尊享会员':'普通会员'}}</text>
+          <text class="t2">尊享会员</text>
         </div>
 
 
@@ -26,9 +26,10 @@
 
 
     <div class="canvas-wrapper">
-      <membercodecheck ref="membercodecheck" ></membercodecheck>
+      <canvas class="qr-code" canvas-id="myQrcode" @click="getMemberLoginCode()"></canvas>
     </div>
 
+    <!--<image  src="/static/images/qr-code.png"></image>-->
 
     <div class="buy-entry">
       <div class="shopcar-wrapper" @click="toOrderListPage('tab-can')">
@@ -52,58 +53,117 @@
   /**
    * 关键，扫码开门，扫码添加物品，以及处理传入当前页面的店面id（扫码开门）
    * */
-
+  import drawQrcode from 'weapp-qrcode'
   import {goodQrcode, storeQrcode} from '@/utils/scanQrcode'
   import membercard from '@/components/memberCard'
-  import membercodecheck from '@/components/memberCodeCheck'
+
 
   export default {
     data() {
       return {
         qrcodeUrl: '',
         storeId: '',
+        cardInfo: {},
+        loginCode: '',
 
+        timeFresh: null
       };
     },
-
-    computed: {
-      memberInfo() {
-        return this.$store.getters.memberInfo
-      }
-    },
     components: {
-      membercard,membercodecheck
+      membercard
     },
     onLoad(options) {
+      this.qrCode('myQrcode', this.loginCode, 316, 316)
       if (options && options.data) {
         this.qrcodeUrl = decodeURIComponent(JSON.parse(options.data).qrcodeUrl)
         this.storeId = storeQrcode.storeId(this.qrcodeUrl)
-        if(this.storeId)this.openDoor(this.storeId)
+        console.log('this.storeId', this.storeId)
+        this.openDoor(this.storeId)
       }
 
     },
 
-    onUnload() {
-      this.$refs.membercodecheck.clearQrCodeTimer()
-      Object.assign(this.$data, this.$options.data())//清楚页面数据
+    onShow() {
+      console.log('on show')
+//      this.getMemberLoginCode()
     },
 
+    mounted() {
 
+    },
 
     methods: {
+
+      getMemberLoginCode() {
+
+//        this.qrCode('myQrcode', this.loginCode, 316, 316)
+        this.wxRequest.get.call(this, this.wxUrl.getGenerateLoginCode, {needToken: true}).then(res => {
+          this.loginCode = res.data.content
+          this.qrCode('myQrcode', this.loginCode, 316, 316)
+          console.log('getGenerateLoginCode success', res.data.content)
+        }, res => {
+          console.log('getMemberTypeList fail', res)
+          wx.showToast({
+            title: '获取二维码失败',
+            icon: 'none'
+          })
+        })
+      },
+
+      qrCode(canvasId, text, width = 1, height = 1) {
+        width = this.wxUtil.rpx2px(width);
+        height = this.wxUtil.rpx2px(height);
+
+        if (this.timeFresh) {
+          clearTimeout(this.timeFresh)
+        }
+
+
+        if (text) {
+          drawQrcode({
+            width: width,
+            height: height,
+            canvasId: canvasId,
+            typeNumber: -1,
+            text: text,
+            correctLevel: 3,
+          })
+        }
+
+        this.timeFresh = setTimeout(() => {
+          const ctx = wx.createCanvasContext(canvasId)
+          ctx.setFillStyle('rgba(255, 255, 255, 0.9)')
+          ctx.fillRect(0, 0, width, height)
+          ctx.setFillStyle('#333333')
+          ctx.setFontSize(16)
+          ctx.setTextAlign('center')
+          ctx.fillText('点击刷新二维码', width / 2, height / 2)
+          ctx.draw(true)
+        }, 3*60*1000)
+//
+      },
 
       scanMRGOCode() {
         this.wxPromise.scanCode({onlyFromCamera: true}).then(res => {
           let qrcodeUrl = res.result
+//          if (qrcodeUrl.startsWith(storeQrcode.path)) {
+//            let storeId = storeQrcode.storeId(qrcodeUrl)
+//            this.wxNavigate.navigateToPage('offlineStore', {qrcodeUrl: encodeURIComponent(qrcodeUrl)})
+//            this.wxNavigate.redirectToPage('offlineStore', {qrcodeUrl: encodeURIComponent(qrcodeUrl)})
+//            this.openDoor(storeId)
+//          } else
           if (qrcodeUrl.startsWith(goodQrcode.path)) {
             this.wxNavigate.navigateToPage('offlineSCar', {qrcodeUrl: encodeURIComponent(qrcodeUrl)})
+
           } else {
             wx.showToast({
               title: '没有查询到商品信息',
               icon: 'none'
             })
           }
+
         })
+
       },
 
       openDoor(storeId) {
@@ -121,7 +181,6 @@
 
         })
       },
-
       toOrderListPage(tab) {
         this.wxNavigate.navigateToPage('orderList', {tab})
       },
@@ -174,9 +233,9 @@
       margin-top: rpx(48);
       margin-bottom: rpx(32);
       background-color: white;
-      /*padding: rpx(20);*/
+      padding: rpx(20);
       .qr-code {
-        @include WH(356, 356);
+        @include WH(316, 316);
       }
     }
 

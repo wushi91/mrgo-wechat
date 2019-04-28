@@ -27,13 +27,13 @@
       <image class="avater" v-if="userInfo&&userInfo.imageUrl" :src="userInfo.imageUrl" ></image>
       <image class="avater" src="/static/images/default-avater.png" v-else></image>
       <text class="nickname" >{{userInfo.nickname}}</text>
-      <text v-if="userInfo&&userInfo.nickname" class="member">普通会员</text>
+      <text v-if="userInfo&&userInfo.nickname" class="member">{{memberInfo.status==1?'尊享会员':'普通会员'}}</text>
       <image v-if="userInfo&&userInfo.nickname" class="imember" src="/static/images/index-green-vip-code.png" @click="toOfflineStorePage"></image>
       <text v-if="userInfo&&userInfo.nickname" class="vip-code" @click="toOfflineStorePage">会员码</text>
       <!--<div class="center">升级会员 <image class="member-arrow" src="/static/images/member-arrow.png"></image></div>-->
     </div>
 
-    <div class="w1">
+    <div class="w1" @click="onWork">
       <div class="online-shop">
         <image mode='aspectFill' src="/static/images/index-img01.png"></image>
         <div class="title">在线购物</div>
@@ -44,7 +44,7 @@
       </div>
     </div>
 
-    <div class="w2">
+    <div class="w2" @click="onWork">
       <div class="item">
         <image mode='aspectFill' src="/static/images/index-img03.png"></image>
         <div class="title">拼团特卖</div>
@@ -71,10 +71,16 @@
       };
     },
 
-    props: ['userInfo'],
+    props: ['userInfo','memberInfo'],
 
     methods:{
 
+      onWork(){
+        wx.showToast({
+          title: '该功能暂未开放',
+          icon: 'none'
+        })
+      },
       toOfflineStorePage(){
         this.wxNavigate.navigateToPage('offlineStore')
       }
@@ -174,6 +180,7 @@
         opacity:0.8;
         border-radius:rpx(10);
         background-color: #29C3A6;
+        filter: grayscale(100%);
       }
       .online-shop{
         @include WH(470,250);
@@ -221,6 +228,7 @@
         opacity:0.8;
         border-radius:rpx(10);
         background-color: #29C3A6;
+        filter: grayscale(100%);
       }
       .item{
         @include WH(230,250);

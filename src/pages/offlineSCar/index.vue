@@ -143,8 +143,10 @@
         goodQrcode.scanAction.call(this, goodRFId, this.goodList.length === 0 ? 1 : 0).then(res => {
 
           console.log('添加商品',res)
+
           this.goodList = res.data.content.commodityCarts.reverse();
-          this.offlineShop = res.data.content.store;
+          this.offlineShop = res.data.content.store?res.data.content.store:{};
+          console.log('res.data.content.store',res.data.content.store)
           this.shopCarTotal.totalPrice = res.data.content.amount
           this.shopCarTotal.vipAmount = res.data.content.vipAmount
         }, res => {

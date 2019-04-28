@@ -1,9 +1,10 @@
-import { getToken, setToken, removeToken,getUserInfo,setUserInfo } from '@/utils/auth'
+import { getToken, setToken, removeToken,getUserInfo,setUserInfo,getMemberInfo,setMemberInfo } from '@/utils/auth'
 
 const user = {
   state: {
     token: getToken(),
-    userInfo:getUserInfo()
+    userInfo:getUserInfo(),
+    memberInfo:getMemberInfo(),
 
   },
 
@@ -13,6 +14,9 @@ const user = {
     },
     SET_USERINFO: (state, userInfo) => {
       state.userInfo = userInfo
+    },
+    SET_MEMBERINFO: (state, memberInfo) => {
+      state.memberInfo = memberInfo
     },
   },
 
@@ -29,6 +33,11 @@ const user = {
       }
 
     },
+
+    Member({commit},{memberInfo}){
+      setMemberInfo(memberInfo)
+      commit('SET_MEMBERINFO', memberInfo)
+    }
 
 
   }

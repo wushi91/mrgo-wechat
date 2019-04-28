@@ -15,16 +15,16 @@
         <image v-if="userInfo&&userInfo.nickname"  @click.stop="toOfflineStorePage" class="index-white-vip-code" src="/static/images/index-white-vip-code.png"></image>
       </div>
       <div class="card-wrapper">
-        <div class="card">
+        <div class="card" @click.stop="toBuyVIPPage">
           <div class="w1">
-            <text class="range">尊享会员</text>
-            <span class="score"><text class="s1">0</text><text class="s2">积分</text></span>
-            <div class="center" @click.stop="toBuyVIPPage">会员中心
+            <text class="range">{{memberInfo.status==1?'尊享会员':'普通会员'}}</text>
+            <span class="score"><text class="s1">{{memberInfo.points}}</text><text class="s2">积分</text></span>
+            <div class="center" >会员中心
               <!--<image class="member-arrow" src="/static/images/member-arrow.png"></image>-->
             </div>
           </div>
 
-          <text class="vip">VIP</text>
+          <text class="vip" v-if="memberInfo.status">VIP</text>
         </div>
 
         <image class="index-hudu" src="/static/images/index-hudu.png"></image>
@@ -71,32 +71,32 @@
       </div>
     </div>
 
-    <div class="menu-wrapper">
-      <div class="menu">
+    <div class="menu-wrapper" @click="onWork">
+      <div class="menu set-all-gray">
         <image class="icon" src="/static/images/menu-wdpt.png"></image>
         <text>我的拼团</text>
         <image class="arrow" src="/static/images/menu-arrow.png"></image>
       </div>
       <div class="line-1-px"></div>
-      <div class="menu">
+      <div class="menu set-all-gray">
         <image class="icon" src="/static/images/menu-wdyhq.png"></image>
         <text>我的优惠券</text>
         <image class="arrow" src="/static/images/menu-arrow.png"></image>
       </div>
       <div class="line-1-px"></div>
-      <div class="menu">
+      <div class="menu set-all-gray">
         <image class="icon" src="/static/images/menu-wdkp.png"></image>
         <text>我的开票</text>
         <image class="arrow" src="/static/images/menu-arrow.png"></image>
       </div>
       <div class="line-1-px"></div>
-      <div class="menu">
+      <div class="menu set-all-gray">
         <image class="icon" src="/static/images/menu-lxkf.png"></image>
         <text>联系客服</text>
         <image class="arrow" src="/static/images/menu-arrow.png"></image>
       </div>
       <div class="line-1-px"></div>
-      <div class="menu">
+      <div class="menu" @click.stop="toPage('aboutUs')">
         <image class="icon" src="/static/images/menu-gy.png"></image>
         <text>关于</text>
         <image class="arrow" src="/static/images/menu-arrow.png"></image>
@@ -109,7 +109,7 @@
 
   export default {
 
-    props: ['userInfo','orderStatus'],
+    props: ['userInfo','orderStatus','memberInfo'],
     data() {
       return {};
     },
@@ -127,6 +127,16 @@
 
 
     methods: {
+
+      onWork(){
+        wx.showToast({
+          title: '该功能暂未开放',
+          icon: 'none'
+        })
+      },
+      toPage(pageUrl){
+        this.wxNavigate.navigateToPage(pageUrl)
+      },
       toOrderListPage(tab) {
         this.wxNavigate.navigateToPage('orderList',{tab})
       },
@@ -139,7 +149,7 @@
         }
       },
       toBuyVIPPage(){
-        this.wxNavigate.navigateToPage('buyVIP')
+        this.wxNavigate.navigateToPackageAPage('buyVIP')
       },
       getuserinfo(e) {
         if (e.mp.detail.errMsg === 'getUserInfo:ok') {
@@ -353,6 +363,7 @@
       border-radius: rpx(10);
       background-color: white;
       margin: rpx(20) rpx(30);
+
       .menu {
         display: flex;
         align-items: center;

@@ -15,6 +15,8 @@
 //      console.log(this.$store.getters.token)
 //      console.log(wx)
 //      wx.redirectTo({url: 'pages/splashScreen/index'})
+
+//      this.wxNavigate.navigateToPackageAPage('buyVIP')
     },
     methods: {},
   }

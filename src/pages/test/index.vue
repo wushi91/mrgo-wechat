@@ -2,6 +2,7 @@
   <div>
 
     <membercard :cardInfo="cardInfo"></membercard>
+    <membercodecheck></membercodecheck>
     <!--<view class="weui-loadmore" wx:if='isRefreshing'>-->
       <!--<view class="weui-loading"></view>-->
       <!--<view class="weui-loadmore-tips">正在刷新...</view>-->
@@ -34,6 +35,7 @@
 
   import mytabbar from '@/components/myTabBar'
   import membercard from '@/components/memberCard'
+  import membercodecheck from '@/components/memberCodeCheck'
 
   export default {
     config: {
@@ -78,7 +80,7 @@
 
     },
     components: {
-      mytabbar,membercard
+      mytabbar,membercard,membercodecheck
     },
     mounted() {
 

@@ -17,6 +17,11 @@
 //   return welcomeVoice
 // }
 
+
+
+const windowWidth = wx.getSystemInfoSync().windowWidth
+
+
 export function playWelcomeVoice(src = 'static/wav/welcome-mrgo.wav') {
   let  welcomeVoice = wx.createInnerAudioContext()
   console.log('播放playWelcomeVoice')
@@ -32,7 +37,7 @@ export function playWelcomeVoice(src = 'static/wav/welcome-mrgo.wav') {
 
 
 export function rpx2px(rpx) {
-  return rpx / 750 * wx.getSystemInfoSync().windowWidth;
+  return rpx / 750 * windowWidth;
 }
 
 export function getQueryString(url) {

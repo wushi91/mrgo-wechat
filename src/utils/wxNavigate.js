@@ -1,5 +1,6 @@
 
 const page = pageUrl =>`/pages/${pageUrl}/index`
+const packageAPage = pageUrl =>`/packageA/pages/${pageUrl}/index`
 
 const navigateToPage = (pageUrl,data)=>{
   if (data) {
@@ -7,6 +8,15 @@ const navigateToPage = (pageUrl,data)=>{
     wx.navigateTo({url: page(pageUrl) + "?data=" + JSON.stringify(data)})
   }else{
     wx.navigateTo({url: page(pageUrl)})
+  }
+}
+
+const navigateToPackageAPage = (pageUrl,data)=>{
+  if (data) {
+    // encodeURIComponent()
+    wx.navigateTo({url: packageAPage(pageUrl) + "?data=" + JSON.stringify(data)})
+  }else{
+    wx.navigateTo({url: packageAPage(pageUrl)})
   }
 }
 
@@ -54,6 +64,9 @@ export default {
   redirectToPage,
   waitNavigateToPage,
   waitRedirectToage,
+
+  //分包
+  navigateToPackageAPage,
   goBack
 }
 

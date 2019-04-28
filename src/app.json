@@ -1,19 +1,29 @@
 {
   "pages": [
     "pages/index/index",
+    "pages/aboutUs/index",
+
+    "pages/operateResult/index",
+
+    "pages/login/index",
     "pages/orderDetail/index",
     "pages/offlineSCar/index",
-    "pages/buyVIP/index",
     "pages/orderList/index",
     "pages/test/index",
     "pages/offlineStore/index",
-    "pages/operateResult/index",
     "pages/personInfo/index",
-    "pages/login/index",
     "pages/userProtocol/index",
     "pages/proto/index"
   ],
-
+  "subPackages": [
+    {
+      "root": "packageA",
+      "pages": [
+        "pages/addOrderComment/index",
+        "pages/buyVIP/index"
+      ]
+    }
+  ],
   "permission": {
     "scope.userLocation": {
       "desc": "你的位置信息将用于小程序位置接口的效果展示"
