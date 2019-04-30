@@ -33,7 +33,6 @@
       },
 
       showNewUserMemberModal(){//新用户免费领取7天会员
-//        wx.setStorageSync('showNewUserMemberModal',0)
         let hasShow = wx.getStorageSync('showNewUserMemberModal')
         if(hasShow){//首次弹窗，弹窗之后一次就够了
           return

@@ -45,14 +45,14 @@
 
         <template v-if="true">
           <div class="w2">
-            <text class="t1">会员价</text>
+            <text class="t1">尊享会员价</text>
             <text class="t2">￥{{shopCarTotal.vipAmount}}</text>
           </div>
 
-          <div class="line-1-px"></div>
+          <div class="line-1-px" v-if="false"></div>
         </template>
 
-        <div class="w2">
+        <div class="w2" v-if="false">
           <text class="t1">优惠卷</text>
           <text class="t2">已减￥0.00</text>
         </div>
@@ -67,7 +67,7 @@
 
 
     <div class="total-price-wrapper">
-      <text class="t1">小计：</text>
+      <text class="t1">合计：</text>
       <text class="t2">￥{{shopCarTotal.totalPrice}}</text>
     </div>
 

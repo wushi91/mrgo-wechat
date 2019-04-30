@@ -25,7 +25,6 @@
     },
 
     onLoad() {
-//      console.log('bbbbbbbbbbbbbbbbbbbbbbb')
     },
 
 

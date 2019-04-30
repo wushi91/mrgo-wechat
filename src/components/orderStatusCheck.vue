@@ -5,7 +5,6 @@
 <script>
   export default {
 
-
     data() {
       return {
 
@@ -14,8 +13,6 @@
     onLoad() {
       this.freshOrderData()
     },
-
-
 
     methods: {
       freshOrderData(){
@@ -38,7 +35,6 @@
             }
           }
 
-//          console.log('orderStatus',orderStatus)
           this.$store.commit('SET_ORDER_STATUS',orderStatus)
         })
       },

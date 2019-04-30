@@ -23,13 +23,13 @@
       </swiper-item>
     </swiper>
 
-    <div class="my-info">
+    <div class="my-info"  @click="toOfflineStorePage">
       <image class="avater" v-if="userInfo&&userInfo.imageUrl" :src="userInfo.imageUrl" ></image>
       <image class="avater" src="/static/images/default-avater.png" v-else></image>
       <text class="nickname" >{{userInfo.nickname}}</text>
       <text v-if="userInfo&&userInfo.nickname" class="member">{{memberInfo.status==1?'尊享会员':'普通会员'}}</text>
-      <image v-if="userInfo&&userInfo.nickname" class="imember" src="/static/images/index-green-vip-code.png" @click="toOfflineStorePage"></image>
-      <text v-if="userInfo&&userInfo.nickname" class="vip-code" @click="toOfflineStorePage">会员码</text>
+      <image v-if="userInfo&&userInfo.nickname" class="imember" src="/static/images/index-green-vip-code.png" ></image>
+      <text v-if="userInfo&&userInfo.nickname" class="vip-code">会员码</text>
       <!--<div class="center">升级会员 <image class="member-arrow" src="/static/images/member-arrow.png"></image></div>-->
     </div>
 
@@ -244,8 +244,6 @@
           bottom: 0;
         }
       }
-
-
 
     }
   }

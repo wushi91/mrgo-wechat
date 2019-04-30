@@ -42,11 +42,6 @@
         }
       }
 
-      //      if (options && options.data&&JSON.parse(options.data).qrcodeUrl) {
-//        this.qrcodeUrl = decodeURIComponent(JSON.parse(options.data).qrcodeUrl)
-//        this.qrcodeUrlAction(this.qrcodeUrl)//bug记录：由于当前innerPageScan是个组件，tabIndex切换后会重建，首页的v-if改成了v-show
-//      }
-
     },
   }
 

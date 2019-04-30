@@ -1,5 +1,5 @@
 <template>
-  <div class="member-card">
+  <div class="member-card" @click="toBuyVipPage">
 
     <div class="inner-wrapper vip" v-if="cardInfo.status===1" >
       <image class="bg" src="/static/images/member-card-vip-bg.png"></image>
@@ -54,7 +54,9 @@
     },
 
     methods: {
-
+      toBuyVipPage(){
+        this.wxNavigate.navigateToPackageAPage('buyVIP')
+      }
     },
 
 

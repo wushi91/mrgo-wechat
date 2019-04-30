@@ -4,6 +4,8 @@
 // const host = 'http://192.168.8.25:5555'//测试服
 // const host = 'http://47.107.185.37:5555'//正式服
 const host = 'https://wechat.mrgo.club'//正式服
+// const host = 'http://wechat.mrgo.club:5555'//正式服
+// const host = 'https://testwechat.mrgo.club/'//正式服
 
 
 const apiMobileVersion = '/mobile/v1'//api版本，移动端分类

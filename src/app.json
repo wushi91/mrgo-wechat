@@ -1,26 +1,22 @@
 {
   "pages": [
     "pages/index/index",
-    "pages/aboutUs/index",
-
-    "pages/operateResult/index",
-
     "pages/login/index",
+    "pages/operateResult/index",
     "pages/orderDetail/index",
     "pages/offlineSCar/index",
     "pages/orderList/index",
-    "pages/test/index",
     "pages/offlineStore/index",
-    "pages/personInfo/index",
-    "pages/userProtocol/index",
-    "pages/proto/index"
+    "pages/userProtocol/index"
   ],
   "subPackages": [
     {
       "root": "packageA",
       "pages": [
         "pages/addOrderComment/index",
-        "pages/buyVIP/index"
+        "pages/buyVIP/index",
+        "pages/aboutUs/index",
+        "pages/personInfo/index"
       ]
     }
   ],

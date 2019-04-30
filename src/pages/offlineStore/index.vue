@@ -105,7 +105,6 @@
           }
         })
       },
-
       openDoor(storeId) {
         storeQrcode.scanAction.call(this, storeId).then(res => {
           console.log('开门成功')
@@ -113,10 +112,30 @@
           this.wxUtil.playWelcomeVoice()
         }, res => {
           console.log('开门失败')
+
           if (res.data.status === 401) {
             this.wxNavigate.waitNavigateToPage('login', '请先登陆', 1000)
           } else {
 
+            wx.showModal({
+              title: '抱歉',
+              content: res.data.message,
+              showCancel:false,
+              confirmText:'离开门店',
+              confirmColor:'#37D0B3',
+              success:res=>{
+                if (res.confirm) {
+                  this.wxNavigate.goBack()
+//                this.wxNavigate.navigateToPackageAPage('buyVIP',{freeMember:true})
+                } else if (res.cancel) {
+                }
+              },
+
+              complete(){
+                wx.setStorageSync('showNewUserMemberModal',1)
+              }
+            })
+//            wx.showToast({title: res.data.message, icon: 'none'})
           }
 
         })

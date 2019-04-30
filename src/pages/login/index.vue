@@ -37,7 +37,7 @@
 
 
 
-      <button class="login_btn_t open-type-button" open-type="getUserInfo"
+      <button class="login_btn_t open-type-button" lang='zh_CN' open-type="getUserInfo"
               @getuserinfo='getuserinfo'>
         <image class="wechat-icon" src="/static/images/login-wechat.png"></image>
         获取微信用户信息

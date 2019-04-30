@@ -1,6 +1,5 @@
 <template>
     <div class="proto">
-
     </div>
   <!--<image src="/static/images/offline-saoyisao.png"></image>-->
 </template>

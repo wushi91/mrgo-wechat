@@ -96,7 +96,7 @@
         <image class="arrow" src="/static/images/menu-arrow.png"></image>
       </div>
       <div class="line-1-px"></div>
-      <div class="menu" @click.stop="toPage('aboutUs')">
+      <div class="menu" @click.stop="toAboutUsPage">
         <image class="icon" src="/static/images/menu-gy.png"></image>
         <text>关于</text>
         <image class="arrow" src="/static/images/menu-arrow.png"></image>
@@ -137,6 +137,9 @@
       toPage(pageUrl){
         this.wxNavigate.navigateToPage(pageUrl)
       },
+      toAboutUsPage(){
+        this.wxNavigate.navigateToPackageAPage('aboutUs')
+      },
       toOrderListPage(tab) {
         this.wxNavigate.navigateToPage('orderList',{tab})
       },
@@ -145,7 +148,7 @@
       },
       toPersonInfoPage(){
         if(this.userInfo&&this.userInfo.nickname){
-          this.wxNavigate.navigateToPage('personInfo')
+          this.wxNavigate.navigateToPackageAPage('personInfo')
         }
       },
       toBuyVIPPage(){
