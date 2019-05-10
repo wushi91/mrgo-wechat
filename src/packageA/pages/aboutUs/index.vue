@@ -3,7 +3,7 @@
 
     <image class="slogan-1" src="/static/images/login-slogan-1.png"></image>
     <text class="name">MR.GO智慧便利店</text>
-    <text class="version">体验版V0.0.2</text>
+    <text class="version">体验版V0.0.3</text>
 
     <button class='open-type-button share-buttton' open-type='share'>
       <div class="btn-share" open-type='share'>推荐给朋友</div>

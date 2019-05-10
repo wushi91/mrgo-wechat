@@ -1,11 +1,12 @@
 // const host = 'http://192.168.8.7:5555'//测试服
 // const host = 'http://192.168.8.12:5555'//测试服192.168.8.12
 // const host = 'http://192.168.8.16:5555'//测试服192.168.8.12
-// const host = 'http://192.168.8.25:5555'//测试服
+// const host = 'http://192.168.8.105:5555'//测试服
 // const host = 'http://47.107.185.37:5555'//正式服
+// const host = 'http://192.168.8.101:5555'//李伟服192.168.8.101:5555/swagger-ui.html#!/s-UsersController/equipmentLoginUsingGET
+
 const host = 'https://wechat.mrgo.club'//正式服
-// const host = 'http://wechat.mrgo.club:5555'//正式服
-// const host = 'https://testwechat.mrgo.club/'//正式服
+// const host = 'https://testwechat.mrgo.club'//测试服
 
 
 const apiMobileVersion = '/mobile/v1'//api版本，移动端分类
@@ -28,13 +29,15 @@ export default {
   getMemberTypeList: `${host + apiConsoleVersion}/member/list`,
   getGenerateLoginCode: `${host + apiMobileVersion}/qrLogin/generateLoginCode`,
 
+  getBannerAdv: `${host + apiMobileVersion}/adv/query`,//轮播图
+
 
   //post请求
   editUser: `${host + apiMobileVersion}/users/edit`, // 上传用户信息POST /v1/users/edit
   openDoor: `${host + apiMobileVersion}/store/sendMsgToQueueIn`, //开门
   saveShoppingCartByRfid : `${host + apiMobileVersion}/shoppingCart/saveByRfid`, //添加商品到购物车
   updateShoppingCartTypeExpired: `${host + apiMobileVersion}/shoppingCart/updateTypeExpired`, //从购物车删除物品
-  saveOrderForShoppingCart : `${host + apiConsoleVersion}/order/saveForShoppingCart`, //新增订单
+  saveOrderForShoppingCart : `${host + apiMobileVersion}/order/saveForShoppingCart`, //新增订单POST /v1/order/saveForShoppingCart
   wechatPay : `${host + apiMobileVersion}/wechatPay/wxPay`, //获取微信支付的参数
   memberUserWechatPay : `${host + apiMobileVersion}/memberUserWechatPay/wxPay`, //购买会员
   giftExperienceMember : `${host + apiMobileVersion}/memberUser/giftExperienceMember`, //7天体验套餐

@@ -1,7 +1,11 @@
 <template>
   <div class="order-good-item">
     <div class="pic-wrapper">
-      <image class="pic" :src="goodInfo.imgUrl">商品图片</image>
+      <template v-if="goodInfo&&goodInfo.imgUrl"><image class="pic" :src="goodInfo.imgUrl">商品图片</image></template>
+      <template v-else>
+        <image class="default-pic" src="/static/images/icon-good-default.png"></image>
+      </template>
+
     </div>
 
     <div class="divname">
@@ -52,8 +56,12 @@
       margin-right: rpx(25);
       image{
         @include WH(90,90);
-        background-color: #e6e6ea;
+        /*background-color: #e6e6ea;*/
 
+      }
+
+      .default-pic{
+        @include WH(136,136);
       }
     }
 

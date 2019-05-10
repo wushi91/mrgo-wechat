@@ -2,8 +2,21 @@
   <div class="my">
     <div class="header-wrapper">
       <div class="avater-wrapper" @click="toPersonInfoPage">
-        <image class="avater" v-if="userInfo&&userInfo.imageUrl" :src="userInfo.imageUrl" ></image>
-        <image class="avater" src="/static/images/default-avater.png" v-else></image>
+
+
+        <template  v-if="userInfo&&userInfo.imageUrl">
+          <div class="huangguan-wrapper">
+            <image class="icon-huangguan" src="/static/images/icon-huangguan.png" v-if="memberInfo.status==1"></image>
+            <image class="avater" :src="userInfo.imageUrl"></image>
+          </div>
+
+        </template>
+        <template v-else>
+          <image class="avater" src="/static/images/default-avater.png" ></image>
+        </template>
+
+        <!--<image class="avater" v-if="userInfo&&userInfo.imageUrl" :src="userInfo.imageUrl" ></image>-->
+        <!--<image class="avater" src="/static/images/default-avater.png" v-else></image>-->
         <div class="username-wrapper">
           <text class="name" v-if="userInfo&&userInfo.nickname">{{userInfo.nickname}}</text>
           <text class="phone">{{formatPhone}}</text>
@@ -71,26 +84,26 @@
       </div>
     </div>
 
-    <div class="menu-wrapper" @click="onWork">
-      <div class="menu set-all-gray">
+    <div class="menu-wrapper" >
+      <div class="menu" @click="onWork">
         <image class="icon" src="/static/images/menu-wdpt.png"></image>
         <text>我的拼团</text>
         <image class="arrow" src="/static/images/menu-arrow.png"></image>
       </div>
       <div class="line-1-px"></div>
-      <div class="menu set-all-gray">
+      <div class="menu" @click="onWork">
         <image class="icon" src="/static/images/menu-wdyhq.png"></image>
         <text>我的优惠券</text>
         <image class="arrow" src="/static/images/menu-arrow.png"></image>
       </div>
       <div class="line-1-px"></div>
-      <div class="menu set-all-gray">
+      <div class="menu" @click="onWork">
         <image class="icon" src="/static/images/menu-wdkp.png"></image>
         <text>我的开票</text>
         <image class="arrow" src="/static/images/menu-arrow.png"></image>
       </div>
       <div class="line-1-px"></div>
-      <div class="menu set-all-gray">
+      <div class="menu" @click="onWork">
         <image class="icon" src="/static/images/menu-lxkf.png"></image>
         <text>联系客服</text>
         <image class="arrow" src="/static/images/menu-arrow.png"></image>
@@ -189,19 +202,31 @@
   .my {
     .header-wrapper {
       background-color: #37D0B3;
-      padding-top: rpx(10);
+      padding-top: rpx(20);
       display: flex;
       flex-direction: column;
       .avater-wrapper {
         display: flex;
         padding: 0 rpx(30) rpx(14) rpx(30);
         align-items: center;
-        .avater {
-          @include WH(120, 120);
-          border-radius: 50%;
-          background-color: #e6e6ea;
-          flex-shrink: 0;
+
+        .huangguan-wrapper{
+          position: relative;
+          .icon-huangguan{
+            @include WH(80,48);
+            left: rpx(20);
+            top:rpx(-20);
+            position: absolute;
+          }
+          .avater {
+            @include WH(120, 120);
+            border-radius: 50%;
+            background-color: #e6e6ea;
+            flex-shrink: 0;
+          }
         }
+
+
         .username-wrapper {
           display: flex;
           flex-direction: column;

@@ -9,6 +9,7 @@ import wxRequest from '@/utils/wxRequest'
 import wxPromise from '@/utils/wxPromise'
 import wxUrl from '@/utils/wxUrl'
 import wxUtil from '@/utils/myUtils'
+import wxAnalytics from '@/utils/wxAnalytics'
 
 Vue.prototype.$ajaxs=ajaxs;//微信小程序网络请求的配置
 Vue.prototype.wxRequest =wxRequest
@@ -17,6 +18,7 @@ Vue.prototype.wxNavigate =wxNavigate
 Vue.prototype.wxUtil =wxUtil
 
 Vue.prototype.wxUrl =wxUrl
+Vue.prototype.wxAnalytics =wxAnalytics
 
 Vue.use(MpvueRouterPatch)
 Vue.config.productionTip = false

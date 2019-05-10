@@ -1,4 +1,4 @@
-import { getToken, setToken, removeToken,getUserInfo,setUserInfo,getMemberInfo,setMemberInfo } from '@/utils/auth'
+import { getToken, setToken, removeToken,getUserInfo,setUserInfo,removeUserInfo,getMemberInfo,setMemberInfo ,removeMemberInfo} from '@/utils/auth'
 
 const user = {
   state: {
@@ -32,6 +32,15 @@ const user = {
         commit('SET_USERINFO', userInfo)
       }
 
+    },
+
+    ClearLogin({commit}) {
+      commit('SET_TOKEN', '')
+      commit('SET_USERINFO', '')
+      commit('SET_MEMBERINFO', '')
+      removeToken()
+      removeUserInfo()
+      removeMemberInfo()
     },
 
     Member({commit},{memberInfo}){

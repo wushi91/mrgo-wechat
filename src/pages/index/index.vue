@@ -39,7 +39,8 @@
       return {
         tabIndex: 0,
         qrcodeUrl:'',
-        showPage:true
+        showPage:true,
+        showTime:0
       };
     },
     components: {
@@ -76,6 +77,17 @@
 
     onShow(){
       this.showPage = true
+
+      if(this.showTime===0){
+        this.showTime ++
+      }else{
+        console.log('更新会员信息')
+
+        this.wxRequest.get.call(this, this.wxUrl.checkLogin, {needToken: true}).then(res => { //更新会员信息
+          this.$store.dispatch('Member', {memberInfo: res.data.content.member})
+        })
+      }
+
     },
     onHide(){
       this.showPage = false

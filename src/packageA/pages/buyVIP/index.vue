@@ -97,7 +97,7 @@
         </div>
 
       </div>
-      <div class="btn-buy-index" @click="buyMemberTryCatch">{{memberInfo.status===1?'续费会员':'成为会员'}}</div>
+      <div class="btn-buy-index" hover-class="btn-buy-index-hover" @click="buyMemberTryCatch">{{memberInfo.status===1?'续费会员':'成为会员'}}</div>
     </div>
 
 
@@ -232,6 +232,7 @@
           throw new Error("请选择会员套餐")
         }
 
+        wx.showLoading({mask:true})
         let wxpayData = await this.wxRequest.post.call(this, this.wxUrl.memberUserWechatPay, {
           needToken: true,
           memberId: memberId
@@ -418,7 +419,13 @@
         border-radius: rpx(50);
         margin-top: rpx(50);
         margin-left: rpx(35);
+        margin-bottom: rpx(10);
       }
+
+      .btn-buy-index-hover{
+        box-shadow: none;
+      }
+
     }
 
     .info-wrapper {

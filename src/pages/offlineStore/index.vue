@@ -106,6 +106,8 @@
         })
       },
       openDoor(storeId) {
+        this.wxAnalytics.scan_open_store(storeId)
+
         storeQrcode.scanAction.call(this, storeId).then(res => {
           console.log('开门成功')
           wx.showToast({title: "开门成功，欢迎光临", icon: 'none'})
@@ -115,27 +117,17 @@
 
           if (res.data.status === 401) {
             this.wxNavigate.waitNavigateToPage('login', '请先登陆', 1000)
-          } else {
-
+          } else if (res.data.status === 400&&res.data.content.statusCode == 400) {
             wx.showModal({
               title: '抱歉',
-              content: res.data.message,
+              content: res.data.content.expectedRecoveryTime?`${res.data.content.statusMessage} 预计恢复时间：${res.data.content.expectedRecoveryTime}`:res.data.content.statusMessage,
               showCancel:false,
               confirmText:'离开门店',
               confirmColor:'#37D0B3',
               success:res=>{
-                if (res.confirm) {
-                  this.wxNavigate.goBack()
-//                this.wxNavigate.navigateToPackageAPage('buyVIP',{freeMember:true})
-                } else if (res.cancel) {
-                }
+                this.wxNavigate.goBack()
               },
-
-              complete(){
-                wx.setStorageSync('showNewUserMemberModal',1)
-              }
             })
-//            wx.showToast({title: res.data.message, icon: 'none'})
           }
 
         })

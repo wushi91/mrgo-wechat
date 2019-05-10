@@ -68,7 +68,7 @@
 
     <div class="total-price-wrapper">
       <text class="t1">合计：</text>
-      <text class="t2">￥{{shopCarTotal.totalPrice}}</text>
+      <text class="t2">￥{{shopCarTotal.currentPrice}}</text>
     </div>
 
     <div class="slogan-wrapper">
@@ -117,6 +117,7 @@
           totalPrice: 0,
           totalCount: 0,
           vipAmount:0,
+          currentPrice:0,//isMember
         }
       };
     },
@@ -143,12 +144,11 @@
         goodQrcode.scanAction.call(this, goodRFId, this.goodList.length === 0 ? 1 : 0).then(res => {
 
           console.log('添加商品',res)
-
           this.goodList = res.data.content.commodityCarts.reverse();
           this.offlineShop = res.data.content.store?res.data.content.store:{};
-          console.log('res.data.content.store',res.data.content.store)
           this.shopCarTotal.totalPrice = res.data.content.amount
           this.shopCarTotal.vipAmount = res.data.content.vipAmount
+          this.shopCarTotal.currentPrice = res.data.content.isMember?this.shopCarTotal.vipAmount:this.shopCarTotal.totalPrice
         }, res => {
           if (res.data.message) {
             wx.showToast({title: res.data.message, icon: 'none'})
@@ -165,6 +165,7 @@
           this.goodList = res.data.content.commodityCarts.reverse();
           this.shopCarTotal.totalPrice = res.data.content.amount
           this.shopCarTotal.vipAmount = res.data.content.vipAmount
+          this.shopCarTotal.currentPrice = res.data.content.isMember?this.shopCarTotal.vipAmount:this.shopCarTotal.totalPrice
         }, res => {
           if (res.data.message) {
             wx.showToast({title: res.data.message, icon: 'none'})
@@ -207,6 +208,8 @@
             this.goodList = []
             this.shopCarTotal.totalPrice = 0
             this.shopCarTotal.vipAmount = 0
+            this.shopCarTotal.currentPrice = 0
+
           }
 
 

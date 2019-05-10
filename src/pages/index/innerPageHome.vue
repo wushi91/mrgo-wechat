@@ -1,34 +1,41 @@
 <template>
   <div class="home">
     <!--previous-margin="20rpx" next-margin="40rpx"-->
-    <swiper autoplay circular interval="100000" >
-      <swiper-item>
+    <swiper autoplay circular interval="100000">
+
+      <template v-if='bannerList&&bannerList.length>0'>
+        <swiper-item  v-for="(item,index) in bannerList" :key="index">
+          <div class="swiper-inner">
+            <image class="i1" mode='aspectFill' :src="item.imageUrl"></image>
+          </div>
+        </swiper-item>
+      </template>
+
+
+      <swiper-item v-else>
         <div class="swiper-inner">
           <image class="i1" mode='aspectFill' src="/static/images/index-banner.png"></image>
         </div>
 
       </swiper-item>
 
-      <swiper-item>
-        <div class="swiper-inner">
-          <image class="i2" mode='aspectFill' src="/static/images/index-banner.png"></image>
-        </div>
-
-      </swiper-item>
-
-      <swiper-item>
-        <div class="swiper-inner">
-          <image class="i3" mode='aspectFill' src="/static/images/index-banner.png"></image>
-        </div>
-      </swiper-item>
     </swiper>
 
-    <div class="my-info"  @click="toOfflineStorePage">
-      <image class="avater" v-if="userInfo&&userInfo.imageUrl" :src="userInfo.imageUrl" ></image>
-      <image class="avater" src="/static/images/default-avater.png" v-else></image>
-      <text class="nickname" >{{userInfo.nickname}}</text>
-      <text v-if="userInfo&&userInfo.nickname" class="member">{{memberInfo.status==1?'尊享会员':'普通会员'}}</text>
-      <image v-if="userInfo&&userInfo.nickname" class="imember" src="/static/images/index-green-vip-code.png" ></image>
+    <div class="my-info" @click="toOfflineStorePage">
+      <template v-if="userInfo&&userInfo.imageUrl">
+        <div class="huangguan-wrapper">
+          <image class="icon-huangguan" src="/static/images/icon-huangguan.png" v-if="memberInfo.status==1"></image>
+          <image class="avater" :src="userInfo.imageUrl"></image>
+        </div>
+
+      </template>
+      <template v-else>
+        <image class="avater" src="/static/images/default-avater.png"></image>
+      </template>
+
+      <text class="nickname">{{userInfo.nickname}}</text>
+      <text v-if="userInfo&&userInfo.nickname" class="member">{{memberInfo.status == 1 ? '尊享会员' : '普通会员'}}</text>
+      <image v-if="userInfo&&userInfo.nickname" class="imember" src="/static/images/index-green-vip-code.png"></image>
       <text v-if="userInfo&&userInfo.nickname" class="vip-code">会员码</text>
       <!--<div class="center">升级会员 <image class="member-arrow" src="/static/images/member-arrow.png"></image></div>-->
     </div>
@@ -67,21 +74,31 @@
   export default {
     data() {
       return {
-        bannerList:[1,23,456]
+        bannerList: []
       };
     },
 
-    props: ['userInfo','memberInfo'],
+    props: ['userInfo', 'memberInfo'],
 
-    methods:{
+    created() {
+      this.initBanner()
+    },
+    methods: {
 
-      onWork(){
+      onWork() {
         wx.showToast({
           title: '该功能暂未开放',
           icon: 'none'
         })
       },
-      toOfflineStorePage(){
+
+      initBanner() {
+        this.wxRequest.get.call(this, this.wxUrl.getBannerAdv, {needToken: true, type: 3, limit: 3}).then(res => {
+          this.bannerList = res.data.content
+        }, res => {
+        })
+      },
+      toOfflineStorePage() {
         this.wxNavigate.navigateToPage('offlineStore')
       }
     }
@@ -92,59 +109,70 @@
 <style lang="scss" scoped>
   @import "../../common/scss/base";
 
-  .home{
+  .home {
     swiper {
       /*background-color: #FFB9B9;*/
       padding: rpx(20) 0;
       height: rpx(320);
-      swiper-item{
+      swiper-item {
         border-radius: rpx(10);
       }
 
-      .swiper-inner{
+      .swiper-inner {
         height: 100%;
         width: 100%;
         box-sizing: border-box;
         padding: 0 rpx(20);
       }
-      image{
-        background-color: #e6e6ea;
+      image {
+        /*background-color: #e6e6ea;*/
         height: 100%;
         width: 100%;
         border-radius: rpx(10);
       }
     }
 
-    .my-info{
+    .my-info {
       background-color: white;
-      padding:rpx(35) rpx(20);
+      padding: rpx(35) rpx(20);
       margin: 0 rpx(20) rpx(20) rpx(20);
       display: flex;
-      border-radius:rpx(10);
+      border-radius: rpx(10);
       align-items: center;
-      .avater{
-        background-color: #e6e6ea;
-        @include WH(88,88);
-        border-radius: 50%;
+
+      .huangguan-wrapper {
+        position: relative;
+        .icon-huangguan {
+          @include WH(68, 38);
+          left: rpx(10);
+          top: rpx(-17);
+          position: absolute;
+        }
+        .avater {
+          background-color: #e6e6ea;
+          @include WH(88, 88);
+          border-radius: 50%;
+        }
       }
-      .nickname{
-        @include FCS(#7F7F7F,32,40,40);
+
+      .nickname {
+        @include FCS(#7F7F7F, 32, 40, 40);
         margin-left: rpx(20);
         margin-right: rpx(30);
       }
-      .member{
-        @include FCS(#7F7F7F,24,40,40);
-        opacity:0.8;
-        flex:1;
+      .member {
+        @include FCS(#7F7F7F, 24, 40, 40);
+        opacity: 0.8;
+        flex: 1;
       }
 
-      .imember{
+      .imember {
         @include WH(82, 82);
       }
-      .vip-code{
+      .vip-code {
         margin-left: rpx(18);
-        @include FCS(#7F7F7F,24,40,40);
-        opacity:0.8;
+        @include FCS(#7F7F7F, 24, 40, 40);
+        opacity: 0.8;
       }
 
       .center {
@@ -157,55 +185,55 @@
         background-color: #F5CB82;
         border-radius: rpx(25);
         text-align: center;
-        .member-arrow{
+        .member-arrow {
           margin-left: rpx(8);
-          @include WH(11,13);
+          @include WH(11, 13);
         }
       }
 
     }
 
-    .w1{
+    .w1 {
       display: flex;
       margin: 0 rpx(20);
       justify-content: space-between;
 
-      .title{
+      .title {
         position: absolute;
         bottom: 0;
         left: 0;
         right: 0;
         text-align: center;
-        @include FCS(#FFFEFE,24,40,40);
-        opacity:0.8;
-        border-radius:rpx(10);
+        @include FCS(#FFFEFE, 24, 40, 40);
+        opacity: 0.8;
+        border-radius: rpx(10);
         background-color: #29C3A6;
         filter: grayscale(100%);
       }
-      .online-shop{
-        @include WH(470,250);
+      .online-shop {
+        @include WH(470, 250);
         background-color: white;
-        border-radius:rpx(10);
+        border-radius: rpx(10);
         position: relative;
-        image{
-          @include WH(470,250);
+        image {
+          @include WH(470, 250);
           position: absolute;
-          top:0;
+          top: 0;
           left: 0;
           right: 0;
           bottom: 0;
         }
 
       }
-      .today-discount{
-        @include WH(230,250);
+      .today-discount {
+        @include WH(230, 250);
         background-color: white;
-        border-radius:rpx(10);
+        border-radius: rpx(10);
         position: relative;
-        image{
-          @include WH(230,250);
+        image {
+          @include WH(230, 250);
           position: absolute;
-          top:0;
+          top: 0;
           left: 0;
           right: 0;
           bottom: 0;
@@ -214,31 +242,31 @@
 
     }
 
-    .w2{
+    .w2 {
       display: flex;
-      margin: rpx(20) ;
+      margin: rpx(20);
       justify-content: space-between;
-      .title{
+      .title {
         position: absolute;
         bottom: 0;
         left: 0;
         right: 0;
         text-align: center;
-        @include FCS(#FFFEFE,24,40,40);
-        opacity:0.8;
-        border-radius:rpx(10);
+        @include FCS(#FFFEFE, 24, 40, 40);
+        opacity: 0.8;
+        border-radius: rpx(10);
         background-color: #29C3A6;
         filter: grayscale(100%);
       }
-      .item{
-        @include WH(230,250);
+      .item {
+        @include WH(230, 250);
         background-color: white;
-        border-radius:rpx(10);
+        border-radius: rpx(10);
         position: relative;
-        image{
-          @include WH(230,250);
+        image {
+          @include WH(230, 250);
           position: absolute;
-          top:0;
+          top: 0;
           left: 0;
           right: 0;
           bottom: 0;

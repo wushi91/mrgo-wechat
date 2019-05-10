@@ -1,6 +1,8 @@
 {
   "pages": [
     "pages/index/index",
+    "pages/onlineStore/index",
+    "pages/test/index",
     "pages/login/index",
     "pages/operateResult/index",
     "pages/orderDetail/index",

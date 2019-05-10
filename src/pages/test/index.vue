@@ -1,31 +1,40 @@
 <template>
-  <div>
+  <div class="test-wrapper">
 
-    <membercard :cardInfo="cardInfo"></membercard>
-    <membercodecheck></membercodecheck>
-    <!--<view class="weui-loadmore" wx:if='isRefreshing'>-->
-      <!--<view class="weui-loading"></view>-->
-      <!--<view class="weui-loadmore-tips">正在刷新...</view>-->
-    <!--</view>-->
+    <div class="tere">
+      <scrollcheck ref="scrollcheck1" viewId="scroll-id-1"></scrollcheck>
+      <scrollcheck ref="scrollcheck2" viewId="scroll-id-2"></scrollcheck>
+      <scrollcheck ref="scrollcheck3" viewId="scroll-id-3"></scrollcheck>
 
-    <!--<text>{{message}}</text>-->
-    <!--<text>{{count}}<br/></text>-->
-    <!--<text>{{token}}</text>-->
-    <!--<button @click="playvoice">playvoice</button>-->
-    <!--<input placeholder="这是一个可以自动聚焦的input"/>-->
-
-    <!--<scroll-view scroll-y @scroll="scroll">-->
-
-      <!--<div class="scroll-inner">-->
-        <!--<block v-for="(good,index) in goodList" :key="index" >-->
-          <!--<div>1 {{good}}</div>-->
-          <!--<div>1 {{good}}</div>-->
-        <!--</block>-->
-      <!--</div>-->
+    </div>
 
 
+    <div>
+      <button @click="clickBtn" id="btn-id-1">scroll 4</button>
+    </div>
 
-    <!--</scroll-view>-->
+    <div class="double-scroll">
+      <scroll-view class="left-scroll-view" scroll-y :scroll-into-view="scrollViewId" scroll-with-animation>
+        <div class="scroll-inner">
+          <div v-for="(item,index) in goodList" :key="index" :id="'id'+index">
+            {{item}}
+          </div>
+        </div>
+      </scroll-view>
+
+      <scroll-view class="right-scroll-view" scroll-y @scroll="onScroll">
+        <div class="scroll-inner">
+          <div v-for="(liebiao,liebiaoindex) in goodList2" :key="liebiaoindex">
+            <div v-for="(good,index) in liebiao" :key="index">
+              {{good}}
+            </div>
+            <div class="scroll-gook-mark"></div>
+          </div>
+        </div>
+
+      </scroll-view>
+    </div>
+
 
   </div>
 </template>
@@ -33,140 +42,191 @@
 
 <script>
 
-  import mytabbar from '@/components/myTabBar'
-  import membercard from '@/components/memberCard'
-  import membercodecheck from '@/components/memberCodeCheck'
+  /*
+  * 右边每滚动100px，左边下滑到下一个
+  * */
+  import scrollcheck from '@/components/scrollCheck'
 
   export default {
     config: {
       navigationBarTitleText: '测试',
-      enablePullDownRefresh: true,
-      disableScroll:true,
     },
     data() {
       return {
-        goodList:[1,23,3,4,34,34,3,53,5,46,546,45,74,573,53,5,46,546,45,74,573,53,5,46,546,45,74,574,5,345,34,6534,6,34],
-        tabIndex: 1,
-        message: 'hello page test',
-        hasMoreData: true,
-        isRefreshing: false,
-        isLoadingMoreData: false,
-        cardInfo:{}
+        markItemHeight:[],
+        scrollTop100: 0,
+        showScroll2: true,
+        scrollViewId: 'id0',
+        goodList: ['分类1','分类2','分类3','分类4','分类5','分类6','分类7','分类8','分类9','分类2','分类3','分类4','分类5','分类6','分类7','分类8','分类9','分类2','分类3','分类4','分类5','分类6','分类7','分类8','分类9','分类2','分类3','分类4','分类5','分类6','分类7','分类8','分类9','分类2','分类3','分类4','分类5','分类6','分类7','分类8','分类9'],
+//        goodList2: ['adf', 'fefe', 'ewrwer','erw','dsfsdfet', 'fefe', 'ewrwer','erw','dsfsdfet', 'fefe', 'ewrwer','erw','dsfsdfet', 'fefe', 'ewrwer','erw','dsfsdfet', 'fefe', 'ewrwer','erw','dsfsdfet', 'fefe', 'ewrwer','erw','dsfsdfet', 'fefe', 'ewrwer','erw','dsfsdfet', 'fefe', 'ewrwer','erw','dsfsdfet', 'fefe', 'ewrwer','erw','dsfsdfet', 'fefe', 'ewrwer','erw','dsfsdfet', 'fefe', 'ewrwer','erw','dsfsdfet', 'fefe', 'ewrwer','erw','dsfsdfet', 'fefe', 'ewrwer','erw','dsfsdfet', 'fefe', 'ewrwer','erw','dsfsdfet', 'fefe', 'ewrwer','erw','dsfsdfet', 'fefe', 'ewrwer','erw','dsfsdfet', 'fefe', 'ewrwer','erw','dsfsdfet', 'fefe', 'ewrwer','erw','dsfsdfet', 'fefe', 'ewrwer','erw','dsfsdfet', 'fefe', 'ewrwer','erw','dsfsdfet', 'fefe', 'ewrwer','erw','dsfsdfet', 'fefe', 'ewrwer','erw','dsfsdfet', 'fefe', 'ewrwer','erw','dsfsdfet', 'fefe', 'ewrwer','erw','dsfsdfet', 'fefe', 'ewrwer','erw','dsfsdfet', 'fefe', 'ewrwer','erw','dsfsdfet'],
+        goodList2: [['可口可乐', '百事可乐', '伊利', '冰红茶', '农夫山泉', '加多宝', '红牛'],['鱼', '蔬菜'], ['可口可乐', '百事可乐', '伊利', '冰红茶', '农夫山泉', '加多宝', '红牛'],['鱼', '蔬菜'],['可口可乐', '百事可乐', '伊利', '冰红茶', '农夫山泉', '加多宝', '红牛'],['鱼', '蔬菜'],['可口可乐', '百事可乐', '伊利', '冰红茶', '农夫山泉', '加多宝', '红牛'], ['苹果', '李子', '西瓜', '香蕉'], ['馒头', '油条', '豆浆'],['可口可乐', '百事可乐', '伊利', '冰红茶', '农夫山泉', '加多宝', '红牛'], ['苹果', '李子', '西瓜', '香蕉'], ['馒头', '油条', '豆浆'],['可口可乐', '百事可乐', '伊利', '冰红茶', '农夫山泉', '加多宝', '红牛'], ['苹果', '李子', '西瓜', '香蕉'], ['馒头', '油条', '豆浆'], ['鱼', '蔬菜'], ['绿豆', '红豆', '黑豆', '大豆', '黄豆', '赤豆', '白豆']]
       };
     },
     computed: {},
 
-    onPullDownRefresh: function () {
-      if (this.isRefreshing || this.isLoadingMoreData) {
-        return
-      }
-      this.isRefreshing = true
-      this.hasMoreData = true
-
-//      this.requestData()//数据请求
-    },
-
-    onReachBottom: function () {
-      if (this.isRefreshing || this.isLoadingMoreData || !this.hasMoreData) {
-        return
-      }
-
-      this.isLoadingMoreData = true
-
-//      this.requestData()//数据请求
-    },
 
     onLoad() {
+      console.log('this.wxUtil.rpx2px(10)')
+      console.log(this.wxUtil.rpx2px(500))
 
+      this.scrollTop100 = this.wxUtil.rpx2px(250)
     },
     components: {
-      mytabbar,membercard,membercodecheck
+      scrollcheck
     },
     mounted() {
+      console.log(this.$refs.scrollcheck)
 
+      this.jisuanHeight()
+//        const query = wx.createSelectorQuery()
+//        query.select('#scroll-id-3').boundingClientRect()
+//        query.selectViewport().scrollOffset()
+//        query.exec(function (res) {
+//          console.log('scroll-id-3 res', res)
+//          res[0].top // #the-id节点的上边界坐标
+//          res[1].scrollTop // 显示区域的竖直滚动位置
+//        })
     },
 
+
     methods: {
-      chooseTab(v) {
-        this.tabIndex = v.tabIndex
+
+      jisuanHeight() {
+        const query = wx.createSelectorQuery()
+        query.selectAll('.right-scroll-view .scroll-gook-mark').boundingClientRect()
+        query.selectViewport().scrollOffset()
+        query.exec((res)=> {
+          console.log('scroll-gook-mark res', res)
+//          res[0].top // #the-id节点的上边界坐标
+//          res[1].scrollTop // 显示区域的竖直滚动位置
+
+          let markItemHeight =[]
+          for(let i=0;i<res[0].length;i++){
+//            console.log(res[0][i])
+            markItemHeight.push(res[0][i].top-137)
+          }
+
+          this.markItemHeight = markItemHeight
+          console.log(markItemHeight)
+        })
+
+
       },
-      totoken() {
-        this.$store.dispatch('Login', {token: '222fefefegsgdfg'})
+
+      onScroll(e) {
+        console.log(e.mp.detail)
+
+        //判断滚动的区间，是否处于markItemHeight的值
+
+        let scrollTop = e.mp.detail.scrollTop
+
+        //优化，如果scrollTop已经高于了，即到底部了，不要处理了
+        if(scrollTop>e.mp.detail.scrollHeight-276){
+          return
+        }
+
+        console.log('scrollTop',scrollTop)
+        console.log('this.markItemHeight[0]',this.markItemHeight[0])
+        let ii = 0
+        for(let i=0;i<this.markItemHeight.length;i++){
+          if(scrollTop<this.markItemHeight[i]){
+            //还在区间范围内
+            ii = i
+            break
+          }
+        }
+
+        console.log('iiiii',ii)
+//        let ii = parseInt(e.mp.detail.scrollTop / this.scrollTop100)
+//        this.scrollViewId = 'id'+ii
+//        console.log()
+
+
+
+
+        let scrollViewId = 'id' + ii
+        if (scrollViewId !== this.scrollViewId) {
+          console.log('--fe-fe--fee ' + scrollViewId)
+          this.scrollViewId = scrollViewId
+        }
+
+//        this.scrollViewId = 'id16'
+
+//        if(e.mp.detail.scrollTop)
+
       },
+      clickBtn() {
+        if (this.scrollViewId === 'id16') {
+          this.scrollViewId = 'id6'
+        } else {
+          this.scrollViewId = 'id16'
+        }
+
+
+//        this.$refs.scrollcheck2.checkUser()
+
+//
+//        const query = wx.createSelectorQuery()
+//        query.select('#scroll-id-3').boundingClientRect()
+//        query.selectViewport().scrollOffset()
+//        query.exec(function (res) {
+//          console.log('scroll-id-3 res', res)
+//          res[0].top // #the-id节点的上边界坐标
+//          res[1].scrollTop // 显示区域的竖直滚动位置
+//        })
+//
+//
+//        console.log('clickbtn')
+//        this.showScroll2 = false
+      },
+
 
     }
   };
 
-  //      playvoice() {
-  //        console.log('playvoice ----')
-
-
-  //        wx.playBackgroundAudio({
-  //          dataUrl: 'static/wav/welcome-mrgo.wav',
-  //        })
-  //
-  //        wx.playVoice({
-  //          filePath: 'static/wav/welcome-mrgo.wav',
-  //          complete: function (res) {
-  //            console.log('playVoice res')
-  //            console.log(res)
-  //          }
-  //        })
-  //      }
-
-  //      let content = '13822542311'
-  //      let reg = /\d+?/
-  //      console.log(content.match(reg))
-  //      let u = new URL('http://wechat.mrgo.club/mrgostore?id=11')
-  //      console.log(u)
-  //      wx.playVoice({
-  //        filePath: 'static/wav/welcome-mrgo.wav',
-  //        complete: function (res) {
-  //          console.log('playVoice res')
-  //          console.log(res)
-  //        }
-  //      })
-
-  //      wx.playVoice({
-  //        filePath: 'static/wav/welcome-mrgo.wav',
-  //        complete: function (res) {
-  //          console.log('playVoice res')
-  //          console.log(res)
-  //        }
-  //      })
-  //      console.log(this.wxUtil.getQueryString('http://wechat.mrgo.club/mrgostore?id=11'))
-  //      console.log('sfefef'.split('&'))
 </script>
 
-<style scoped>
 
-  scroll-view{
-    background-color: green;
-    height:100VH;
+<style>
+  page, test-wrapper {
+    max-height: 100%;
+  }
+</style>
+
+<style lang="scss" scoped>
+  @import "../../common/scss/base";
+
+  .test-wrapper {
+    display: flex;
+    background-color: #EEEEEE;
+    flex-direction: column;
+
+    #btn-id-1 {
+      margin: rpx(10);
+    }
+
+    .tere {
+      display: flex;
+      flex-direction: column;
+    }
 
   }
-  .weui-loadmore {
-    width: 100%;
-    height: 100 rpx;
-    font-size: 30 rpx;
-    text-align: center;
-    margin-top: 30 rpx;
+
+  .double-scroll {
+    display: flex;
+
+    font-size: rpx(36);
+
+    .left-scroll-view {
+      width: rpx(150);
+      background-color: red;
+      height: rpx(500);
+    }
+    .right-scroll-view {
+      background-color: lightblue;
+      height: rpx(500);
+    }
   }
 
-  .weui-loading {
-    width: 50 rpx;
-    height: 50 rpx;
-    display: inline-block;
-    vertical-align: middle;
-    -webkit-animation: weuiLoading 1s steps(12, end) infinite;
-    animation: weuiLoading 1s steps(12, end) infinite;
-    background: transparent url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAiIGhlaWdodD0iMTIwIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCI+PHBhdGggZmlsbD0ibm9uZSIgZD0iTTAgMGgxMDB2MTAwSDB6Ii8+PHJlY3Qgd2lkdGg9IjciIGhlaWdodD0iMjAiIHg9IjQ2LjUiIHk9IjQwIiBmaWxsPSIjRTlFOUU5IiByeD0iNSIgcnk9IjUiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDAgLTMwKSIvPjxyZWN0IHdpZHRoPSI3IiBoZWlnaHQ9IjIwIiB4PSI0Ni41IiB5PSI0MCIgZmlsbD0iIzk4OTY5NyIgcng9IjUiIHJ5PSI1IiB0cmFuc2Zvcm09InJvdGF0ZSgzMCAxMDUuOTggNjUpIi8+PHJlY3Qgd2lkdGg9IjciIGhlaWdodD0iMjAiIHg9IjQ2LjUiIHk9IjQwIiBmaWxsPSIjOUI5OTlBIiByeD0iNSIgcnk9IjUiIHRyYW5zZm9ybT0icm90YXRlKDYwIDc1Ljk4IDY1KSIvPjxyZWN0IHdpZHRoPSI3IiBoZWlnaHQ9IjIwIiB4PSI0Ni41IiB5PSI0MCIgZmlsbD0iI0EzQTFBMiIgcng9IjUiIHJ5PSI1IiB0cmFuc2Zvcm09InJvdGF0ZSg5MCA2NSA2NSkiLz48cmVjdCB3aWR0aD0iNyIgaGVpZ2h0PSIyMCIgeD0iNDYuNSIgeT0iNDAiIGZpbGw9IiNBQkE5QUEiIHJ4PSI1IiByeT0iNSIgdHJhbnNmb3JtPSJyb3RhdGUoMTIwIDU4LjY2IDY1KSIvPjxyZWN0IHdpZHRoPSI3IiBoZWlnaHQ9IjIwIiB4PSI0Ni41IiB5PSI0MCIgZmlsbD0iI0IyQjJCMiIgcng9IjUiIHJ5PSI1IiB0cmFuc2Zvcm09InJvdGF0ZSgxNTAgNTQuMDIgNjUpIi8+PHJlY3Qgd2lkdGg9IjciIGhlaWdodD0iMjAiIHg9IjQ2LjUiIHk9IjQwIiBmaWxsPSIjQkFCOEI5IiByeD0iNSIgcnk9IjUiIHRyYW5zZm9ybT0icm90YXRlKDE4MCA1MCA2NSkiLz48cmVjdCB3aWR0aD0iNyIgaGVpZ2h0PSIyMCIgeD0iNDYuNSIgeT0iNDAiIGZpbGw9IiNDMkMwQzEiIHJ4PSI1IiByeT0iNSIgdHJhbnNmb3JtPSJyb3RhdGUoLTE1MCA0NS45OCA2NSkiLz48cmVjdCB3aWR0aD0iNyIgaGVpZ2h0PSIyMCIgeD0iNDYuNSIgeT0iNDAiIGZpbGw9IiNDQkNCQ0IiIHJ4PSI1IiByeT0iNSIgdHJhbnNmb3JtPSJyb3RhdGUoLTEyMCA0MS4zNCA2NSkiLz48cmVjdCB3aWR0aD0iNyIgaGVpZ2h0PSIyMCIgeD0iNDYuNSIgeT0iNDAiIGZpbGw9IiNEMkQyRDIiIHJ4PSI1IiByeT0iNSIgdHJhbnNmb3JtPSJyb3RhdGUoLTkwIDM1IDY1KSIvPjxyZWN0IHdpZHRoPSI3IiBoZWlnaHQ9IjIwIiB4PSI0Ni41IiB5PSI0MCIgZmlsbD0iI0RBREFEQSIgcng9IjUiIHJ5PSI1IiB0cmFuc2Zvcm09InJvdGF0ZSgtNjAgMjQuMDIgNjUpIi8+PHJlY3Qgd2lkdGg9IjciIGhlaWdodD0iMjAiIHg9IjQ2LjUiIHk9IjQwIiBmaWxsPSIjRTJFMkUyIiByeD0iNSIgcnk9IjUiIHRyYW5zZm9ybT0icm90YXRlKC0zMCAtNS45OCA2NSkiLz48L3N2Zz4=) no-repeat;
-    background-size: 100%;
-  }
-
-  .weui-loadmore-tips {
-    display: inline-block;
-    vertical-align: middle;
-  }
 
 </style>

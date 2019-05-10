@@ -12,6 +12,7 @@
       this.checkUser()
     },
 
+
     methods: {
       checkUser() {
         if (!this.$store.getters.token) {//本地都没有token，直接登录页
@@ -19,7 +20,7 @@
           return
         }
         this.wxRequest.get.call(this, this.wxUrl.checkLogin, {needToken: true}).then(res => {
-          console.log(res.data.content.member)
+          console.log('res.data.content.member',res.data.content)
           if(res.data.content.member.memberRecord===0){
             this.showNewUserMemberModal()
           }
@@ -40,8 +41,8 @@
         wx.showModal({
           title: '',
           content: '领取7天会员体验套餐',
-          showCancel:false,
           confirmText:'去领取',
+          showCancel:false,
           confirmColor:'#37D0B3',
           success:res=>{
             if (res.confirm) {

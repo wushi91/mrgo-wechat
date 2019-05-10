@@ -67,13 +67,13 @@
         agreeProto: true,
         qrcodeUrl: '',
         redirectPage: '',//已有流程无法区分，一开始进入登录页还是之后跳转的进入登录页
-        showWechatUser: false
+        showWechatUser: false,
+        loginCode :null
       };
     },
 
     onLoad(options) {
       if (options && options.data) {
-
         let parseData = JSON.parse(options.data)
         if (parseData.qrcodeUrl) {
           this.qrcodeUrl = parseData.qrcodeUrl
@@ -81,8 +81,19 @@
         if (parseData.redirectPage) {
           this.redirectPage = parseData.redirectPage
         }
-
       }
+
+      this.$store.dispatch('ClearLogin')
+
+      this.wxPromise.login().then(res => {
+        this.loginCode = res.code
+        return res.code
+      }, res => null)
+
+    },
+
+    onUnload() {
+      Object.assign(this.$data, this.$options.data())//清楚页面数据
     },
 
     mounted() {
@@ -121,7 +132,7 @@
       async getphonenumber(e) {
         if (e.mp.detail.errMsg === 'getPhoneNumber:ok') {
           try {
-            await this.phoneLogin(e.mp.detail)
+            await this.phoneLogin(this.loginCode,e.mp.detail)
           } catch (err) {
             wx.showToast({
               title: err.message,
@@ -141,12 +152,12 @@
       },
 
 
-      async phoneLogin({encryptedData, iv}) {
-        let code = await this.wxPromise.login().then(res => {
-          return res.code
-        }, res => null)
+      async phoneLogin(code,{encryptedData, iv}) {
+//        let code = await this.wxPromise.login().then(res => {
+//          return res.code
+//        }, res => null)
 
-        console.log('测试 code',code)
+        console.log('测试login code',code)
         if (!code) throw new Error("登录失败")
         let {token, userInfo} = await this.wxRequest.get.call(this, this.wxUrl.login, {
           code,

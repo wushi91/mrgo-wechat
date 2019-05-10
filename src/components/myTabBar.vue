@@ -46,7 +46,7 @@
   @import "../common/scss/base";
 
   .tab {
-    height: rpx(98);
+    height: rpx(108);
     background: white;
     display: flex;
     .item {

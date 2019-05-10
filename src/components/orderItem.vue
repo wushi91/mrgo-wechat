@@ -15,9 +15,24 @@
 
     <div class="good-wrapper">
 
-      <div class="pic-wrapper" v-for="(imgUrl,index) in imageList" :key="index" v-if="index<5">
-        <image class="pic" :src="imgUrl" ></image>
-      </div>
+      <template v-if="imageList&&imageList.length>0">
+        <div class="pic-wrapper" v-for="(imgUrl,index) in imageList" :key="index" v-if="index<5">
+
+          <template v-if="imgUrl">
+            <image class="pic" :src="imgUrl" ></image>
+          </template>
+          <template v-else>
+            <image class="default-pic" src="/static/images/icon-good-default.png"></image>
+          </template>
+
+        </div>
+      </template>
+      <template v-else>
+        <div class="pic-wrapper">
+          <image class="default-pic" src="/static/images/icon-good-default.png"></image>
+        </div>
+      </template>
+
     </div>
 
     <div class="line-1-px-ee"></div>
@@ -124,6 +139,9 @@
           @include WH(90, 90);
           /*background-color: #e6e6ea;*/
 
+        }
+        .default-pic{
+          @include WH(118, 118);
         }
       }
 
