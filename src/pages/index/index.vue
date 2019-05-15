@@ -16,18 +16,17 @@
       <mytabbar :tabIndex=tabIndex @chooseTab=chooseTab></mytabbar>
     </div>
 
-    <scancheck v-if="qrcodeUrl" :qrcodeUrl="qrcodeUrl"></scancheck>
-    <usercheck v-else></usercheck>
+    <!--<scancheck v-if="qrcodeUrl" :qrcodeUrl="qrcodeUrl"></scancheck>-->
+    <usercheck ref="usercheck" :qrcodeUrl="qrcodeUrl"></usercheck>
     <!--<testcheck></testcheck>-->
-    <orderstatuscheck :orderStatus='orderStatus' ref="orderstatuscheck" v-if="showPage"></orderstatuscheck>
+    <orderstatuscheck :orderStatus='orderStatus' ref="orderstatuscheck" ></orderstatuscheck>
 
   </div>
 </template>
 
 <script>
-  import mytabbar from '@/components/myTabBar'
+  import mytabbar from '@/templates/myTabBar'
   import usercheck from '@/components/userCheck'
-  import scancheck from '@/components/scanCheck'
   import testcheck from '@/components/testCheck'
   import orderstatuscheck from '@/components/orderStatusCheck'
   import innerpagehome from './innerPageHome'
@@ -44,7 +43,7 @@
       };
     },
     components: {
-      mytabbar,usercheck, scancheck,orderstatuscheck,innerpagehome, innerpagescan, innerpagemy,testcheck
+      mytabbar,usercheck,orderstatuscheck,innerpagehome, innerpagescan, innerpagemy,testcheck
     },
     computed: {
       token() {
@@ -62,38 +61,26 @@
     },
     onLoad(options) {
 
-//      wx.setEnableDebug({enableDebug:true})
-//      wx.chooseInvoiceTitle({})
-
       if (options && options.data && JSON.parse(options.data).qrcodeUrl) {
         this.qrcodeUrl = decodeURIComponent(JSON.parse(options.data).qrcodeUrl)
-//        this.tabIndex = 1
       }else if(options&&options.q){//微信扫一扫二维码参数是q
         this.qrcodeUrl = decodeURIComponent(options.q)
-//        this.tabIndex = 1
       }
 
     },
 
     onShow(){
-      this.showPage = true
-
       if(this.showTime===0){
         this.showTime ++
       }else{
-        console.log('更新会员信息')
 
-        this.wxRequest.get.call(this, this.wxUrl.checkLogin, {needToken: true}).then(res => { //更新会员信息
-          this.$store.dispatch('Member', {memberInfo: res.data.content.member})
-        })
+        this.$refs.usercheck.freshMemberInfo()//更新会员信息
+        this.$refs.orderstatuscheck.freshOrderData()//更新订单状态数量
       }
 
     },
-    onHide(){
-      this.showPage = false
-    },
-    mounted() {
 
+    mounted() {
     },
 
     methods: {

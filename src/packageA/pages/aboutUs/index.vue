@@ -3,7 +3,10 @@
 
     <image class="slogan-1" src="/static/images/login-slogan-1.png"></image>
     <text class="name">MR.GO智慧便利店</text>
-    <text class="version">体验版V0.0.3</text>
+    <text class="version">V1.0.0</text>
+    <!--体验版-->
+    <text class="address">公司名称：深圳智荟物联技术有限公司</text>
+    <text class="phone">加盟电话：0755-86525614</text>
 
     <button class='open-type-button share-buttton' open-type='share'>
       <div class="btn-share" open-type='share'>推荐给朋友</div>
@@ -16,16 +19,12 @@
 
 <script>
 
-  import mytabbar from '@/components/myTabBar'
 
   export default {
     config: {
       navigationBarTitleText: '关于我们'
     },
 
-    components: {
-      mytabbar
-    },
     onLoad(){
       wx.hideShareMenu()
     },
@@ -89,7 +88,7 @@
       @include FCS(#666666, 32, 40, 40);
       margin-top: rpx(36);
     }
-    .version {
+    .version,.address,.phone{
       margin-top: rpx(24);
       @include FCS(#999999, 26, 34, 34);
     }

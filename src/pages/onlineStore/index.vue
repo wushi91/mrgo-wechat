@@ -32,7 +32,7 @@
 
 <script>
 
-  import mytabbar from '@/components/myTabBar'
+  import mytabbar from '@/templates/myTabBar'
 
   export default {
     config: {

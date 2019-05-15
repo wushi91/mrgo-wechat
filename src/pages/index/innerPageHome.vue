@@ -80,7 +80,7 @@
 
     props: ['userInfo', 'memberInfo'],
 
-    created() {
+    onLoad() {
       this.initBanner()
     },
     methods: {
@@ -153,6 +153,12 @@
           @include WH(88, 88);
           border-radius: 50%;
         }
+      }
+
+      .avater {
+        background-color: #e6e6ea;
+        @include WH(88, 88);
+        border-radius: 50%;
       }
 
       .nickname {

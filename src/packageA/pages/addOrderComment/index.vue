@@ -17,7 +17,7 @@
 
 <script>
 
-  import starrate from '@/components/starRate'
+  import starrate from '@/templates/starRate'
 export default {
   config: {
     navigationBarTitleText: '评价'

@@ -6,6 +6,11 @@
 
 <script>
 
+  /*
+  * 会员二维码
+  * 生成规则：根据后台的字符动态生成，每50s刷新一次
+  * */
+
   import drawWeappQrcode from 'weapp-qrcode'
 
   export default {
@@ -29,6 +34,7 @@
       }
     },
     onLoad(options) {
+//      console.log('created - 会员码')
 //      this.drawQrcode(this.canvarsId, this.qrCodeContent, this.qrCodeConfig)
       this.qrCodeConfig = this.initQrCodeConfig(this.qrCodeWidthRPX, this.qrCodeHeightRPX, this.qrCodePaddingRPX)
       this.drawQrcodeInvalid(this.canvarsId, this.qrCodeConfig)
@@ -38,7 +44,7 @@
     watch: {
       qrCodeContent(newValue, oldValue) {
         if(newValue){//绘制新的二维码
-          console.log('绘制新的二维码')
+//          console.log('绘制新的二维码')
           this.drawQrcode(this.canvarsId, newValue, this.qrCodeConfig)
         }else if(oldValue){//如果旧的二维码是有效的，新的二维码是无效的，就绘制无效图层
           console.log('绘制无效图层')
@@ -70,7 +76,6 @@
       creatQrCodeTimer() {
         this.clearQrCodeTimer()
         this.qrCodeTimer = setTimeout(() => {
-//          this.qrCodeContent = ''
           this.getMemberLoginCode()
         }, this.qrCodeEffectTime)
       },

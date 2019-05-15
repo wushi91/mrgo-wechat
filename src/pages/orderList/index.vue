@@ -82,7 +82,7 @@
 <script>
 
 
-  import orderitem from '@/components/orderItem'
+  import orderitem from '@/templates/orderItem'
   import orderlistcheck from '@/components/orderListCheck'
 
   export default {

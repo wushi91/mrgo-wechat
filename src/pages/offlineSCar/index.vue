@@ -86,7 +86,7 @@
 
 <script>
 
-  import ordergooditem from '@/components/orderGoodItem'
+  import ordergooditem from '@/templates/orderGoodItem'
   import {goodQrcode} from '@/utils/scanQrcode'
 
 

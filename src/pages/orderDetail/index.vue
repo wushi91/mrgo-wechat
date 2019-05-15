@@ -72,7 +72,7 @@
   /**
    *  status 1：待付款 2：可使用 3：完成 4：退款 5已取消
    * */
-  import ordergooditem from '@/components/orderGoodItem'
+  import ordergooditem from '@/templates/orderGoodItem'
 
   export default {
     config: {

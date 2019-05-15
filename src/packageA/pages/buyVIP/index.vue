@@ -54,15 +54,15 @@
           <text class="t3"></text>
         </div>
 
-        <div class="item" :class="[memberType===1?'select':'']" @click="memberType=1">
-          <div class="member-type-check-wrapper">
-            <image
-              :src="memberType===1?'/static/images/member-type-check-on.png':'/static/images/member-type-check-off.png'"></image>
-          </div>
-          <text class="t1">90天</text>
-          <text class="t2">￥55.0</text>
-          <text class="t3">￥59.9</text>
-        </div>
+        <!--<div class="item" :class="[memberType===1?'select':'']" @click="memberType=1">-->
+          <!--<div class="member-type-check-wrapper">-->
+            <!--<image-->
+              <!--:src="memberType===1?'/static/images/member-type-check-on.png':'/static/images/member-type-check-off.png'"></image>-->
+          <!--</div>-->
+          <!--<text class="t1">90天</text>-->
+          <!--<text class="t2">￥55.0</text>-->
+          <!--<text class="t3">￥59.9</text>-->
+        <!--</div>-->
       </div>
 
       <div class="inner-wrapper" v-else>
@@ -76,25 +76,25 @@
           <text class="t3"></text>
         </div>
 
-        <div class="item" :class="[memberType===1?'select':'']" @click="memberType=1">
-          <div class="member-type-check-wrapper">
-            <image
-              :src="memberType===1?'/static/images/member-type-check-on.png':'/static/images/member-type-check-off.png'"></image>
-          </div>
-          <text class="t1">90天</text>
-          <text class="t2">￥55.0</text>
-          <text class="t3">￥59.9</text>
-        </div>
+        <!--<div class="item" :class="[memberType===1?'select':'']" @click="memberType=1">-->
+          <!--<div class="member-type-check-wrapper">-->
+            <!--<image-->
+              <!--:src="memberType===1?'/static/images/member-type-check-on.png':'/static/images/member-type-check-off.png'"></image>-->
+          <!--</div>-->
+          <!--<text class="t1">90天</text>-->
+          <!--<text class="t2">￥55.0</text>-->
+          <!--<text class="t3">￥59.9</text>-->
+        <!--</div>-->
 
-        <div class="item" :class="[memberType===2?'select':'']" @click="memberType=2">
-          <div class="member-type-check-wrapper">
-            <image
-              :src="memberType===2?'/static/images/member-type-check-on.png':'/static/images/member-type-check-off.png'"></image>
-          </div>
-          <text class="t1">360天</text>
-          <text class="t2">￥210.0</text>
-          <text class="t3">￥238.8</text>
-        </div>
+        <!--<div class="item" :class="[memberType===2?'select':'']" @click="memberType=2">-->
+          <!--<div class="member-type-check-wrapper">-->
+            <!--<image-->
+              <!--:src="memberType===2?'/static/images/member-type-check-on.png':'/static/images/member-type-check-off.png'"></image>-->
+          <!--</div>-->
+          <!--<text class="t1">360天</text>-->
+          <!--<text class="t2">￥210.0</text>-->
+          <!--<text class="t3">￥238.8</text>-->
+        <!--</div>-->
 
       </div>
       <div class="btn-buy-index" hover-class="btn-buy-index-hover" @click="buyMemberTryCatch">{{memberInfo.status===1?'续费会员':'成为会员'}}</div>
@@ -104,14 +104,14 @@
     <div class="info-wrapper">
       <div class="text-wrapper">
         <text class="title">尊享会员卡使用说明：</text>
-        <text class="tttt">1、会仅需：
+        <text class="tttt" v-if="false">1、会仅需：
           <text style="color:#FF766F">100 元 </text>
           即可成为尊享会员。
         </text>
-        <text class="tttt">2、年费缴费日至次年次日24:00（2019年1月1日缴费，到期日为2020年1月2日 24:00）</text>
-        <text class="tttt">3、年费续费日期前2个月，续费的年费，以续费时候的年费价格为准</text>
-        <text class="tttt">4、使用地区，仅限大陆地区</text>
-        <text class="tttt">5、次会员规则解释权，归本公司所有</text>
+        <text class="tttt" v-if="false">2、年费缴费日至次年次日24:00（2019年1月1日缴费，到期日为2020年1月2日 24:00）</text>
+        <text class="tttt" v-if="false">1、年费续费日期前2个月，续费的年费，以续费时候的年费价格为准</text>
+        <text class="tttt">1、使用地区，仅限大陆地区</text>
+        <text class="tttt">2、会员规则解释权，归本公司所有</text>
       </div>
 
 
@@ -431,11 +431,14 @@
     .info-wrapper {
       flex: 1;
       display: flex;
+      width: 100%;
+      box-sizing: border-box;
       flex-direction: column;
       background-color: white;
       align-items: center;
       padding: rpx(50) rpx(40) 0 rpx(40);
       .text-wrapper {
+        width: 100%;
         display: flex;
         flex-direction: column;
         flex: 1;

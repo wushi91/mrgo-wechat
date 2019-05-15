@@ -54,7 +54,7 @@
    * */
 
   import {goodQrcode, storeQrcode} from '@/utils/scanQrcode'
-  import membercard from '@/components/memberCard'
+  import membercard from '@/templates/memberCard'
   import membercodecheck from '@/components/memberCodeCheck'
 
   export default {

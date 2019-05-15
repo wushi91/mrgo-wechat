@@ -225,6 +225,12 @@
             flex-shrink: 0;
           }
         }
+        .avater {
+          @include WH(120, 120);
+          border-radius: 50%;
+          background-color: #e6e6ea;
+          flex-shrink: 0;
+        }
 
 
         .username-wrapper {

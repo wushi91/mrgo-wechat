@@ -1,32 +1,30 @@
 <template>
-    <div class="proto">
-    </div>
+  <div class="proto">
+  </div>
   <!--<image src="/static/images/offline-saoyisao.png"></image>-->
 </template>
 
 <script>
 
-  import mytabbar from '@/components/myTabBar'
-export default {
-  config: {
-    navigationBarTitleText: '原型页'
-  },
+  import mytabbar from '@/templates/myTabBar'
 
-  components: {
-    mytabbar
-  },
-  data() {
-    return {
-    };
-  },
-  mounted() {
+  export default {
+    config: {
+      navigationBarTitleText: '原型页'
+    },
 
-  },
+    components: {
+      mytabbar
+    },
+    data() {
+      return {};
+    },
+    mounted() {
 
-  methods: {
+    },
 
-  }
-};
+    methods: {}
+  };
 </script>
 
 <style>

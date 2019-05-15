@@ -63,16 +63,12 @@
 
 <script>
 
-  import mytabbar from '@/components/myTabBar'
 
   export default {
     config: {
       navigationBarTitleText: '我的信息'
     },
 
-    components: {
-      mytabbar
-    },
     data() {
       return {};
     },
