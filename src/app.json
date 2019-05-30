@@ -1,6 +1,7 @@
 {
   "pages": [
     "pages/index/index",
+    "pages/test/index",
     "pages/onlineStore/index",
     "pages/login/index",
     "pages/operateResult/index",
@@ -34,6 +35,10 @@
     "enablePullDownRefresh": false,
     "backgroundColor": "#F9FCFB"
   },
+
+  "navigateToMiniProgramAppIdList": [
+    "wxeb490c6f9b154ef9"
+  ],
   "usingComponents": {
     "i-swipeout": "static/iview/swipeout/index",
     "i-tabs": "static/iview/tabs/index",

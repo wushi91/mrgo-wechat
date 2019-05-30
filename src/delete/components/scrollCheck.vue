@@ -70,7 +70,7 @@
 
 <style lang="scss" scoped>
 
-  @import "../common/scss/base";
+  @import "../../common/scss/base";
 
 
 </style>

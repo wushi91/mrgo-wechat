@@ -7,6 +7,12 @@
     <button @click="openMember">打开会员码</button>
     <button @click="addMember">成为会员</button>
 
+    <navigator class="menu_list btn-opencard" target="miniProgram" app-id="wxeb490c6f9b154ef9" :extra-data="extra_data">
+      <div class="title">领取会员卡 <em class="xg-mp-font icon-jiantou"></em></div>
+    </navigator>
+
+
+
     <div class="input-comment-wrapper" :style="'bottom: '+inputBottom+'px;'">
       <div class="input-wrapper">
 
@@ -40,7 +46,10 @@
         inputBottom: 0,
         loginCode: '...',
         openid: '...',
-        session_key: '...'
+        session_key: '...',
+        appid:'wx0facf1f31a74c225',
+        appSecret:'6f3ad96341fcf7ffd8f583559ee682e4',
+        extra_data:{}
       };
     },
     computed: {},
@@ -48,18 +57,8 @@
 
     onLoad() {
 
-//      console.log(this.wxUtil.sha1('efefe'))
-//      console.log(this.wxUtil.getRawString({grant_type: 'authorization_code'}))
-//
-//      console.log(new Date().getTime())
-      this.wxPromise.login().then(res => {
-        console.log('res.code', res.code)
 
-        this.loginCode = res.code
-        this.initOpenId('wx2ca38014acceeebe', '0bc6e32646e9f77a4006ef45cc60e5a5', res.code)
-
-      }, res => null)
-
+      this.initAccessToken()
 
     },
 
@@ -70,8 +69,33 @@
 
     methods: {
 
+      initLoginCode(){
+        this.wxPromise.login().then(res => {
+          console.log('res.code', res.code)
 
+          this.loginCode = res.code
+          this.initOpenId(this.appid, this.appSecret, this.loginCode)
 
+        }, res => null)
+      },
+
+      initAccessToken(APP_ID,APP_SECRET){
+        //https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET
+
+        this.wxPromise.request({
+          url: 'https://api.weixin.qq.com/cgi-bin/token', data: {
+            appid: APP_ID,
+            secret: APP_SECRET,
+            grant_type: 'client_credential'
+          },
+          method: 'GET',
+        }).then(res => {
+          console.log('initAccessToken res', res)
+        }, res => {
+          console.log('initAccessToken err', res)
+        })
+
+      },
       initOpenId(APP_ID, APP_SECRET, LOGIN_CODE) {
         this.wxPromise.request({
           url: 'https://api.weixin.qq.com/sns/jscode2session', data: {
@@ -94,15 +118,11 @@
 
 
 
-
       openMember() {
         console.log('openMember')
         wx.openCard({
           cardList: [{
             cardId: 'pw_MH0ug2B7Y8uT-gdNkkuUHqCFs',
-            code: ''
-          }, {
-            cardId: '',
             code: ''
           }],
           success(res) {
@@ -111,23 +131,40 @@
       }
       ,
       addMember() {
-        let code = this.loginCode
-        let openid = this.openid
-        console.log('addMember')
-        let timestamp = new Date().getTime()
-        let rawString = this.wxUtil.getRawString({code,openid,timestamp})
-        let signature = this.wxUtil.sha1(rawString)
 
-        console.log(`{"code": "${code}", "openid": "${openid}", "timestamp": "${timestamp}", "signature":"${signature}"}`)
-        wx.addCard({
-          cardList: [
-            {
-              cardId: 'pw_MH0ug2B7Y8uT-gdNkkuUHqCFs',
-              cardExt: `{"code": "${code}", "openid": "${openid}", "timestamp": "${timestamp}", "signature":"${signature}"}`
-            }
-          ],
+        console.log('addMember')
+//        let timestamp = new Date().getTime()
+//        let rawString = this.wxUtil.getRawString({timestamp})
+//        let signature = this.wxUtil.sha1(rawString)
+//
+//        console.log(`{"timestamp":"${timestamp}","signature":"${signature}"}`)
+//        wx.addCard({
+//          cardList: [
+//            {
+//              cardId: 'pw_MH0ug2B7Y8uT-gdNkkuUHqCFs',
+//              cardExt: `{"timestamp":"${timestamp}","signature":"${signature}"}`
+//            }
+//          ],
+//          success(res) {
+//            console.log('addMember success',res.cardList) // 卡券添加结果
+//          },
+//          fail(res){
+//            console.log('addMember fail',res)
+//          }
+//        })
+
+        wx.navigateToMiniProgram({
+          appId: 'wxeb490c6f9b154ef9', // 固定为此 appid，不可改动
+          extraData: {encrypt_card_id:'', outer_str:"", biz:""}, // 包括 encrypt_card_id, outer_str, biz三个字段，须从 step3 中获得的链接中获取参数
+
           success(res) {
-            console.log(res.cardList) // 卡券添加结果
+
+            console.log('navigateToMiniProgram success res',res)
+          },
+          fail(res) {
+            console.log('navigateToMiniProgram fail res',res)
+          },
+          complete() {
           }
         })
       }

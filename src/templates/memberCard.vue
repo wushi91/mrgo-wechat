@@ -86,7 +86,7 @@
         flex-direction: column;
         padding: rpx(20) rpx(30) rpx(24) rpx(30);
         .member-card-title{
-          @include WH(214,28);
+          @include WH(241,28);
         }
         .center{
           flex:1;

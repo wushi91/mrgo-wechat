@@ -107,6 +107,7 @@
           break
       }
 
+      console.log(this.nickname)
 
     }
 

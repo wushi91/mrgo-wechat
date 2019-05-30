@@ -1,22 +1,4 @@
 
-// let  welcomeVoice = null
-// function creatWelcomeVoice(){
-//   welcomeVoice = wx.createInnerAudioContext()
-//   welcomeVoice.onPlay(() => {
-//     console.log('开始播放')
-//   })
-//
-//   welcomeVoice.onEnded(()=>{
-//     console.log('welcomeVoice onStop 结束')
-//     welcomeVoice.destroy()
-//   })
-//   welcomeVoice.onError((res) => {
-//     console.log(res.errMsg)
-//     console.log(res.errCode)
-//   })
-//   return welcomeVoice
-// }
-
 
 
 const windowWidth = wx.getSystemInfoSync().windowWidth

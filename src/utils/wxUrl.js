@@ -1,18 +1,11 @@
-// const host = 'http://192.168.8.7:5555'//测试服
-// const host = 'http://192.168.8.12:5555'//测试服192.168.8.12
-// const host = 'http://192.168.8.16:5555'//测试服192.168.8.12
-// const host = 'http://192.168.8.105:5555'//测试服
-// const host = 'http://47.107.185.37:5555'//正式服
-// const host = 'http://192.168.8.101:5555'//李伟服192.168.8.101:5555/swagger-ui.html#!/s-UsersController/equipmentLoginUsingGET
 
-const host = 'https://wechat.mrgo.club'//正式服
-// const host = 'https://testwechat.mrgo.club'//测试服
 
+import config from '@/config/index'
+const host = config.host
 
 const apiMobileVersion = '/mobile/v1'//api版本，移动端分类
 const apiConsoleVersion = '/console/v1'//api版本，后台端分类
 // const apiMallVersion = '/mall/v1'//api版本，后台端分类
-
 
 
 export default {
@@ -30,6 +23,10 @@ export default {
   getGenerateLoginCode: `${host + apiMobileVersion}/qrLogin/generateLoginCode`,
 
   getBannerAdv: `${host + apiMobileVersion}/adv/query`,//轮播图
+
+
+
+
 
 
   //post请求
@@ -51,5 +48,13 @@ export default {
 
   //上传
 
+
+
+
+  //审核相关接口
+  getReviewStatus: `${host + apiMobileVersion}/users/getReviewStatus`,//判断是否开启体验账号
+  getTestUser: `${host + apiMobileVersion}/users/getTestUser`,//获取体验账号的token
+  getMiniAppVersion: `${host + apiMobileVersion}/users/getMiniAppVersion`,//获取线上审核版本好
+  postMiniAppVersion: `${host + apiMobileVersion}/users/setMiniAppVersion`,//设置线上审核版本好
 
 }

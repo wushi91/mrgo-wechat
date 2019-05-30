@@ -14,7 +14,7 @@
       }
     },
     onLoad(options) {
-      this.checkUser()
+//      this.checkUser()
     },
     methods:{
       checkUser() {
@@ -49,6 +49,6 @@
 
 <style lang="scss" scoped>
 
-  @import "../common/scss/base";
+  @import "../../common/scss/base";
 
 </style>

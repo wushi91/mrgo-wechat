@@ -84,7 +84,7 @@
       </div>
     </div>
 
-    <div class="menu-wrapper" >
+    <div class="menu-wrapper" v-if="false">
       <div class="menu" @click="onWork">
         <image class="icon" src="/static/images/menu-wdpt.png"></image>
         <text>我的拼团</text>

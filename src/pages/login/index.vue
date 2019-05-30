@@ -12,8 +12,13 @@
         使用微信登录
       </button>
 
+      <div class="proto-wrapper" v-if="showTesterAccount" @click="testerAccountLogin">
 
-      <div class="proto-wrapper" >
+        <text class="t1 use-tester-account">使用体验账号登录</text>
+
+      </div>
+
+      <div class="proto-wrapper"  v-else>
         <div class="agree-wrapper">
           <image class="check" src="/static/images/read_done.png" v-if="agreeProto"
                  @click="agreeProto=!agreeProto"></image>
@@ -23,6 +28,10 @@
         <!--<text class="t2" @click="toUserProtocolPage">《MGRO用户协议》</text>-->
         <text class="t2">《MGRO用户协议》</text>
       </div>
+
+
+
+
 
       <div class="slogan-2-wrapper">
         <image class="slogan-2" src="/static/images/login-slogan-2.png"></image>
@@ -68,11 +77,15 @@
         qrcodeUrl: '',
         redirectPage: '',//已有流程无法区分，一开始进入登录页还是之后跳转的进入登录页
         showWechatUser: false,
-        loginCode :null
+        loginCode :null,
+        showTesterAccount:false,//是否显示审核状态入口
       };
     },
 
     onLoad(options) {
+
+      this.initTesterAccount()
+
       if (options && options.data) {
         let parseData = JSON.parse(options.data)
         if (parseData.qrcodeUrl) {
@@ -90,6 +103,7 @@
         return res.code
       }, res => null)
 
+
     },
 
     onUnload() {
@@ -106,6 +120,37 @@
       ttt(){
         this.showWechatUser = true
       },
+      initTesterAccount(){
+        this.wxRequest.get.call(this, this.wxUrl.getMiniAppVersion ).then(res => {
+//          console.log('getReviewStatus res success',res)
+//          console.log('getReviewStatus res success',res.data.content.reviewStatus)
+
+          res.data.content.version===this.wxConfig.reviewVersion?this.showTesterAccount = true:this.showTesterAccount = false
+
+//          this.showTesterAccount = res.data.content.reviewStatus
+        }, res => {
+        })
+      },
+
+      async testerAccountLogin(){
+        let {token, userInfo} = await this.wxRequest.get.call(this, this.wxUrl.getTestUser).then(res => {
+          console.log('测试账号登录成功',res.data.content)
+          this.$store.dispatch('Login', {token: res.data.content.token, userInfo: res.data.content.userInfo})//保存token，并同步到其他组件（store），提示登陆成功，返回原来的页面
+          return {token: res.data.content.token, userInfo: res.data.content.userInfo}
+        }, res => {
+          console.log('测试账号登录失败',res)
+          return {token: null, userInfo: null}
+        })
+
+        if (this.qrcodeUrl) {
+          this.wxNavigate.redirectToPage('index', {qrcodeUrl: this.qrcodeUrl})
+        } else if (this.redirectPage) {
+          this.wxNavigate.redirectToPage(this.redirectPage)
+        } else {
+          this.loginBack()
+        }
+      },
+
       clickLoginBtn() {
         if (this.agreeProto === false) {
           wx.showToast({
@@ -115,19 +160,6 @@
         }
       },
 
-//      async getuserinfo(e) {
-//        if (e.mp.detail.errMsg === 'getUserInfo:ok') {
-//          try {
-//            console.log(e.mp.detail)
-//            await this.userinfoLogin(e.mp.detail)
-//          } catch (err) {
-//            wx.showToast({
-//              title: err.message,
-//              icon: 'none'
-//            })
-//          }
-//        }
-//      },
 
       async getphonenumber(e) {
         if (e.mp.detail.errMsg === 'getPhoneNumber:ok') {
@@ -341,6 +373,10 @@
       }
       .t2 {
         @include FCS(#333333, 26, 34, 34);
+      }
+      .use-tester-account{
+        text-decoration:underline;
+        @include FCS(#37D0B3, 28, 38, 38);
       }
     }
 

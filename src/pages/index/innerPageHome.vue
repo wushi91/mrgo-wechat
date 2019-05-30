@@ -40,32 +40,47 @@
       <!--<div class="center">升级会员 <image class="member-arrow" src="/static/images/member-arrow.png"></image></div>-->
     </div>
 
-    <div class="w1" @click="onWork">
-      <div class="online-shop">
-        <image mode='aspectFill' src="/static/images/index-img01.png"></image>
-        <div class="title">在线购物</div>
+    <div class="w1" >
+      <div class="online-shop" @click="toBuyVIPPage">
+        <image mode='aspectFill' src="/static/images/index-img07.png"></image>
+        <!--<div class="title">在线购物</div>-->
+        <div class="title">领取7天尊享会员</div>
       </div>
-      <div class="today-discount">
-        <image mode='aspectFill' src="/static/images/index-img02.png"></image>
-        <div class="title">今日特惠</div>
+      <div class="today-discount" @click="toAboutUsPage">
+        <!--<image mode='aspectFill' src="/static/images/index-img02.png"></image>-->
+        <image mode='aspectFill' src="/static/images/index-img08.png"></image>
+        <!--<div class="title">今日特惠</div>-->
+        <div class="title">关于MR.GO</div>
       </div>
     </div>
 
-    <div class="w2" @click="onWork">
+    <!--<div style="width: 100rpx;height: 100rpx;background-color: honeydew" @click="onlinePay"></div>-->
+    <div class="w2" v-if="false">
       <div class="item">
         <image mode='aspectFill' src="/static/images/index-img03.png"></image>
-        <div class="title">拼团特卖</div>
+        <!--<div class="title">拼团特卖</div>-->
       </div>
       <div class="item">
         <image mode='aspectFill' src="/static/images/index-img04.png"></image>
-        <div class="title">领取优惠券</div>
+        <!--<div class="title">领取优惠券</div>-->
       </div>
       <div class="item">
         <image mode='aspectFill' src="/static/images/index-img05.png"></image>
-        <div class="title">分享礼包</div>
+        <!--<div class="title">分享礼包</div>-->
       </div>
 
     </div>
+
+    <div class="w3">
+      <div class="order" @click="toOrderListPage('tab-all')">
+        <!--<image mode='aspectFill' src="/static/images/index-img02.png"></image>-->
+        <image mode='aspectFill' src="/static/images/index-img09.png"></image>
+        <!--<div class="title">今日特惠</div>-->
+        <div class="title">我的订单</div>
+      </div>
+    </div>
+
+    <!--<button @click="onlinePay">付款码</button>-->
   </div>
 </template>
 
@@ -85,11 +100,26 @@
     },
     methods: {
 
+      onlinePay(){
+        console.log('onlinePay')
+        wx.openOfflinePayView({
+          success:(res)=>{
+            console.log('success',res)
+          },
+          fail:(res)=>{
+            console.log('fail',res)
+          }
+        })
+      },
       onWork() {
         wx.showToast({
           title: '该功能暂未开放',
           icon: 'none'
         })
+      },
+
+      toAboutUsPage(){
+        this.wxNavigate.navigateToPackageAPage('aboutUs')
       },
 
       initBanner() {
@@ -100,7 +130,13 @@
       },
       toOfflineStorePage() {
         this.wxNavigate.navigateToPage('offlineStore')
-      }
+      },
+      toBuyVIPPage(){
+        this.wxNavigate.navigateToPackageAPage('buyVIP')
+      },
+      toOrderListPage(tab) {
+        this.wxNavigate.navigateToPage('orderList',{tab})
+      },
     }
 
   };
@@ -214,7 +250,7 @@
         opacity: 0.8;
         border-radius: rpx(10);
         background-color: #29C3A6;
-        filter: grayscale(100%);
+        /*filter: grayscale(100%);*/
       }
       .online-shop {
         @include WH(470, 250);
@@ -228,6 +264,7 @@
           left: 0;
           right: 0;
           bottom: 0;
+          border-radius: rpx(10);
         }
 
       }
@@ -243,11 +280,44 @@
           left: 0;
           right: 0;
           bottom: 0;
+          border-radius: rpx(10);
         }
       }
 
     }
 
+    .w3{
+      display: flex;
+      margin: rpx(20);
+      justify-content: space-between;
+      .title {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        text-align: center;
+        @include FCS(#FFFEFE, 24, 40, 40);
+        opacity: 0.8;
+        border-radius: rpx(10);
+        background-color: #29C3A6;
+        /*filter: grayscale(100%);*/
+      }
+      .order{
+        @include WH(710, 250);
+        background-color: white;
+        border-radius: rpx(10);
+        position: relative;
+        image {
+          @include WH(710, 250);
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          border-radius: rpx(10);
+        }
+      }
+    }
     .w2 {
       display: flex;
       margin: rpx(20);

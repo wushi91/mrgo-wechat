@@ -122,7 +122,7 @@
               title: '抱歉',
               content: res.data.content.expectedRecoveryTime?`${res.data.content.statusMessage} 预计恢复时间：${res.data.content.expectedRecoveryTime}`:res.data.content.statusMessage,
               showCancel:false,
-              confirmText:'离开门店',
+              confirmText:'关闭',
               confirmColor:'#37D0B3',
               success:res=>{
                 this.wxNavigate.goBack()

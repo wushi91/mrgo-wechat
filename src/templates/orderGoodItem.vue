@@ -49,13 +49,13 @@
     .pic-wrapper{
       flex-shrink: 0;
       @include WH(136,136);
-      border:rpx(2) solid rgba(238, 238, 238, 1);
+      /*border:rpx(2) solid rgba(238, 238, 238, 1);*/
       display: flex;
       justify-content: center;
       align-items: center;
       margin-right: rpx(25);
       image{
-        @include WH(90,90);
+        @include WH(136,136);
         /*background-color: #e6e6ea;*/
 
       }

@@ -3,7 +3,7 @@
 
     <image class="slogan-1" src="/static/images/login-slogan-1.png"></image>
     <text class="name">MR.GO智慧便利店</text>
-    <text class="version">V1.0.0</text>
+    <text class="version">{{version}}</text>
     <!--体验版-->
     <text class="address">公司名称：深圳智荟物联技术有限公司</text>
     <text class="phone">加盟电话：0755-86525614</text>
@@ -29,7 +29,9 @@
       wx.hideShareMenu()
     },
     data() {
-      return {};
+      return {
+        version:this.wxConfig.version
+      };
     },
     mounted() {
 
@@ -54,12 +56,6 @@
     onShareAppMessage: function (options) {
 
       console.log('options',options)
-//      let data = JSON.stringify({id: this.id})
-//      return {
-//        title: this.coachInfo.nickName,
-//        desc: '教练之家',
-//        path: `/pages/coach/main?data=${data}`
-//      }
     },
   };
 </script>

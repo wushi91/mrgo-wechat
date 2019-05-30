@@ -69,8 +69,10 @@
           title: '',
           content: '领取7天会员体验套餐',
           confirmText:'去领取',
-          showCancel:false,
+          cancelText:'暂不领取',
+          showCancel:true,
           confirmColor:'#37D0B3',
+          cancelColor:'#777777',
           success:res=>{
             if (res.confirm) {
               this.wxNavigate.navigateToPackageAPage('buyVIP',{freeMember:true})

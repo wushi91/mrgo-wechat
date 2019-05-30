@@ -1,0 +1,371 @@
+{
+  "status": 200,
+  "message": "服务器成功返回用户请求的数据.",
+  "content": [
+    {
+      "id": "249291573484072960",
+      "parentId": "0",
+      "label": "系统授权",
+      "sort": 1,
+      "checked": null,
+      "url": "/system",
+      "iconClass": "fa fa-cog",
+      "children": [
+        {
+          "id": "267700328609361920",
+          "parentId": "249291573484072960",
+          "label": "用户信息管理",
+          "sort": 1,
+          "checked": 0,
+          "url": "/system/user",
+          "iconClass": "fa fa-user-circle",
+          "children": [
+            {
+              "id": "322796197503053824",
+              "parentId": "267700328609361920",
+              "label": "用户管理",
+              "sort": 1,
+              "checked": 0,
+              "url": "/system/user/userInfo",
+              "iconClass": "1",
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "270194047002619904",
+          "parentId": "249291573484072960",
+          "label": "权限管理",
+          "sort": 2,
+          "checked": 0,
+          "url": "/system/permission",
+          "iconClass": "fa fa-star-half-o",
+          "children": [
+            {
+              "id": "270194513400836096",
+              "parentId": "270194047002619904",
+              "label": "菜单管理",
+              "sort": 1,
+              "checked": 0,
+              "url": "/system/permission/menu",
+              "iconClass": "el-icon-menu",
+              "children": []
+            },
+            {
+              "id": "270254177035497472",
+              "parentId": "270194047002619904",
+              "label": "角色管理",
+              "sort": 2,
+              "checked": 0,
+              "url": "/system/permission/role",
+              "iconClass": null,
+              "children": []
+            },
+            {
+              "id": "270528104789979136",
+              "parentId": "270194047002619904",
+              "label": "菜单角色配置",
+              "sort": 3,
+              "checked": 0,
+              "url": "/system/permission/menuRole",
+              "iconClass": null,
+              "children": []
+            },
+            {
+              "id": "270528265830281216",
+              "parentId": "270194047002619904",
+              "label": "页面权限配置",
+              "sort": 4,
+              "checked": 0,
+              "url": "/system/permission/page",
+              "iconClass": null,
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "270525902851682304",
+          "parentId": "249291573484072960",
+          "label": "字典管理",
+          "sort": 3,
+          "checked": 0,
+          "url": "/system/dictionaryManage",
+          "iconClass": "fa fa-book",
+          "children": [
+            {
+              "id": "270526076449730560",
+              "parentId": "270525902851682304",
+              "label": "系统字典管理",
+              "sort": 1,
+              "checked": 0,
+              "url": "/system/dictionaryManage/dictionary",
+              "iconClass": "",
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "270528501646635008",
+          "parentId": "249291573484072960",
+          "label": "系统日志管理",
+          "sort": 4,
+          "checked": 0,
+          "url": "/system/",
+          "iconClass": "fa fa-file-text-o",
+          "children": [
+            {
+              "id": "270528770157588480",
+              "parentId": "270528501646635008",
+              "label": "用户登录日志",
+              "sort": 1,
+              "checked": 0,
+              "url": "/system/log/userLogin",
+              "iconClass": "el-icon-setting",
+              "children": []
+            },
+            {
+              "id": "270529067214974976",
+              "parentId": "270528501646635008",
+              "label": "短信验证码日志",
+              "sort": 3,
+              "checked": 0,
+              "url": "/system/log/message",
+              "iconClass": "el-icon-setting",
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "274976147044052992",
+      "parentId": "0",
+      "label": "供应链子系统",
+      "sort": 2,
+      "checked": null,
+      "url": "/guardianship",
+      "iconClass": "fa fa-hospital-o",
+      "children": [
+        {
+          "id": "276038239104806912",
+          "parentId": "274976147044052992",
+          "label": "供应链",
+          "sort": 1,
+          "checked": 0,
+          "url": "/Institutional",
+          "iconClass": "fa fa-cog",
+          "children": [
+            {
+              "id": "276038382327705600",
+              "parentId": "276038239104806912",
+              "label": "区域管理",
+              "sort": 1,
+              "checked": 0,
+              "url": "/guardianship/Institutional/region",
+              "iconClass": "fa fa-cog",
+              "children": []
+            },
+            {
+              "id": "276038418339999744",
+              "parentId": "276038239104806912",
+              "label": "仓库门店管理",
+              "sort": 2,
+              "checked": 0,
+              "url": "/guardianship/Institutional/hospital",
+              "iconClass": "fa fa-cog",
+              "children": []
+            },
+            {
+              "id": "309669163864174592",
+              "parentId": "276038239104806912",
+              "label": "RFID打印申请",
+              "sort": 3,
+              "checked": 0,
+              "url": "/guardianship/Institutional/rfid",
+              "iconClass": "fa fa-cog",
+              "children": []
+            },
+            {
+              "id": "314866716159258624",
+              "parentId": "276038239104806912",
+              "label": "供应商管理",
+              "sort": 4,
+              "checked": 0,
+              "url": "/guardianship/Institutional/supplier",
+              "iconClass": "fa fa-cog",
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "269886592611790848",
+      "parentId": "0",
+      "label": "商城及财务服务",
+      "sort": 3,
+      "checked": null,
+      "url": "/mall",
+      "iconClass": "fa fa-shopping-cart",
+      "children": [
+        {
+          "id": "269906945253847040",
+          "parentId": "269886592611790848",
+          "label": "商品分类管理",
+          "sort": 0,
+          "checked": 0,
+          "url": "/mall/productType",
+          "iconClass": "fa fa-user-circle",
+          "children": [
+            {
+              "id": "272097806624501760",
+              "parentId": "269906945253847040",
+              "label": "商品分类管理",
+              "sort": 0,
+              "checked": 0,
+              "url": "/mall/productType/producttype",
+              "iconClass": "",
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "272464653341437952",
+          "parentId": "269886592611790848",
+          "label": "产品服务管理",
+          "sort": 1,
+          "checked": 0,
+          "url": "/mall/productService",
+          "iconClass": "fa fa-user-circle",
+          "children": [
+            {
+              "id": "272464904508944384",
+              "parentId": "272464653341437952",
+              "label": "商品信息管理",
+              "sort": 0,
+              "checked": 0,
+              "url": "/mall/productService/productInf",
+              "iconClass": "",
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "272464499733442560",
+          "parentId": "269886592611790848",
+          "label": "设备库存管理",
+          "sort": 2,
+          "checked": 0,
+          "url": "/mall/equipment",
+          "iconClass": "fa fa-user-circle",
+          "children": [
+            {
+              "id": "309324648666116096",
+              "parentId": "272464499733442560",
+              "label": "商品库存管理",
+              "sort": 0,
+              "checked": 0,
+              "url": "/mall/equipment/stock",
+              "iconClass": "",
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "269907468090617856",
+          "parentId": "269886592611790848",
+          "label": "商品订单管理",
+          "sort": 3,
+          "checked": 0,
+          "url": "/mall/productOrder",
+          "iconClass": "fa fa-user-circle",
+          "children": [
+            {
+              "id": "272465836609122304",
+              "parentId": "269907468090617856",
+              "label": "订单管理",
+              "sort": 1,
+              "checked": 0,
+              "url": "/mall/productOrder/order",
+              "iconClass": "",
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "317797582787325952",
+      "parentId": "0",
+      "label": "会员及运营子系统",
+      "sort": 4,
+      "checked": null,
+      "url": "/member",
+      "iconClass": "fa fa-address-card-o",
+      "children": [
+        {
+          "id": "317797743181705216",
+          "parentId": "317797582787325952",
+          "label": "会员管理",
+          "sort": 1,
+          "checked": 0,
+          "url": "/member/management",
+          "iconClass": "fa fa-shopping-cart",
+          "children": [
+            {
+              "id": "317797907350958080",
+              "parentId": "317797743181705216",
+              "label": "会员等级设置",
+              "sort": 1,
+              "checked": 0,
+              "url": "/member/management/rank",
+              "iconClass": "fa fa-shopping-cart",
+              "children": []
+            },
+            {
+              "id": "317827557808680960",
+              "parentId": "317797743181705216",
+              "label": "会员积分明细",
+              "sort": 1,
+              "checked": 0,
+              "url": "/member/management/points",
+              "iconClass": "fa fa-shopping-cart",
+              "children": []
+            },
+            {
+              "id": "318165678500884480",
+              "parentId": "317797743181705216",
+              "label": "积分规则配置",
+              "sort": 1,
+              "checked": 0,
+              "url": "/member/management/config",
+              "iconClass": "fa fa-shopping-cart",
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "325466074198061056",
+          "parentId": "317797582787325952",
+          "label": "平台广告栏管理",
+          "sort": 2,
+          "checked": 0,
+          "url": "/member/management",
+          "iconClass": "fa fa-shopping-cart",
+          "children": [
+            {
+              "id": "325466533696647168",
+              "parentId": "325466074198061056",
+              "label": "广告管理",
+              "sort": 1,
+              "checked": 0,
+              "url": "/member/management/adv",
+              "iconClass": "fa fa-shopping-cart",
+              "children": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -368,7 +368,7 @@
       .inner-wrapper {
         margin-top: rpx(32);
         display: flex;
-        justify-content: space-between;
+        /*justify-content: space-between;*/
 
         .item {
           @include WH(200, 180);
@@ -377,6 +377,7 @@
           flex-direction: column;
           border-radius: rpx(10);
           align-items: center;
+          margin-right: rpx(20);
           .member-type-check-wrapper {
             display: flex;
             justify-content: flex-end;

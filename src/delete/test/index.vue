@@ -17,9 +17,9 @@
     </scroll-view>
 
     <div class="tere">
-      <scrollcheck ref="scrollcheck1" viewId="scroll-id-1"></scrollcheck>
-      <scrollcheck ref="scrollcheck2" viewId="scroll-id-2"></scrollcheck>
-      <scrollcheck ref="scrollcheck3" viewId="scroll-id-3" ></scrollcheck>
+      <!--<scrollcheck ref="scrollcheck1" viewId="scroll-id-1"></scrollcheck>-->
+      <!--<scrollcheck ref="scrollcheck2" viewId="scroll-id-2"></scrollcheck>-->
+      <!--<scrollcheck ref="scrollcheck3" viewId="scroll-id-3" ></scrollcheck>-->
 
     </div>
 
@@ -32,16 +32,17 @@
 
 
 <script>
-
-  import mytabbar from '@/components/myTabBar'
   import membercard from '@/components/memberCard'
   import membercodecheck from '@/components/memberCodeCheck'
-  import scrollcheck from '@/components/scrollCheck'
+//  import scrollcheck from '@/components/scrollCheck'
 
   export default {
     config: {
       navigationBarTitleText: '测试',
       enablePullDownRefresh: false,
+    },
+    components: {
+       membercard, membercodecheck
     },
     data() {
       return {
@@ -84,9 +85,7 @@
 
 
     },
-    components: {
-      mytabbar, membercard, membercodecheck,scrollcheck
-    },
+
     mounted() {
       console.log(this.$refs.scrollcheck)
 //      this.$refs.scrollcheck1.checkUser()
