@@ -67,6 +67,7 @@
         this.qrcodeUrl = decodeURIComponent(options.q)
       }
 
+
     },
 
     onShow(){
@@ -91,7 +92,9 @@
         }
 
         if(this.tabIndex===0&&v.tabIndex===0){//
-
+          if(this.wxConfig.isDeveloper(this.userInfo.mobile)){
+            this.wxNavigate.navigateToPackageAPage('developer')
+          }
         }
         this.tabIndex = v.tabIndex
       },

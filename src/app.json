@@ -1,6 +1,7 @@
 {
   "pages": [
     "pages/index/index",
+
     "pages/test/index",
     "pages/onlineStore/index",
     "pages/login/index",
@@ -15,6 +16,7 @@
     {
       "root": "packageA",
       "pages": [
+        "pages/developer/index",
         "pages/addOrderComment/index",
         "pages/buyVIP/index",
         "pages/aboutUs/index",

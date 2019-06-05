@@ -33,6 +33,8 @@
 
   //  import scrollcheck from '@/components/scrollCheck'
 
+  import wxNavigateTest from '@/utils/wxNavigateTest'
+  import wxToast from '@/utils/wxToast'
   export default {
     config: {
       navigationBarTitleText: '测试',
@@ -55,11 +57,34 @@
     computed: {},
 
 
-    onLoad() {
+    onLoad(options) {
 
+      console.log(options)
+      console.log('怎么啦',JSON.stringify(options))
+      if(JSON.stringify(options) === "{}"){
+        console.log('空')
+      }else{
+        console.log('不为空')
+      }
+
+      console.log(this.$router)
+      console.log(this.$route)
 
       this.initAccessToken()
+      wxNavigateTest.navigateToPage('addOrderComment',{a:2,b:34,c:234})
 
+//      wx.showToast({title:'hahah',duration:3000,success:()=>{
+//        console.log('傻逼')
+//      }})
+      wxToast.toastText('hello world')
+      wxToast.toastToDo({title:'支付成功',duration:3000}).then(res=>{
+        console.log('我是一只大厦宝宝')
+      })
+
+//      wxToast.textmm('22',232)
+
+
+//      console.log()
     },
 
     mounted() {
