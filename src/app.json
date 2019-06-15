@@ -1,8 +1,6 @@
 {
   "pages": [
     "pages/index/index",
-
-    "pages/test/index",
     "pages/onlineStore/index",
     "pages/login/index",
     "pages/operateResult/index",
@@ -10,17 +8,16 @@
     "pages/offlineSCar/index",
     "pages/orderList/index",
     "pages/offlineStore/index",
-    "pages/userProtocol/index"
+    "pages/developer/index",
+    "pages/buyVIP/index",
+    "pages/aboutUs/index",
+    "pages/personInfo/index"
   ],
   "subPackages": [
     {
       "root": "packageA",
       "pages": [
-        "pages/developer/index",
-        "pages/addOrderComment/index",
-        "pages/buyVIP/index",
-        "pages/aboutUs/index",
-        "pages/personInfo/index"
+
       ]
     }
   ],

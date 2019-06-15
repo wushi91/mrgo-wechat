@@ -1,6 +1,6 @@
 
 const page = pageUrl =>`/pages/${pageUrl}/index`
-const packageAPage = pageUrl =>`/packageA/pages/${pageUrl}/index`
+const packageAPage = pageUrl =>`/pages/${pageUrl}/index`
 
 const navigateToPage = (pageUrl,data)=>{
   if (data) {

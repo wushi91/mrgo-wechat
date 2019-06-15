@@ -17,7 +17,8 @@
     </div>
 
     <!--<scancheck v-if="qrcodeUrl" :qrcodeUrl="qrcodeUrl"></scancheck>-->
-    <usercheck ref="usercheck" :qrcodeUrl="qrcodeUrl"></usercheck>
+    <!--<usercheck ref="usercheck" :qrcodeUrl="qrcodeUrl"></usercheck>-->
+    <usercheck ref="usercheck"></usercheck>
     <!--<testcheck></testcheck>-->
     <orderstatuscheck :orderStatus='orderStatus' ref="orderstatuscheck" ></orderstatuscheck>
 
@@ -37,7 +38,7 @@
     data() {
       return {
         tabIndex: 0,
-        qrcodeUrl:'',
+//        qrcodeUrl:'',
         showPage:true,
         showTime:0
       };
@@ -61,11 +62,11 @@
     },
     onLoad(options) {
 
-      if (options && options.data && JSON.parse(options.data).qrcodeUrl) {
-        this.qrcodeUrl = decodeURIComponent(JSON.parse(options.data).qrcodeUrl)
-      }else if(options&&options.q){//微信扫一扫二维码参数是q
-        this.qrcodeUrl = decodeURIComponent(options.q)
-      }
+//      if (options && options.data && JSON.parse(options.data).qrcodeUrl) {
+//        this.qrcodeUrl = decodeURIComponent(JSON.parse(options.data).qrcodeUrl)
+//      }else if(options&&options.q){//微信扫一扫二维码参数是q
+//        this.qrcodeUrl = decodeURIComponent(options.q)
+//      }
 
 
     },

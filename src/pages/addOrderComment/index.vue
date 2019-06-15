@@ -34,6 +34,16 @@ export default {
 
   },
 
+  onLoad(options) {
+    console.log(options)
+    console.log('怎么啦',JSON.stringify(options))
+    if(JSON.stringify(options) === "{}"){
+      console.log('空')
+    }else{
+      console.log('不为空')
+    }
+    console.log(this.$route)
+  },
   methods: {
 
   }
@@ -42,13 +52,15 @@ export default {
 
 
 <style lang="scss" scoped>
-  @import "../../../common/scss/base";
+  @import "../../common/scss/base";
 
   .add-order-comment{
     padding: rpx(60) rpx(30) rpx(30) rpx(30);
     .comment-score-wrapper{
       display: flex;
       padding-bottom: rpx(30);
+      align-items: center;
+      align-content: center;
       text{
         @include FCS(#333333,32,40,40);
         margin-right: rpx(16);

@@ -40,6 +40,15 @@ export const goodQrcode = {
   }
 }
 
+export const buyVIPQrcode = {
+  path: 'http://wechat.mrgo.club/buyVIP',
+  goalPage: 'buyVIP',
+  goalfullPage: 'pages/buyVIP/index',
+  scanAction: function () {//请求商品信息
+    return ''
+  }
+}
+
 export function scanToPage(isLogin, qrcodeUrl, duration) {
 
   //如果路径是空的，登录后跳转到首页

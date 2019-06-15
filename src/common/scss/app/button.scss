@@ -5,9 +5,9 @@ button{
     display: flex;
     align-items: center;
     justify-content: center;
-    &:active{
-      background-color: $main-orange;
-    }
+    //&:active{
+    //  background-color: $main-orange;
+    //}
 
     &[disabled='']{
       background-color: rgba(239,74,34,0.5);

@@ -6,8 +6,8 @@
 
 
 //线上
-// const host = 'https://wechat.mrgo.club'//正式服
-const host = 'https://testwechat.mrgo.club'//测试服
+const host = 'https://wechat.mrgo.club'//正式服
+// const host = 'https://testwechat.mrgo.club'//测试服
 
 const version = '1.0.2'//项目版本号
 const reviewV = 'b'//审核版本号，测试版本没有审核版本号

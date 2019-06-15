@@ -100,7 +100,6 @@
       <div class="btn-buy-index" hover-class="btn-buy-index-hover" @click="buyMemberTryCatch">{{memberInfo.status===1?'续费会员':'成为会员'}}</div>
     </div>
 
-
     <div class="info-wrapper">
       <div class="text-wrapper">
         <text class="title">尊享会员卡使用说明：</text>
@@ -157,6 +156,11 @@
         console.log(this.memberInfo)
         this.freeMember = true
         this.memberType = 3
+      }else if(options && options.data){
+        wx.showToast({
+          title: '您已经领取过7天免费会员',
+          icon: 'none'
+        })
       }
 
       this.initPage()
@@ -307,7 +311,7 @@
 </style>
 
 <style lang="scss" scoped>
-  @import "../../../common/scss/base";
+  @import "../../common/scss/base";
 
   .buy-vip {
     display: flex;

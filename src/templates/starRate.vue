@@ -36,7 +36,7 @@
   .wrapper-star-rate{
     .icon-star{
       @include WH(32,32);
-      padding:rpx(4);
+      padding:rpx(10);
     }
   }
 </style>

@@ -18,7 +18,7 @@
   * 点击开门进行扫码，判断扫描的二维码是店面二维码或者商品二维码，则将该路径传到下个页面，由下个页面做业务处理？当前页面做业务处理优化体验，成功后将数据带入下个页面？
   * */
 
-  import {goodQrcode, storeQrcode} from '@/utils/scanQrcode'
+  import {goodQrcode, storeQrcode,buyVIPQrcode} from '@/utils/scanQrcode'
 
   export default {
 
@@ -40,7 +40,9 @@
           this.wxNavigate.navigateToPage('offlineStore', {qrcodeUrl: encodeURIComponent(qrcodeUrl)})
         } else if (qrcodeUrl.startsWith(goodQrcode.path)) {
           this.wxNavigate.navigateToPage('offlineSCar', {qrcodeUrl: encodeURIComponent(qrcodeUrl)})
-        } else {
+        } else if (qrcodeUrl.startsWith(buyVIPQrcode.path)){
+          this.wxNavigate.navigateToPage('buyVIP',{info:'我很傻'})
+        }else {
           wx.showToast({
             title: '没有找到对应的门店或商品',
             icon: 'none'

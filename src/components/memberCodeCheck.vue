@@ -107,10 +107,12 @@
 
       drawQrcodeInvalid(canvasId, qrCodeConfig) {//一定时间后，二维码会失效，绘制图层，提示用户点击手动刷新
         let ctx = wx.createCanvasContext(canvasId)
-        ctx.setFillStyle('rgba(255, 255, 255, 0.9)')
+        ctx.font = '16px sans-serif'
+        ctx.fillStyle='rgba(255, 255, 255, 0.9)'
         ctx.fillRect(0, 0, qrCodeConfig.width, qrCodeConfig.height)
-        ctx.setFillStyle('#333333')
-        ctx.setFontSize(16)
+//        ctx.fillStyle('#003333')
+        ctx.fillStyle='#333333'
+//        ctx.setFontSize(16)
         ctx.setTextAlign('center')
         ctx.fillText('点击刷新二维码', qrCodeConfig.width / 2, qrCodeConfig.height / 2)
         ctx.draw(true)

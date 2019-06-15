@@ -68,7 +68,7 @@
   }
 </style>
 <style lang="scss" scoped>
-  @import "../../../common/scss/base";
+  @import "../../common/scss/base";
 
   .about-us {
     display: flex;

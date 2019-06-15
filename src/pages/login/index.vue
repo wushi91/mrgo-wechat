@@ -18,13 +18,12 @@
 
       </div>
 
-      <div class="proto-wrapper"  v-else>
+      <div class="proto-wrapper" @click="agreeProto=!agreeProto" v-else>
         <div class="agree-wrapper">
-          <image class="check" src="/static/images/read_done.png" v-if="agreeProto"
-                 @click="agreeProto=!agreeProto"></image>
-          <image class="check" src="/static/images/read_un.png" v-else @click="agreeProto=!agreeProto"></image>
+          <image class="check" src="/static/images/read_done.png" v-if="agreeProto"></image>
+          <image class="check" src="/static/images/read_un.png" v-else ></image>
         </div>
-        <text class="t1" @click="agreeProto=!agreeProto">已阅读并同意</text>
+        <text class="t1">已阅读并同意</text>
         <!--<text class="t2" @click="toUserProtocolPage">《MGRO用户协议》</text>-->
         <text class="t2">《MGRO用户协议》</text>
       </div>
@@ -353,19 +352,20 @@
       }
     }
     .proto-wrapper {
-      margin-top: rpx(70);
+      margin-top: rpx(60);
       display: flex;
       align-items: center;
+      height: rpx(50);
       .agree-wrapper {
         display: flex;
         position: relative;
-        @include WH(27, 27);
+        @include WH(28, 28);
         margin-right: rpx(15);
         .check {
           position: absolute;
           top: 0;
           left: 0;
-          @include WH(27, 27);
+          @include WH(28, 28);
         }
       }
       .t1 {
