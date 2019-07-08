@@ -55,6 +55,7 @@
 
 
       qrcodeUrlAction(qrcodeUrl) {
+        qrcodeUrl = qrcodeUrl.trim()//
         if (qrcodeUrl.startsWith(storeQrcode.path)) {
           this.wxNavigate.navigateToPage('offlineStore', {qrcodeUrl: encodeURIComponent(qrcodeUrl)})
         } else if (qrcodeUrl.startsWith(goodQrcode.path)) {

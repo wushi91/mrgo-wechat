@@ -29,13 +29,17 @@
 
     methods: {
       scanMRGOCode() {
+
+//        console.log('------------------','scanMRGOCode')
         this.wxPromise.scanCode({onlyFromCamera: true}).then(res => {
           let qrcodeUrl = res.result
+
           this.qrcodeUrlAction(qrcodeUrl)
         })
       },
 
       qrcodeUrlAction(qrcodeUrl) {
+        qrcodeUrl = qrcodeUrl.trim()//
         if (qrcodeUrl.startsWith(storeQrcode.path)) {
           this.wxNavigate.navigateToPage('offlineStore', {qrcodeUrl: encodeURIComponent(qrcodeUrl)})
         } else if (qrcodeUrl.startsWith(goodQrcode.path)) {

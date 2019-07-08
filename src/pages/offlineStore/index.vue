@@ -30,19 +30,19 @@
     </div>
 
 
-    <div class="buy-entry">
-      <div class="shopcar-wrapper" @click="toOrderListPage('tab-can')">
-        <image src="/static/images/offline-order.png"></image>
-        <text class="tip">可使用订单</text>
-      </div>
-      <!--@click="scanMRGOCode"-->
+    <!--<div class="buy-entry">-->
+      <!--<div class="shopcar-wrapper" @click="toOrderListPage('tab-can')">-->
+        <!--<image src="/static/images/offline-order.png"></image>-->
+        <!--<text class="tip">可使用订单</text>-->
+      <!--</div>-->
+      <!--&lt;!&ndash;@click="scanMRGOCode"&ndash;&gt;-->
 
-      <div class="saoyisao-wrapper" @click="scanMRGOCode">
-        <image src="/static/images/offline-saoyisao.png"></image>
-        <text class="tip">扫码购</text>
-      </div>
+      <!--<div class="saoyisao-wrapper" @click="scanMRGOCode">-->
+        <!--<image src="/static/images/offline-saoyisao.png"></image>-->
+        <!--<text class="tip">扫码购</text>-->
+      <!--</div>-->
 
-    </div>
+    <!--</div>-->
 
   </div>
 </template>
@@ -184,11 +184,9 @@
     .canvas-wrapper {
       margin-top: rpx(48);
       margin-bottom: rpx(32);
-      background-color: white;
+      /*background-color: white;*/
       /*padding: rpx(20);*/
-      .qr-code {
-        @include WH(356, 356);
-      }
+
     }
 
     .buy-entry {

@@ -1,6 +1,8 @@
 <template>
-  <div class="member-code-check">
-    <canvas class="qr-code" canvas-id="myQrcode" @click="getMemberLoginCode()"></canvas>
+  <div class="member-code-check" @click="getMemberLoginCode()">
+    <text class="update-tip-1">会员识别码用于登陆结算台</text>
+    <canvas class="qr-code" canvas-id="myQrcode" ></canvas>
+    <text class="update-tip-2">每30秒自动更新</text>
   </div>
 </template>
 
@@ -22,7 +24,7 @@
         qrCodePaddingRPX: 20,
         qrCodeContent: '',
         qrCodeTimer: null,
-        qrCodeEffectTime: 50 * 1000,
+        qrCodeEffectTime: 40 * 1000,
 //        qrCodeEffectTime: 60*1000,
         qrCodeConfig: {
           width: 0,
@@ -131,9 +133,21 @@
 
   .member-code-check {
     background-color: white;
-    @include WH(356, 356);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: rpx(20);
+    padding:rpx(40) rpx(60);
     .qr-code {
       @include WH(356, 356);
+    }
+    .update-tip-1{
+      @include FCS(#646464, 28, 40, 40);
+      margin-bottom: rpx(10);
+    }
+    .update-tip-2{
+      @include FCS(#989898, 24, 40, 40);
+      margin: rpx(10) 0 rpx(10) 0;
     }
   }
 

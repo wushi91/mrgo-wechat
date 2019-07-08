@@ -69,6 +69,8 @@
 //      }
 
 
+//      console.log('genHost',this.wxConfig.genHost())
+//      console.log(this.wxConfig.host)
     },
 
     onShow(){

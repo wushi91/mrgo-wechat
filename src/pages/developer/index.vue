@@ -34,10 +34,13 @@
 
     <div class="mp-config">
       <text class="title n-gray">5.操作：</text>
+      <div class="operate d-orange suojin" hover-class="operate-hover" @click="changeServer">切换服务器</div>
       <div class="operate d-orange suojin" hover-class="operate-hover" @click="setMiniAppVersionActionCofirm(reviewVersion===onlineReviewVersion?'关闭体验账号':'开启体验账号',reviewVersion)">{{reviewVersion===onlineReviewVersion?"关闭体验账号":"开启体验账号"}}</div>
       <!--<div class="operate d-orange suojin" hover-class="operate-hover">使用体验账号登录</div>-->
       <div class="operate d-orange suojin" hover-class="operate-hover" @click="toPage('login')">登录页</div>
-      <div class="operate d-orange suojin" hover-class="operate-hover" @click="clearStorage">清除缓存：{{nowCache?'['+nowCache+']':'无数据'}}</div>
+      <div class="operate d-orange suojin" hover-class="operate-hover" @click="clearStorage">清除缓存</div>
+
+      <!--：{{nowCache?'['+nowCache+']':'无数据'}}-->
     </div>
   </div>
   <!--<image src="/static/images/offline-saoyisao.png"></image>-->
@@ -61,7 +64,7 @@
     data() {
       return {
         mpConfig:[{label:'版本号',value:this.wxConfig.version},
-          {label:'连接主机',value:this.wxConfig.host},
+          {label:'连接主机',value:this.wxConfig.genHost()},
           {label:'用户手机号',value: this.$store.getters.userInfo.mobile},],
         lastMpConfig:[{label:'版本号',value:this.wxConfig.last_version+'.'+this.wxConfig.last_reviewV}],
         serviceMpConfig:[{label:'后台审核版本号',value:''}],
@@ -106,6 +109,17 @@
         wx.clearStorage({success: (res) =>{
           this.nowCache = ''
         }})
+      },
+
+      changeServer(){
+        let storageHost = wx.getStorageSync('storageHost')//
+        if(!storageHost){//true表示正式服，需要切换测试服
+          wx.setStorageSync('storageHost','测试服')
+        }else{
+          wx.setStorageSync('storageHost','')
+        }
+        wx.showToast({title: '请重启微信，连接测试服需要打开调试模式', icon: 'none'})
+
       },
 
       setMiniAppVersionActionCofirm(title,version){

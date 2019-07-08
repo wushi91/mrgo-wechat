@@ -1,7 +1,7 @@
 
 
 import config from '@/config/index'
-const host = config.host
+const host = config.genHost()
 
 const apiMobileVersion = '/mobile/v1'//api版本，移动端分类
 const apiConsoleVersion = '/console/v1'//api版本，后台端分类
