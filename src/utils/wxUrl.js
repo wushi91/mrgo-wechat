@@ -1,6 +1,5 @@
-
-
 import config from '@/config/index'
+
 const host = config.genHost()
 
 const apiMobileVersion = '/mobile/v1'//api版本，移动端分类
@@ -24,21 +23,18 @@ export default {
 
   getBannerAdv: `${host + apiMobileVersion}/adv/query`,//轮播图
 
-
-
-
+  getOpenOfflinePayViewParam: `${host + apiMobileVersion}/wechatPay/getOpenOfflinePayViewParam`,//打开付款码
 
 
   //post请求
   editUser: `${host + apiMobileVersion}/users/edit`, // 上传用户信息POST /v1/users/edit
   openDoor: `${host + apiMobileVersion}/store/sendMsgToQueueIn`, //开门
-  saveShoppingCartByRfid : `${host + apiMobileVersion}/shoppingCart/saveByRfid`, //添加商品到购物车
+  saveShoppingCartByRfid: `${host + apiMobileVersion}/shoppingCart/saveByRfid`, //添加商品到购物车
   updateShoppingCartTypeExpired: `${host + apiMobileVersion}/shoppingCart/updateTypeExpired`, //从购物车删除物品
-  saveOrderForShoppingCart : `${host + apiMobileVersion}/order/saveForShoppingCart`, //新增订单POST /v1/order/saveForShoppingCart
-  wechatPay : `${host + apiMobileVersion}/wechatPay/wxPay`, //获取微信支付的参数
-  memberUserWechatPay : `${host + apiMobileVersion}/memberUserWechatPay/wxPay`, //购买会员
-  giftExperienceMember : `${host + apiMobileVersion}/memberUser/giftExperienceMember`, //7天体验套餐
-
+  saveOrderForShoppingCart: `${host + apiMobileVersion}/order/saveForShoppingCart`, //新增订单POST /v1/order/saveForShoppingCart
+  wechatPay: `${host + apiMobileVersion}/wechatPay/wxPay`, //获取微信支付的参数
+  memberUserWechatPay: `${host + apiMobileVersion}/memberUserWechatPay/wxPay`, //购买会员
+  giftExperienceMember: `${host + apiMobileVersion}/memberUser/giftExperienceMember`, //7天体验套餐
 
 
   // saveOrderByRfids: `${host + apiMobileVersion}/order/saveByRfids`, //新增订单
@@ -47,8 +43,6 @@ export default {
 
 
   //上传
-
-
 
 
   //审核相关接口

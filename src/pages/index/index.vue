@@ -40,7 +40,8 @@
         tabIndex: 0,
 //        qrcodeUrl:'',
         showPage:true,
-        showTime:0
+        showTime:0,
+        isLoadReady:false
       };
     },
     components: {
@@ -74,17 +75,34 @@
     },
 
     onShow(){
-      if(this.showTime===0){
-        this.showTime ++
-      }else{
 
+      this.$nextTick(() => {
+
+      })
+
+//      setTimeout(() => {
+////        this.navclick(this.thisa);
+//
+//      }, 0);
+
+//      console.log('---------onshow')
+      if(this.isLoadReady){
         this.$refs.usercheck.freshMemberInfo()//更新会员信息
         this.$refs.orderstatuscheck.freshOrderData()//更新订单状态数量
+      }else{
+
+
       }
 
     },
 
+    onReady(){
+//      console.log('onready - - - - - - - -')
+    },
     mounted() {
+      this.$refs.usercheck.freshMemberInfo()//更新会员信息
+      this.$refs.orderstatuscheck.freshOrderData()//更新订单状态数量
+      this.isLoadReady = true
     },
 
     methods: {

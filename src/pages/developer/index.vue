@@ -35,10 +35,12 @@
     <div class="mp-config">
       <text class="title n-gray">5.操作：</text>
       <div class="operate d-orange suojin" hover-class="operate-hover" @click="changeServer">切换服务器</div>
-      <div class="operate d-orange suojin" hover-class="operate-hover" @click="setMiniAppVersionActionCofirm(reviewVersion===onlineReviewVersion?'关闭体验账号':'开启体验账号',reviewVersion)">{{reviewVersion===onlineReviewVersion?"关闭体验账号":"开启体验账号"}}</div>
+
       <!--<div class="operate d-orange suojin" hover-class="operate-hover">使用体验账号登录</div>-->
       <div class="operate d-orange suojin" hover-class="operate-hover" @click="toPage('login')">登录页</div>
       <div class="operate d-orange suojin" hover-class="operate-hover" @click="clearStorage">清除缓存</div>
+      <div class="operate d-orange suojin" hover-class="operate-hover" @click="setMiniAppVersionActionCofirm(reviewVersion===onlineReviewVersion?'关闭体验账号':'开启体验账号',reviewVersion)">{{reviewVersion===onlineReviewVersion?"关闭体验账号":"开启体验账号"}}</div>
+
 
       <!--：{{nowCache?'['+nowCache+']':'无数据'}}-->
     </div>

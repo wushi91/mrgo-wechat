@@ -11,11 +11,12 @@
       }
     },
     onLoad() {
-      this.freshOrderData()
+//      this.freshOrderData()
     },
 
     methods: {
       freshOrderData(){
+//        console.log('freshOrderData-----------------------------------------')
         this.wxRequest.get.call(this, this.wxUrl.getOrderStatusCount, {needToken: true}).then(res => {//获取个人页面的订单数量
           let orderStatus = {tabAll:0,tabWait:0,tabBack:0,tabCan:0}
           for(let i = 0 ;i<res.data.content.length;i++){
