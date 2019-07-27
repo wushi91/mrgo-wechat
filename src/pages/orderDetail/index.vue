@@ -52,7 +52,7 @@
 
     <div class="order-info-wrapper">
       <text class="title">订单信息</text>
-      <text class="info">订单编号：{{orderDetail.createId}}</text>
+      <text class="info">订单编号：{{orderDetail.id}}</text>
       <text class="info">下单时间：{{orderDetail.createTime}}</text>
       <text class="info">支付方式：{{orderDetail.paymentTypeStr}}</text>
       <text class="info">订单备注：{{orderDetail.description?orderDetail.description:'无'}}</text>

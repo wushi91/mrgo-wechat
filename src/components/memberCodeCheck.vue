@@ -40,7 +40,9 @@
 //      this.drawQrcode(this.canvarsId, this.qrCodeContent, this.qrCodeConfig)
       this.qrCodeConfig = this.initQrCodeConfig(this.qrCodeWidthRPX, this.qrCodeHeightRPX, this.qrCodePaddingRPX)
       this.drawQrcodeInvalid(this.canvarsId, this.qrCodeConfig)
-      this.getMemberLoginCode()
+      setTimeout( ()=>{
+        this.getMemberLoginCode()
+      },500)
     },
 
     watch: {

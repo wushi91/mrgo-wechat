@@ -4,7 +4,7 @@
 
 <script>
 
-  import {goodQrcode, storeQrcode,buyVIPQrcode} from '@/utils/scanQrcode'
+  import {goodQrcode, storeQrcode,buyVIPQrcode,offlineStoreQrcode} from '@/utils/scanQrcode'
 
   export default {
 //    props: [''],
@@ -62,7 +62,9 @@
           this.wxNavigate.navigateToPage('offlineSCar', {qrcodeUrl: encodeURIComponent(qrcodeUrl)})
         } else if (qrcodeUrl.startsWith(buyVIPQrcode.path)){
           this.wxNavigate.navigateToPage('buyVIP',{info:'我很傻'})
-        }else {
+        }else if (qrcodeUrl.startsWith(offlineStoreQrcode.path)){
+          this.wxNavigate.navigateToPage('offlineStore')
+        } else {
           wx.showToast({
             title: '没有找到对应的门店或商品',
             icon: 'none'

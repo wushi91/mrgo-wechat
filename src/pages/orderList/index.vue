@@ -17,8 +17,10 @@
         <image src="/static/images/order-blank.png"></image>
         <text>还没有订单哦</text>
       </div>
-      <div class="orderitem-wrapper" v-for="(order,index) in allOrderList" :key="index">
-        <orderitem :orderInfo=order @orderItemClick="orderItemClick(order.orderId)"></orderitem>
+      <div class="orderitem-wrapper" v-for="(order,index) in allOrderList" :key="index" @click="orderItemClick(order.orderId)">
+        <!--{{index+1}}-->
+        <orderitem :orderInfo=order></orderitem>
+        <!--@orderItemClick="orderItemClick(order.orderId,order)"-->
       </div>
     </div>
 
@@ -30,8 +32,9 @@
         <image src="/static/images/order-blank.png"></image>
         <text>还没有订单哦</text>
       </div>
-      <div class="orderitem-wrapper" v-for="(order,index) in waitOrderList" :key="index">
-        <orderitem :orderInfo=order @orderItemClick="orderItemClick(order.orderId)"></orderitem>
+      <div class="orderitem-wrapper" v-for="(order,index) in waitOrderList" :key="index" @click="orderItemClick(order.orderId)">
+        <orderitem :orderInfo=order ></orderitem>
+        <!--@orderItemClick="orderItemClick(order.orderId)"-->
       </div>
 
 
@@ -50,8 +53,10 @@
         <image src="/static/images/order-blank.png"></image>
         <text>还没有订单哦</text>
       </div>
-      <div class="orderitem-wrapper" v-for="(order,index) in canOrderList" :key="index">
-        <orderitem :orderInfo=order @orderItemClick="orderItemClick(order.orderId)"></orderitem>
+      <div class="orderitem-wrapper" v-for="(order,index) in canOrderList" :key="index" @click="orderItemClick(order.orderId)">
+
+        <orderitem :orderInfo=order ></orderitem>
+        <!--@orderItemClick="orderItemClick(order.orderId)"-->
       </div>
     </div>
 
@@ -63,8 +68,9 @@
         <image src="/static/images/order-blank.png"></image>
         <text>还没有订单哦</text>
       </div>
-      <div class="orderitem-wrapper" v-for="(order,index) in backOrderList" :key="index">
-        <orderitem :orderInfo=order @orderItemClick="orderItemClick(order.orderId)"></orderitem>
+      <div class="orderitem-wrapper" v-for="(order,index) in backOrderList" :key="index" @click="orderItemClick(order.orderId)">
+        <orderitem :orderInfo=order ></orderitem>
+        <!--@orderItemClick="orderItemClick(order.orderId)"-->
       </div>
     </div>
 
@@ -88,8 +94,8 @@
   export default {
     config: {
       navigationBarTitleText: '我的订单',
-      enablePullDownRefresh: true
-
+      enablePullDownRefresh: true,
+      onReachBottomDistance:100
     },
     components: {
       orderitem, orderlistcheck

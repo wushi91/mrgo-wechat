@@ -49,6 +49,15 @@ export const buyVIPQrcode = {
   }
 }
 
+export const offlineStoreQrcode = {
+  path: 'http://wechat.mrgo.club/offlineStore',
+  goalPage: 'offlineStore',
+  goalfullPage: 'pages/offlineStore/index',
+  scanAction: function () {//请求商品信息
+    return ''
+  }
+}
+
 export function scanToPage(isLogin, qrcodeUrl, duration) {
 
   //如果路径是空的，登录后跳转到首页

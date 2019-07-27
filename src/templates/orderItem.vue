@@ -62,7 +62,14 @@
     props: ['orderInfo'],
     computed: {
       imageList() {
-        return this.orderInfo.imgUrlStr?this.orderInfo.imgUrlStr.split(','):[]
+
+        let _imageList = this.orderInfo.imgUrlStr?this.orderInfo.imgUrlStr.split(','):[]
+        let addBlankImageNum =  this.orderInfo.num - _imageList.length
+        for(let i = 0;i<addBlankImageNum;i++){
+          _imageList.push('')
+        }
+
+        return _imageList
       }
 
     },

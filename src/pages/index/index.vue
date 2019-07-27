@@ -16,6 +16,7 @@
       <mytabbar :tabIndex=tabIndex @chooseTab=chooseTab></mytabbar>
     </div>
 
+
     <!--<scancheck v-if="qrcodeUrl" :qrcodeUrl="qrcodeUrl"></scancheck>-->
     <!--<usercheck ref="usercheck" :qrcodeUrl="qrcodeUrl"></usercheck>-->
     <usercheck ref="usercheck"></usercheck>
@@ -76,29 +77,13 @@
 
     onShow(){
 
-      this.$nextTick(() => {
-
-      })
-
-//      setTimeout(() => {
-////        this.navclick(this.thisa);
-//
-//      }, 0);
-
-//      console.log('---------onshow')
       if(this.isLoadReady){
         this.$refs.usercheck.freshMemberInfo()//更新会员信息
         this.$refs.orderstatuscheck.freshOrderData()//更新订单状态数量
-      }else{
-
-
       }
 
     },
 
-    onReady(){
-//      console.log('onready - - - - - - - -')
-    },
     mounted() {
       this.$refs.usercheck.freshMemberInfo()//更新会员信息
       this.$refs.orderstatuscheck.freshOrderData()//更新订单状态数量

@@ -95,12 +95,10 @@
         }
       }
 
+      console.log('ClearLogin info')
       this.$store.dispatch('ClearLogin')
 
-      this.wxPromise.login().then(res => {
-        this.loginCode = res.code
-        return res.code
-      }, res => null)
+      this.freshLoginCode()
 
 
     },
@@ -118,6 +116,16 @@
 
       ttt(){
         this.showWechatUser = true
+      },
+
+      freshLoginCode(){
+        this.wxPromise.login().then(res => {
+          this.loginCode = res.code
+          console.log('this.loginCode',this.loginCode)
+          return res.code
+        }, res => {
+
+        })
       },
       initTesterAccount(){
         this.wxRequest.get.call(this, this.wxUrl.getMiniAppVersion ).then(res => {
@@ -165,6 +173,8 @@
           try {
             await this.phoneLogin(this.loginCode,e.mp.detail)
           } catch (err) {
+
+            this.freshLoginCode()
             wx.showToast({
               title: err.message,
               icon: 'none'
@@ -189,7 +199,7 @@
 //        }, res => null)
 
         console.log('测试login code',code)
-        if (!code) throw new Error("登录失败")
+        if (!code) throw new Error("登录失败1")
         let {token, userInfo} = await this.wxRequest.get.call(this, this.wxUrl.login, {
           code,
           encryptedData,
@@ -199,12 +209,12 @@
           this.$store.dispatch('Login', {token: res.data.content.token, userInfo: res.data.content.userInfo})//保存token，并同步到其他组件（store），提示登陆成功，返回原来的页面
           return {token: res.data.content.token, userInfo: res.data.content.userInfo}
         }, res => {
-          console.log('登录失败',res)
+          console.log('登录失败2',res)
           return {token: null, userInfo: null}
         })
 
         console.log('测试 token',token)
-        if (!token) throw new Error("登录失败")
+        if (!token) throw new Error("登录失败3")
 
 //        console.log('----')
 

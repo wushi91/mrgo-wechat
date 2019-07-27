@@ -37,9 +37,9 @@
 
     },
     onLoad(options){
-      console.log(options)
-      console.log(getCurrentPages())
-      console.log(wx.getLogManager())
+//      console.log(options)
+//      console.log(getCurrentPages())
+//      console.log(wx.getLogManager())
     },
 
     methods: {

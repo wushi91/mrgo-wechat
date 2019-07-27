@@ -20,6 +20,7 @@
 
 发现问题，二维码部分的测试不够方便，修改了相关的代码后，因为现有的二维码是跳转到正式版的小程序，无法进行完整测试。
 
+会员码购买商品是公司基于获取哪个用户下单的数据需求
 
 框架
 -------
@@ -27,3 +28,7 @@
 requestData('login',{accout:'username',pwd:'123456'},{})
 navigateToPage('member',{isAuto:true},{needToken:true,needLogin:true})
 页面跳转在本地处理，needLogin不好判断，暂时处理needToken情况，每次到首页检测token是否过期，过期就会清空token
+
+
+-------
+bug监控系统

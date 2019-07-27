@@ -1,10 +1,10 @@
 <template>
   <div class="home">
     <!--previous-margin="20rpx" next-margin="40rpx"-->
-    <swiper autoplay circular interval="100000">
+    <swiper autoplay circular interval="100000" indicator-dots indicator-color="#DBDBDB" indicator-active-color="#29C3A6"	>
 
       <template v-if='bannerList&&bannerList.length>0'>
-        <swiper-item  v-for="(item,index) in bannerList" :key="index">
+        <swiper-item  v-for="(item,index) in bannerList" :key="index" @click="clickSwiperItem(index)">
           <div class="swiper-inner">
             <image class="i1" mode='aspectFill' :src="item.imageUrl"></image>
           </div>
@@ -35,8 +35,15 @@
 
       <text class="nickname">{{userInfo.nickname}}</text>
       <text v-if="userInfo&&userInfo.nickname" class="member">{{memberInfo.status == 1 ? '尊享会员' : '普通会员'}}</text>
+      <div class="vip-code-wrapper">
+        <text v-if="userInfo&&userInfo.nickname" class="vip-code">点击打开</text>
+        <text v-if="userInfo&&userInfo.nickname" class="vip-code">会员码</text>
+
+      </div>
+
       <image v-if="userInfo&&userInfo.nickname" class="imember" src="/static/images/index-green-vip-code.png"></image>
-      <text v-if="userInfo&&userInfo.nickname" class="vip-code">会员码</text>
+      <image v-if="userInfo&&userInfo.nickname" class="member-code-arrow" src="/static/images/member-code-arrow.png"></image>
+
       <!--<div class="center">升级会员 <image class="member-arrow" src="/static/images/member-arrow.png"></image></div>-->
     </div>
 
@@ -100,6 +107,9 @@
     },
     methods: {
 
+      clickSwiperItem(index){
+        if(index===0)this.wxNavigate.navigateToPage('offlineStore')
+      },
       onlinePay(){
         console.log('onlinePay')
         wx.openOfflinePayView({
@@ -149,7 +159,7 @@
     swiper {
       /*background-color: #FFB9B9;*/
       padding: rpx(20) 0;
-      height: rpx(320);
+      height: rpx(280);
       swiper-item {
         border-radius: rpx(10);
       }
@@ -170,7 +180,7 @@
 
     .my-info {
       background-color: white;
-      padding: rpx(35) rpx(20);
+      padding: rpx(35) rpx(5) rpx(35) rpx(20);
       margin: 0 rpx(20) rpx(20) rpx(20);
       display: flex;
       border-radius: rpx(10);
@@ -210,9 +220,22 @@
 
       .imember {
         @include WH(82, 82);
+        margin-right: rpx(16);
+      }
+
+      .member-code-arrow{
+        @include WH(26, 36);
+      }
+
+      .vip-code-wrapper{
+        display: flex;
+        flex-direction: column;
+        margin-right: rpx(18);
+        justify-content: center;
+        /*align-items: center;*/
       }
       .vip-code {
-        margin-left: rpx(18);
+        /*margin-left: rpx(18);*/
         @include FCS(#7F7F7F, 24, 40, 40);
         opacity: 0.8;
       }
