@@ -11,12 +11,12 @@ const host = 'https://wechat.mrgo.club'//正式服
 const devHost = 'https://testwechat.mrgo.club' //开发者选择，不会对系统造成印象
 const prodHost = 'https://wechat.mrgo.club' //生产环境的服务器地址
 
-const version = '1.0.5'//项目版本号
-const reviewV = 'a'//审核版本号，测试版本没有审核版本号
+const version = '1.0.7'//项目版本号
+const reviewV = 'c'//审核版本号，测试版本没有审核版本号
 
 
-const last_version = '1.0.4'
-const last_reviewV = 'd'
+const last_version = '1.0.6'
+const last_reviewV = 'b'
 
 
 const genVersionPrefix = (host,version)=>{

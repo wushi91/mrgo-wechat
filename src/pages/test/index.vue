@@ -1,18 +1,27 @@
 <template>
   <div class="test-wrapper">
 
-    <text style="font-size: 26rpx">openid:{{openid}}</text>
-    <text style="font-size: 26rpx">loginCode:{{loginCode}}</text>
-    <text style="font-size: 26rpx">session_key:{{session_key}}</text>
-    <button @click="openMember">打开会员码</button>
-    <button @click="addMember">成为会员</button>
+    <!--<text style="font-size: 26rpx">openid:{{openid}}</text>-->
+    <!--<text style="font-size: 26rpx">loginCode:{{loginCode}}</text>-->
+    <!--<text style="font-size: 26rpx">session_key:{{session_key}}</text>-->
+    <!--<button @click="openMember">打开会员码</button>-->
+    <!--<button @click="addMember">成为会员</button>-->
 
-    <navigator class="menu_list btn-opencard" target="miniProgram" app-id="wxeb490c6f9b154ef9" :extra-data="extra_data">
-      <div class="title">领取会员卡 <em class="xg-mp-font icon-jiantou"></em></div>
-    </navigator>
+    <!--<navigator class="menu_list btn-opencard" target="miniProgram" app-id="wxeb490c6f9b154ef9" :extra-data="extra_data">-->
+    <!--<div class="title">领取会员卡 <em class="xg-mp-font icon-jiantou"></em></div>-->
+    <!--</navigator>-->
+
+    <!--<button @click="testSetting">测试wx.getseting</button>-->
+    <!--<button @click="testSetting">测试wx.getseting</button>-->
+    <button @click="toPage('index')">首页</button>
+    <button @click="toPage('offlineSCar')">购物车</button>
+    <button @click="toPage('storeList')">所有门店</button>
+    <button @click="toPage('myCoupon')">我的优惠券</button>
+    <button @click="toPage('getCoupon')">领取优惠卷</button>
+    <button @click="toPage('useCoupon')">使用优惠券</button>
 
 
-
+    <text>{{testTimeStamp}}</text>
     <div class="input-comment-wrapper" :style="'bottom: '+inputBottom+'px;'">
       <div class="input-wrapper">
 
@@ -35,6 +44,7 @@
 
   import wxNavigateTest from '@/utils/wxNavigateTest'
   import wxToast from '@/utils/wxToast'
+
   export default {
     config: {
       navigationBarTitleText: '测试',
@@ -49,9 +59,10 @@
         loginCode: '...',
         openid: '...',
         session_key: '...',
-        appid:'wx0facf1f31a74c225',
-        appSecret:'6f3ad96341fcf7ffd8f583559ee682e4',
-        extra_data:{}
+        appid: 'wx0facf1f31a74c225',
+        appSecret: '6f3ad96341fcf7ffd8f583559ee682e4',
+        extra_data: {},
+        testTimeStamp:'2019-08-16 23:59:59'
       };
     },
     computed: {},
@@ -59,27 +70,29 @@
 
     onLoad(options) {
 
-      console.log(options)
-      console.log('怎么啦',JSON.stringify(options))
-      if(JSON.stringify(options) === "{}"){
-        console.log('空')
-      }else{
-        console.log('不为空')
-      }
 
-      console.log(this.$router)
-      console.log(this.$route)
 
-      this.initAccessToken()
-      wxNavigateTest.navigateToPage('addOrderComment',{a:2,b:34,c:234})
-
-//      wx.showToast({title:'hahah',duration:3000,success:()=>{
-//        console.log('傻逼')
-//      }})
-      wxToast.toastText('hello world')
-      wxToast.toastToDo({title:'支付成功',duration:3000}).then(res=>{
-        console.log('我是一只大厦宝宝')
-      })
+//      console.log(options)
+//      console.log('怎么啦',JSON.stringify(options))
+//      if(JSON.stringify(options) === "{}"){
+//        console.log('空')
+//      }else{
+//        console.log('不为空')
+//      }
+//
+//      console.log(this.$router)
+//      console.log(this.$route)
+//
+//      this.initAccessToken()
+//      wxNavigateTest.navigateToPage('addOrderComment',{a:2,b:34,c:234})
+//
+////      wx.showToast({title:'hahah',duration:3000,success:()=>{
+////        console.log('傻逼')
+////      }})
+//      wxToast.toastText('hello world')
+//      wxToast.toastToDo({title:'支付成功',duration:3000}).then(res=>{
+//        console.log('我是一只大厦宝宝')
+//      })
 
 //      wxToast.textmm('22',232)
 
@@ -89,12 +102,43 @@
 
     mounted() {
 
+      console.log(this.testTimeStamp.split('-').join('/'))
+      this.testTimeStamp = new Date(this.testTimeStamp.split('-').join('/'))
+
+      console.log(this.testTimeStamp)
+      console.log(this.testTimeStamp.getTime())
     },
 
 
     methods: {
 
-      initLoginCode(){
+      toPage(pageUrl){
+        this.wxNavigate.navigateToPage(pageUrl)
+      },
+
+      testSetting() {
+        wx.getSetting({
+          success(res) {
+            console.log('setting res', res)
+            if (res.authSetting['scope.userInfo']) {
+              // 已经授权，可以直接调用 getUserInfo 获取头像昵称
+              wx.getUserInfo({
+                success: function (res) {
+                  wxToast.toastText('已经授权')
+                  console.log('已经授权', res)
+                }
+              })
+            } else {
+              wxToast.toastToDo({title: '还未授权', duration: 2000}).then(res => {
+                wxNavigateTest.navigateToPage('login')
+              })
+
+            }
+          }
+        })
+      },
+
+      initLoginCode() {
         this.wxPromise.login().then(res => {
           console.log('res.code', res.code)
 
@@ -104,7 +148,7 @@
         }, res => null)
       },
 
-      initAccessToken(APP_ID,APP_SECRET){
+      initAccessToken(APP_ID, APP_SECRET) {
         //https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET
 
         this.wxPromise.request({
@@ -140,7 +184,6 @@
 
 
       },
-
 
 
       openMember() {
@@ -180,14 +223,14 @@
 
         wx.navigateToMiniProgram({
           appId: 'wxeb490c6f9b154ef9', // 固定为此 appid，不可改动
-          extraData: {encrypt_card_id:'', outer_str:"", biz:""}, // 包括 encrypt_card_id, outer_str, biz三个字段，须从 step3 中获得的链接中获取参数
+          extraData: {encrypt_card_id: '', outer_str: "", biz: ""}, // 包括 encrypt_card_id, outer_str, biz三个字段，须从 step3 中获得的链接中获取参数
 
           success(res) {
 
-            console.log('navigateToMiniProgram success res',res)
+            console.log('navigateToMiniProgram success res', res)
           },
           fail(res) {
-            console.log('navigateToMiniProgram fail res',res)
+            console.log('navigateToMiniProgram fail res', res)
           },
           complete() {
           }

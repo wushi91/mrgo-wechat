@@ -1,6 +1,7 @@
 
 
 const TokenKey = 'Admin-Token'
+const TokenExpiresKey = 'TokenExpires'
 const UserInfoKey = 'UserInfo'
 const MemberInfoKey = 'MemberInfo'
 
@@ -18,7 +19,22 @@ export function setToken(token) {
 export function removeToken() {
   return wx.removeStorageSync(TokenKey)
 }
+export function getTokenExpires() {
+  let timestamp = wx.getStorageSync(TokenExpiresKey)
+  if(timestamp){
+    return timestamp
+  }else{
+    return 0 //老版本可能不存在这个timestamp，为了避免出错
+  }
+}
 
+export function setTokenExpires(token) {
+  return wx.setStorageSync(TokenExpiresKey,token)
+}
+
+export function removeTokenExpires() {
+  return wx.removeStorageSync(TokenExpiresKey)
+}
 //
 export function getUserInfo() {
 

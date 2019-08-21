@@ -1,6 +1,13 @@
 {
   "pages": [
+    "pages/test/index",
     "pages/index/index",
+
+    "pages/storeList/index",
+    "pages/myCoupon/index",
+    "pages/getCoupon/index",
+    "pages/useCoupon/index",
+
     "pages/onlineStore/index",
     "pages/login/index",
     "pages/operateResult/index",

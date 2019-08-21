@@ -95,7 +95,7 @@
         }
       }
 
-      console.log('ClearLogin info')
+//      console.log('ClearLogin info')
       this.$store.dispatch('ClearLogin')
 
       this.freshLoginCode()
@@ -121,7 +121,7 @@
       freshLoginCode(){
         this.wxPromise.login().then(res => {
           this.loginCode = res.code
-          console.log('this.loginCode',this.loginCode)
+//          console.log('this.loginCode',this.loginCode)
           return res.code
         }, res => {
 
@@ -219,8 +219,8 @@
 //        console.log('----')
 
 //        userInfo.imageUrl = ''//测试用 必须注释的
-
-
+//        this.showWechatUser = true
+//        throw new Error("请先获取微信用户信息")
         if (!(userInfo&&userInfo.imageUrl && userInfo.nickname)) {//如果头像或者nickname为空，显示获取头像的按钮
           this.showWechatUser = true
           throw new Error("请先获取微信用户信息")
@@ -243,6 +243,8 @@
         if (e.mp.detail.errMsg === 'getUserInfo:ok') {
           try {
             let userInfo = e.mp.detail.userInfo
+
+            console.log('e.mp.detail.userInfo',e.mp.detail.userInfo)
 
             let editstatus = await this.wxRequest.post.call(this, this.wxUrl.editUser, {
               needToken: true, contentType: 'application/json', cities: userInfo.city,

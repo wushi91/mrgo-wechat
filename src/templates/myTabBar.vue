@@ -6,13 +6,13 @@
       <text class="title">首页</text>
     </div>
 
-    <div class="center">
-      <div class="scan-wrapper" :class="[tabIndex ===1 ?'select': '']" @click="chooseTab(1)">
-        <image class="icon" src="/static/images/index-saoyisao.png" ></image>
-        <div style="height: 45rpx"></div>
-        <text class="title">开门·购物</text>
-      </div>
-    </div>
+    <!--<div class="center">-->
+      <!--<div class="scan-wrapper" :class="[tabIndex ===1 ?'select': '']" @click="chooseTab(1)">-->
+        <!--<image class="icon" src="/static/images/index-saoyisao.png" ></image>-->
+        <!--<div style="height: 45rpx"></div>-->
+        <!--<text class="title">开门·购物</text>-->
+      <!--</div>-->
+    <!--</div>-->
 
     <div class="item" :class="[tabIndex ===2 ?'select': '']" @click="chooseTab(2)">
       <image class="icon"  src="/static/images/index-mine-select.png" v-show="tabIndex ===2 "></image>
@@ -52,9 +52,11 @@
     .item {
       display: flex;
       flex-direction: column;
-      padding: 0 rpx(100);
+      /*padding: 0 rpx(100);*/
       height: rpx(98);
       justify-content: center;
+      align-items: center;
+      width: 50%;
       .icon{
         @include WH(45, 45);
       }

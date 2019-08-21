@@ -2,7 +2,7 @@
   <div class="index">
     <div class="page-content">
       <div v-show="tabIndex===0">
-        <innerpagehome :userInfo='userInfo' :memberInfo="memberInfo"></innerpagehome>
+        <innerpagehome :userInfo='userInfo' :memberInfo="memberInfo" @chooseTab=chooseTab></innerpagehome>
       </div>
       <div v-show="tabIndex===1">
         <innerpagescan ref="innerpagescan" :userInfo='userInfo'></innerpagescan>
@@ -35,7 +35,11 @@
   import innerpagescan from './innerPageScan'
   import innerpagemy from './innerPageMy'
 
+//  navigationStyle
   export default {
+    config: {
+//      "navigationStyle": 'custom',
+    },
     data() {
       return {
         tabIndex: 0,
@@ -64,6 +68,9 @@
     },
     onLoad(options) {
 
+//
+//      console.log(JSON.stringify({m:'13822545555',e:new Date().getTime()}))
+//      console.log('staticQrcode',staticQrcode.getEncryptQrcodeString(13822542317))
 //      if (options && options.data && JSON.parse(options.data).qrcodeUrl) {
 //        this.qrcodeUrl = decodeURIComponent(JSON.parse(options.data).qrcodeUrl)
 //      }else if(options&&options.q){//微信扫一扫二维码参数是q

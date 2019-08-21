@@ -11,6 +11,7 @@ export default {
 
   //get请求
   login: `${host + apiMobileVersion}/users/wechatLogin`, //登陆
+  wechatLoginByCode: `${host + apiMobileVersion}/users/wechatLoginByCode`, //登陆
   checkLogin: `${host + apiMobileVersion}/users/getUserInfo`,
   getUserInfo: `${host + apiMobileVersion}/users/getUserInfo`,
   getOrderDetail: `${host + apiMobileVersion}/order/getOrderDetail`,
@@ -42,6 +43,15 @@ export default {
   // addPost:`${host+apiMobileVersion}/addPost`,//新建帖子
 
 
+  //优惠券GET /v1/couponTake/receive
+  // getCouponList : `${host + apiMobileVersion}/coupon/getCouponList`, //个人优惠券列表
+  getCouponList : `${host + apiMobileVersion}/couponTake/receive`, //个人优惠券列表
+  couponReceiveList : `${host + apiMobileVersion}/coupon/receive`, //可领取的优惠券列表
+  couponReceive : `${host + apiMobileVersion}/coupon/receive`, //领取优惠券 post{couponId}
+
+
+  //门店
+  mobileStoreList : `${host + apiMobileVersion}/store/mobile/store`,
   //上传
 
 

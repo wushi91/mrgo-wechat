@@ -25,28 +25,16 @@
     </div>
 
 
-    <div class="canvas-wrapper">
-      <membercodecheck ref="membercodecheck"></membercodecheck>
+    <div class="canvas-wrapper" @click="getMemberLoginCode">
+      <membercodecheck ref="membercodecheck" :qrCodeContent="qrCodeContent"></membercodecheck>
     </div>
 
 
     <div class="wexin-offlinepay-wrapper" @click="openWexinOfflinePay">
       <image src="/static/images/icon-wexin-offlinepay.png"></image>
-      <text>打开微信付款码</text>
+      <text>微信支付</text>
     </div>
-    <!--<div class="buy-entry">-->
-    <!--<div class="shopcar-wrapper" @click="toOrderListPage('tab-can')">-->
-    <!--<image src="/static/images/offline-order.png"></image>-->
-    <!--<text class="tip">可使用订单</text>-->
-    <!--</div>-->
-    <!--&lt;!&ndash;@click="scanMRGOCode"&ndash;&gt;-->
 
-    <!--<div class="saoyisao-wrapper" @click="scanMRGOCode">-->
-    <!--<image src="/static/images/offline-saoyisao.png"></image>-->
-    <!--<text class="tip">扫码购</text>-->
-    <!--</div>-->
-
-    <!--</div>-->
 
   </div>
 </template>
@@ -61,12 +49,16 @@
   import membercard from '@/templates/memberCard'
   import membercodecheck from '@/components/memberCodeCheck'
 
+  import staticQrcode from '@/utils/staticQrcode'
+
   export default {
     data() {
       return {
-        qrcodeUrl: '',
+        qrcodeUrl: '',//扫描二维码开门
         storeId: '',
-
+        qrCodeContent: '',//这个是会员码
+        qrCodeInterval: null,
+        qrCodeEffectTime: 45 * 1000,//45秒刷新
       };
     },
 
@@ -88,21 +80,28 @@
     },
 
     onUnload() {
-      this.$refs.membercodecheck.clearQrCodeTimer()
+
+      if(this.qrCodeInterval){//清除定时器
+        clearInterval(this.qrCodeInterval)
+      }
       Object.assign(this.$data, this.$options.data())//清楚页面数据
+    },
+
+    mounted(){
+      setTimeout(()=>{//部分华为手机二维码绘制有问题，这里延时绘制避免
+        this.getMemberLoginCode()
+      },300)
+
     },
 
 
     methods: {
 
-
       openWexinOfflinePay() {
-
-        this.wxRequest.get.call(this, this.wxUrl.getOpenOfflinePayViewParam,{
+        this.wxRequest.get.call(this, this.wxUrl.getOpenOfflinePayViewParam, {
           needToken: true,
         }).then(res => {
-
-          if(res.data.status === 200){
+          if (res.data.status === 200) {
             let objArr = {}
             objArr.appId = res.data.content.appId
             objArr.timeStamp = res.data.content.timeStamp
@@ -110,52 +109,25 @@
             objArr.package = res.data.content.package
             objArr.signType = res.data.content.signType
             objArr.paySign = res.data.content.paySign
-
             objArr.success = function (res) {
-
             }
             objArr.fail = function (res) {
               console.log('openOfflinePayView api fali', res)
-              wx.showToast({
-                title: '打开付款码失败',
-                icon: 'none'
-              })
-
+//              wx.showToast({
+//                title: '网络出故障了，请手动打开付款码',
+//                icon: 'none'
+//              })
             }
-
             wx.openOfflinePayView(objArr)
           }
-
         }, res => {
-          console.log('internet fail',res)
+          console.log('internet fail', res)
           wx.showToast({
-            title: '打开付款码失败',
+            title: '网络出故障了，请手动打开付款码',
             icon: 'none'
           })
         })
-
-//        getOpenOfflinePayViewParam
-//        this.wx
-//        let objArr = {appId: 'wx2ca38014acceeebe',
-//          timeStamp:createTimeStamp(),
-//          nonceStr:createNonceStr(),
-//          package: 'mch_id=1500996251',
-//          signType: 'MD5'}
-//        objArr.paySign = paySign(objArr,'9BMQN4EISAIJDKVAA0LPSB7FELVIW5UK')
-//
-////        console.log()
-//        objArr.success=function (res) {
-//          console.log('success',res)
-//        }
-//        objArr.fail=function (res) {
-//          console.log('fali',res)
-//        }
-//
-//        console.log('openWexinOfflinePay', objArr)
-//
-//        wx.openOfflinePayView(objArr)
-      }
-      ,
+      },
 
       scanMRGOCode() {
         this.wxPromise.scanCode({onlyFromCamera: true}).then(res => {
@@ -169,8 +141,8 @@
             })
           }
         })
-      }
-      ,
+      },
+
       openDoor(storeId) {
         this.wxAnalytics.scan_open_store(storeId)
 
@@ -197,18 +169,30 @@
           }
 
         })
-      }
-      ,
+      },
 
       toOrderListPage(tab) {
         this.wxNavigate.navigateToPage('orderList', {tab})
-      }
-      ,
+      },
 
+      getMemberLoginCode() {
+        let phoneNumber = this.$store.getters.userInfo&&this.$store.getters.userInfo.mobile?this.$store.getters.userInfo.mobile:''
+        if(!phoneNumber){
+          return
+        }
+        if(this.qrCodeInterval){
+          clearInterval(this.qrCodeInterval)
+        }
+        this.qrCodeContent = staticQrcode.getEncryptQrcodeString(phoneNumber)//首先先执行一次
+        this.qrCodeInterval = setInterval(() => {
+          console.log(phoneNumber)
+          this.qrCodeContent = staticQrcode.getEncryptQrcodeString(phoneNumber)
+        }, this.qrCodeEffectTime);
+
+      },
 
     }
   }
-  ;
 </script>
 
 <style lang="scss" scoped>
@@ -252,25 +236,29 @@
 
     .canvas-wrapper {
       margin-top: rpx(20);
-      margin-bottom: rpx(20);
+      margin-bottom: rpx(26);
       /*background-color: white;*/
       /*padding: rpx(20);*/
 
     }
 
+
+
     .wexin-offlinepay-wrapper {
-      @include WH(380, 80);
+      @include WH(476, 96);
       display: flex;
       justify-content: center;
       align-items: center;
       border: rpx(2) solid #37D0B3;
-      border-radius: rpx(40);
+      border-radius: 50px;
+      background-color: #37D0B3;
+
       image {
         @include WH(44, 40);
         margin-right: rpx(16);
       }
       text {
-        @include FCS(#37D0B3, 32, 40, 40);
+        @include FCS(#FFFFFF, 32, 78, 78);
       }
     }
 

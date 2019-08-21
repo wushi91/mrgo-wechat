@@ -35,7 +35,7 @@
             <!--<text class="t2">￥{{shopCarTotal.totalPrice}}</text>-->
           <!--</div>-->
 
-          <text class="t1">商品总金额</text>
+          <text class="t1">总金额</text>
           <text class="t2">￥{{shopCarTotal.totalPrice}}</text>
 
           <!--<text class="member-price">会员: ￥15.00</text>-->
@@ -45,16 +45,17 @@
 
         <template v-if="true">
           <div class="w2">
-            <text class="t1">尊享会员价</text>
-            <text class="t2">￥{{shopCarTotal.vipAmount}}</text>
+            <text class="t1">尊享会员优惠</text>
+            <text class="t2">-￥{{shopCarTotal.vipAmount}}</text>
           </div>
 
-          <div class="line-1-px" v-if="false"></div>
+          <div class="line-1-px" v-if="true"></div>
         </template>
 
-        <div class="w2" v-if="false">
+        <div class="w2" @click="toPage('useCoupon')">
           <text class="t1">优惠卷</text>
-          <text class="t2">已减￥0.00</text>
+          <text class="t2">-￥0.00</text>
+          <image class="icon-offlineSCar-coupon-arrow" src="/static/images/icon-offlineSCar-coupon-arrow.png"></image>
         </div>
 
 
@@ -66,10 +67,7 @@
     </div>
 
 
-    <div class="total-price-wrapper">
-      <text class="t1">合计：</text>
-      <text class="t2">￥{{shopCarTotal.currentPrice}}</text>
-    </div>
+
 
     <div class="slogan-wrapper">
       <!--<image class="slogan" src="/static/images/slogan.png"></image>-->
@@ -77,6 +75,7 @@
 
 
     <div class="pay-wrapper">
+      <text class="money-heji">{{shopCarTotal.currentPrice}}</text>
       <div class="btn-scan" @click="scanMRGOCode">继续扫码购</div>
       <div class="btn-pay" @click="payShopCarTryCatch">去支付</div>
     </div>
@@ -132,6 +131,38 @@
         this.addGood(goodQrcode.goodRFId(qrcodeUrl))
       }
 
+      //*
+      //
+      //
+      //
+      //
+      //
+      //
+      //
+      //
+      // 删掉删掉删掉删掉删掉注意以下代码要删掉的
+      //
+      //
+      //
+      //
+      //
+      // */
+//      let qrcodeUrl = 'http://wechat.mrgo.club/mrgogood?id=190723351037813434888370';
+//      this.addGood(goodQrcode.goodRFId(qrcodeUrl))
+
+      let result = {"status":200,"message":"服务器成功返回用户请求的数据.","content":{"amount":"10.50","commodityCarts":[{"commodityId":"351450990001795072","name":"三只松鼠蟹香蚕豆三只松鼠蟹香蚕豆三只松鼠蟹香蚕豆三只松鼠蟹香蚕豆三只松鼠蟹香蚕豆三只松鼠蟹香蚕豆","secondName":null,"imgUrl":"http://image.mrgo.club/FryDQVy5NpAcD0w69KJAUev3SmvU","price":"10.50","vipPrice":"9.45","totalPrice":"10.50","vipTotalPrice":"9.45","num":1,"idList":null,"idsStr":"358693814208311296"}],"vipAmount":"9.45","store":{"id":"343807012825739264","sortId":null,"areaId":null,"userId":null,"code":null,"name":"深业U店","province":null,"city":null,"area":null,"address":"宝安区鹤洲洲石路北二路深圳U中心","longitude":null,"latitude":null,"mobile":null,"dutyPhone":null,"storeType":null,"storeLevel":null,"workTimeAm":null,"workTimePm":null,"areaSize":null,"description":null,"status":null,"createId":null,"createTime":null,"modifyId":null,"modifyTime":null,"expectedRecoveryTime":null,"purchasingCycle":null,"coefficient":null,"userName":null},"statusMessage":"服务器成功返回用户请求的数据.","statusCode":200,"isMember":true}}
+      this.goodList = result.content.commodityCarts.reverse();
+      this.offlineShop = result.content.store?result.content.store:{};
+      this.shopCarTotal.totalPrice = result.content.amount
+      this.shopCarTotal.vipAmount = result.content.vipAmount
+      this.shopCarTotal.currentPrice = result.content.isMember?this.shopCarTotal.vipAmount:this.shopCarTotal.totalPrice
+
+
+      //*
+      //
+      //
+      //
+      // **/
     },
 
     onUnload() {
@@ -140,6 +171,9 @@
 
     methods: {
 
+      toPage(pageUrl) {
+        this.wxNavigate.navigateToPage(pageUrl)
+      },
       addGood(goodRFId) {
         goodQrcode.scanAction.call(this, goodRFId, this.goodList.length === 0 ? 1 : 0).then(res => {
 
@@ -396,6 +430,7 @@
         margin: rpx(32) 0;
         padding: 0 rpx(30);
         display: flex;
+        align-items: center;
         .t1 {
           flex: 1;
           @include FCS(#333333, 32, 40, 40);
@@ -403,7 +438,10 @@
         .t2 {
           @include FCS(#FF766F, 32, 40, 40);
         }
-
+        .icon-offlineSCar-coupon-arrow{
+          @include WH(16,27);
+          margin-left: rpx(18);
+        }
       }
 
       .line-1-px{
@@ -458,31 +496,29 @@
       display: flex;
       position: fixed;
       background-color: #F9FCFB;
-      padding: 0 rpx(30);
       bottom: 0;
       left: 0;
       right: 0;
       height: rpx(100);
-
       justify-content: center;
 
-      .btn-scan {
+      .money-heji{
+        margin: auto;
+        @include FCS(#333333, 36, 42, 42);
+        &:before {
+          content: "合计 ￥";
+          font-size: rpx(24);
+        }
+      }
+      .btn-scan,.btn-pay{
         text-align: center;
-        @include WH(240, 78);
-        @include FCS(#37D0B3, 32, 78, 78);
-        border: rpx(2) solid #37D0B3;
+        @include WH(200, 78);
+        background-color: #37D0B3;
+        @include FCS(#FFFFFF, 30, 78, 78);
         border-radius: rpx(40);
-        background-color: #F9FCFB;
+        margin-right: rpx(32);
       }
 
-      .btn-pay {
-        text-align: center;
-        @include WH(240, 78);
-        background-color: #37D0B3;
-        @include FCS(#FFFFFF, 32, 78, 78);
-        border-radius: rpx(40);
-        margin-left: rpx(80);
-      }
     }
 
   }
